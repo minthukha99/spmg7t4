@@ -4,6 +4,7 @@ Git repository: https://github.com/minthukha99/spmg7t4/
 ## Project setup
 ```
 npm install
+min test 
 ```
 
 ### Compiles and hot-reloads for development
