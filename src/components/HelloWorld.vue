@@ -172,6 +172,8 @@
       display: flex;
       width: 90%;
       justify-content: space-around;
+      align-items: center;
+      align-content: space-around;
     }
 
   .home-page-wrapper .small .dropdown-content a {
