@@ -1,16 +1,31 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="app-wrapper">
+    <router-view v-if="currentRoute === '/'" />
+    <div v-else>
+      <NavigationBar />
+      <div class="app-content-wrapper">
+        <router-view />
+      </div>
+    </div>
+    <BottomBar />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NavigationBar from './components/NavigationBar.vue';
+import BottomBar from './components/BottomBar.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    NavigationBar,
+    BottomBar,
+  },
+  computed: {
+    currentRoute() {
+      return this.$route.path;
+    },
+  },
 }
 </script>
 
@@ -21,6 +36,36 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: #2c3e50;
+  text-decoration: none;
+}
+
+.app-wrapper {
+  overflow-x: hidden;
+}
+
+.app-content-wrapper {
+  min-height: 100vh;
+  padding: 0.5rem;
+}
+
+@media screen and (min-width: 468px) {
+  .app-content-wrapper {
+    padding: 0.5rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .app-content-wrapper {
+    padding: 1rem;
+  }
 }
 </style>

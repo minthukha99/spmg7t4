@@ -1,55 +1,46 @@
 <template>
-  <div class="home-page-wrapper">
-    <!--top header-->
     <header class="header">
-      <nav class="links text-white" v-if="fullView">
-        <template :key="route.path" v-for="route in routes">
-          <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
-            {{ route.name }}
-          </router-link>
-        </template>
-      </nav>
-
-      <!-- If on small screen -->
-      <nav class="nav small" v-else>
-        <div id="nav-icon3" :class="classNames" @click="showButton">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
-        <div id="home-dropdown-small" :class="dropdownClass" @click="showButton">
-          <!-- Router link to other paths -->
-          <template :key="route.path" v-for="route in routes">
-            <router-link
-              v-if="route.meta.visible"
-              :to="route.path.toLowerCase()"
-            >
-              {{ route.name }}
+        <nav class="nav links text-white" v-if="fullView">
+            <router-link id="home" to="/">
+                <img class="homeimg" src="../assets/ljms.png" alt="LJMS Icon" />
             </router-link>
-          </template>
-        </div>
-      </nav>
-
-      <div class="header-middle-text d-flex">
-        <h4 class="text-white">SPM,</h4>
-        <h4 class="text-white">Together</h4>
-      </div>
-    </header>
-  </div>
-</template>
-
-<script>
-  // @ is an alias to /src
-  // Components
-  import NavigationBar from "@/components/NavigationBar.vue";
+        
+            <!--added in a class called topnav (removed)-->
+            <template :key="route.path" v-for="(route) in routes">
+                <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
+                {{ route.name }}
+                </router-link>
+            </template>
+        </nav>
   
+        <nav class="nav small" v-else>
+        <div id="nav-icon3" :class="classNames" @click="showButton">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    
+        <div id="home-dropdown-small" :class="dropdownClass" @click="showButton">
+            <!-- router link to home -->
+            <router-link :to="routes[0].path.toLowerCase()">
+            Home
+            </router-link>
+            <!-- Router link to other paths -->
+            <template :key="route.path" v-for="(route) in routes">
+                <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
+                    {{ route.name }}
+                </router-link>
+            </template>
+        </div>
+        </nav>
+    </header>
+    
+  </template>
+  
+  <script>
   export default {
-    name: "Home",
-    components: {
-      NavigationBar,
-    },
+    name: "NavigationBar",
     data() {
       return {
         fullView: true,
@@ -72,12 +63,6 @@
         }
       },
     },
-    computed: {
-      routes() {
-        console.log(this.$router.options.routes);
-        return this.$router.options.routes;
-      },
-    },
     created() {
       if (window.innerWidth < 760) {
         this.fullView = false;
@@ -94,32 +79,64 @@
           this.fullView = false;
         }
       });
-    }, 
+    },
+    computed: {
+      // Current route I guess. Can use to dynamically render navbar active links
+      view() {
+        return this.$route.name;
+      },
+  
+      // return all routes from router
+      routes() {
+        return this.$router.options.routes;
+      },
+    },
   };
+  </script>
+  
+  <style scoped>
 
-</script>
+    .header {
+        height:auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: column;
+        max-height: 100vh;
+        padding: 0.5rem;
+        position: relative;
+    }
 
-<style scoped>
-  .home-page-wrapper {
-    overflow-x: hidden;
+    .header-middle-text {
+        margin-top: 9rem;
+        width: 70%;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+  .nav {
+      /* margin: 0; */
+      display: flex;
+      align-items: center;
+      align-content: space-around;
+      justify-content: center;
+      /* flex-wrap: wrap;
+      flex-direction: row; */
   }
 
-  .header {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    max-height: 100vh;
-    padding: 0.5rem;
-    position: relative;
+  a {
+      font-weight: bold;
+      margin: 0 0.5rem;
+      padding: 50px 30px 30px 30px;
+  }
+        
+  .router-link-exact-active {
+    color:grey;
   }
 
-  .header-middle-text {
-    margin-top: 9rem;
-    width: 70%;
-    flex-direction: column;
-    align-items: flex-start;
+  .nav #home .homeimg {
+    border-radius: 50%;
+    height: 120px;
   }
 
   #nav-icon3 {
@@ -155,9 +172,11 @@
       display: flex;
       width: 90%;
       justify-content: space-around;
+      align-items: center;
+      align-content: space-around;
     }
 
-  .home-page-wrapper .small .dropdown-content a {
+  .small .dropdown-content a {
     padding: 12px 16px;
     margin-left: 0;
     margin-right: 0;
@@ -166,7 +185,7 @@
     text-align: left;
   }
 
-  .home-page-wrapper .small .dropdown-content {
+  .small .dropdown-content {
     position: absolute;
     top: 60px;
     right: 0;
@@ -177,7 +196,7 @@
     width: 200px;
   }
 
-  .home-page-wrapper .small .dropdown-content.show-content {
+  .small .dropdown-content.show-content {
     display: flex;
   }
 
@@ -228,9 +247,5 @@
     }
   }
 
-  @media screen and (min-width: 468px) {
-    h1 {
-      font-size: 40px;
-    }
-  }
-</style>
+  </style>
+  
