@@ -44,5 +44,11 @@
         width: 100%;
         margin: auto;
     }
+
+    @media screen and (min-width: 468px) {
+      .footer-bg-wrapper {
+        width: 75%;
+      }
+    }
   </style>
   

@@ -31,11 +31,26 @@
           </template>
         </div>
       </nav>
-
       <div class="header-middle-text d-flex">
-        <h4 class="text-white">SPM,</h4>
-        <h4 class="text-white">Together</h4>
+        <h1><i>Learning Journey Management System</i></h1>
+        <p>This website is only meant for internal use ⚠️ </p>
       </div>
+      <section class="about-wrapper container">
+        <div class="text-center">
+          <h2 class="mb-1">About Us</h2>
+          <p>
+            We are a group of students applying Scrum and Agile methodologies while building this Learning Journey Management System, LJMS for short. This system helps to assists our target audiences (Staff, HR personnel, Manager) to better manage one's career progression in the company.
+          </p>
+        </div>
+      </section>
+      <section class="about-wrapper container">
+        <div class="text-center">
+          <h2 class="mb-1">Meet the Team</h2>
+          <p>
+            We are a group of students applying Scrum and Agile methodologies while building this Learning Journey Management System, LJMS for short. This system helps to assists our target audiences (Staff, HR personnel, Manager) to better manage one's career progression in the company.
+          </p>
+        </div>
+      </section>
     </header>
   </div>
 </template>
@@ -105,19 +120,18 @@
   }
 
   .header {
-    height: 100vh;
+    margin-top: 20px;
+    height: auto;
     display: flex;
     align-items: center;
     justify-content: flex-start;
     flex-direction: column;
     max-height: 100vh;
-    padding: 0.5rem;
     position: relative;
   }
 
   .header-middle-text {
-    margin-top: 9rem;
-    width: 70%;
+    width: 75%;
     flex-direction: column;
     align-items: flex-start;
   }
@@ -145,8 +159,11 @@
     position: absolute;
     top: 60px;
     right: 0px;
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
+    border-radius: 5px;
+    background: #ebecee;
+    box-shadow: rgb(206, 209, 209)6px 0 rgb(0 0 0 /  10%);
     z-index: 1;
     width: 200px;
   }
@@ -192,7 +209,7 @@
     position: absolute;
     height: 5px;
     width: 100%;
-    background: #000;
+    background: #2c3e50;
     border-radius: 9px;
     opacity: 1;
     left: 0;
@@ -222,15 +239,45 @@
     left: 50%;
   }
 
+  .about-wrapper {
+      width: 75%;
+    }
+
   @media screen and (max-width: 230px) {
     #home-dropdown-small {
       width: 150px;
     }
+
   }
 
-  @media screen and (min-width: 468px) {
+  /* @media screen and (max-width: 468px) {
     h1 {
       font-size: 40px;
     }
+
+    .about-wrapper {
+      width: 75%;
+    }
   }
+
+  @media screen and (max-width: 768px) {
+    h1 {
+      font-size: 40px;
+    }
+
+    .about-wrapper {
+      width: 75%;
+    }
+  } */
+
+  @media screen and (max-width: 1280px) {
+    h1 {
+      font-size: 40px;
+    }
+
+    .about-wrapper {
+      width: 75%;
+    }
+  }
+
 </style>

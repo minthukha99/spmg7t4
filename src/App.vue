@@ -30,42 +30,35 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-a {
-  color: #2c3e50;
-  text-decoration: none;
-}
-
-.app-wrapper {
-  overflow-x: hidden;
-}
-
-.app-content-wrapper {
-  min-height: 100vh;
-  padding: 0.5rem;
-}
-
-@media screen and (min-width: 468px) {
-  .app-content-wrapper {
-    padding: 0.5rem;
+  html {
+    background: #f0f4f7;
   }
-}
 
-@media screen and (min-width: 768px) {
-  .app-content-wrapper {
-    padding: 1rem;
+  #app {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* text-align: center; */
+    /* padding: 40px; */
+    color: #2c3e50;
   }
-}
+
+  img {
+    height: auto;
+  }
+
+  a {
+    color: #2c3e50;
+    text-decoration: none;
+  }
+
+  .app-wrapper {
+    overflow-x: hidden;
+  }
+
+  .app-content-wrapper {
+    min-height: 100vh;
+  }
+  
 </style>
