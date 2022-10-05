@@ -27,11 +27,28 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td scope="row" data-label="Index">1.</td>
-              <td scope="row" data-label="Name"><strong>Role123</strong></td>
-              <td scope="row" data-label="Skills">Teamwork, Project Management123</td>
-              <td scope="row" data-label="Status">Active/Deactive</td>
+            <tr v-for="(role,index) in rolesList" :key="role.id">
+              <td scope="row" data-label="Index">{{ index +1}}</td>
+              <td scope="row" data-label="Name">{{ role.roleName }}</td>
+              <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
+              <!-- show in bullet point if got data, else dash -->
+              <td v-if="role.skillName =='' ">
+                -
+              </td>
+              <td v-else>
+                <ul scope="row" data-label="roleName" v-for="x in role.skillName" :key="x">
+                  <li> {{x}}</li>
+                </ul>
+              </td>
+
+              <td v-if="role.status ==false " class="inactive">
+                <p >Inactive</p>
+              </td>
+              <td v-else class="active">
+                <p >Active</p>
+              </td>
+
+              <!-- <td scope="row" data-label="Status">{{role.status}}</td> -->
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
               <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
               <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
@@ -45,8 +62,41 @@
 
   
 <script>
+import axios from "axios";
 export default {
   name: 'Roles',
+  mounted() {
+    this.getRoles()
+  },
+  data() {
+    return {
+      rolesList: []
+    }
+  },
+  methods: {
+    getRoles() {
+      const url = "http://localhost:3000/roles";
+      axios.get(url)
+        .then(response => {
+          var roleData = response.data
+          console.log("roleData=", roleData)
+          for (var role of roleData) {
+          this.rolesList.push(
+              {
+              id: role._id,
+              roleName: role.roleName,
+              skillName: role.skillName,
+              status: role.status
+              }
+            );
+          }
+          console.log("rolesList=", this.rolesList)
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+    }
+  }
 }
 </script>
 
@@ -87,6 +137,7 @@ table th,
 table td {
   padding: .625em;
   text-align: center;
+  word-wrap: break-word;
 }
 
 @media screen and (max-width: 700px) {
@@ -145,5 +196,13 @@ button {
   font-size: 16px;
   margin: 10px 2px;
   cursor: pointer;
+}
+
+.inactive {
+  color: rgba(184, 56, 56, 0.77);
+  
+}
+.active{
+  color: rgba(40, 190, 42, 0.77);
 }
 </style>
