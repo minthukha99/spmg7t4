@@ -43,7 +43,7 @@ export default {
 
     getSkills() {
 
-      let url = "https://localhost:8000/skills";
+      let url = "http://localhost:3000/skills";
       axios.get(url)
       .then(response => {
       
