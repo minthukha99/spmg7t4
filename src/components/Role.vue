@@ -20,19 +20,42 @@
               <th scope="col">Index</th>
               <th scope="col">Role Name</th>
               <th scope="col">Skills needed</th>
-              <th scope="col">Action 1</th>
-              <th scope="col">Action 2</th>
-              <th scope="col">Action 3</th>
+              <th scope="col">Status</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Activate / Deactivate</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="availableRole in availableRoles" :key="availableRole.id">
-              <td scope="row" data-label="Index">{{availableRole.id}}</td>
-              <td scope="row" data-label="Name"><strong>{{availableRole.name}}</strong></td>
-              <td scope="row" data-label="Skills">{{availableRole.skills}}</td>
+            <tr v-for="role in roles" :key="role.id">
+              <td scope="row" data-label="Index">{{role.id}}</td>
+              <td scope="row" data-label="Name"><strong>{{role.name}}</strong></td>
+              <td scope="row" data-label="Skills">{{role.skills}}</td>
+              <td scope="row" data-label="Skills" v-if="role.status">Active</td>
+              <td scope="row" data-label="Skills" v-else>Inactive</td>
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
-              <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
-              <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
+
+              <td scope="row" data-label="Action 2">
+                <button v-on:click="deactivateRoles(role.name) ; role.status = !role.status">
+                  
+                  <span :class="{green: role.status}">Activate</span> /
+                  <span :class="{red: !role.status}">Deactivate</span> 
+                  
+                  
+                </button>
+              </td>
+
+              <!-- <td scope="row" data-label="Action 2" v-if="role.status = !role.status">
+                <button v-on:click="deactivateRoles(role.name)">
+                  <span :class="{red: !role.status}">Deactivate</span>
+                </button>
+              </td>
+
+              <td scope="row" data-label="Action 2" v-else>
+                <button v-on:click="deactivateRoles(role.name)">
+                  <span :class="{green: role.status}">Activate</span>
+                </button>
+              </td> -->
+              
             </tr>
           </tbody>
         </table>
@@ -41,7 +64,7 @@
   </header>
 </template>
 
-  
+
 <script>
 import axios from "axios";
 
@@ -51,22 +74,23 @@ export default {
 
   data() {
     return {
-      availableRoles: [],
+      roles: [],
+      toggle: false,
     }
   },
 
   mounted() {
     
-    this.getAvailableRoles()
+    this.getRoles()
     // this.deactivateSkills()
 
   },
 
   methods: {
 
-    getAvailableRoles() {
+    getRoles() {
 
-      let url = "http://localhost:3000/availableroles";
+      let url = "http://localhost:3000/roles";
       axios.get(url)
       .then(response => {
       
@@ -74,17 +98,16 @@ export default {
 
           console.log(data)
 
-          for (var availableRole of data) {
-            // console.log(availableRole)
-            // console.log(availableRole._id)
-            // console.log(availableRole.roleName)
-            this.availableRoles.push(
-                  {id: availableRole._id,
-                  name: availableRole.roleName,
-                  skills: availableRole.skillName}
+          for (var role of data) {
+            console.log(role)
+            // console.log(role._id)
+            // console.log(role.roleName)
+            this.roles.push(
+                  {id: role._id,
+                  name: role.roleName,
+                  skills: role.skillName,
+                  status: role.status}
               )
-
-              // this.availableRole.push(availableRole._id)
               
           }
 
@@ -94,22 +117,21 @@ export default {
       })
     },
 
-  //   deactivateRoles() {
 
-  //     let url = "http://localhost:3000/delete/1";
-  //     axios.put(url)
-  //     .then(response => {
-      
-  //         var data = response
+    deactivateRoles(roleName) {
 
-  //         console.log(data)
+      let url = "http://localhost:3000/deleterole/"+roleName;
+      axios.put(url)
+      .then(response => {
+        // this.getRoles()
+        location.reload()
 
-  //     })
-  //     .catch(error => {
-  //         console.log(error.message)
-  //     })
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
 
-  //   }
+    }
 
   }
 }
@@ -214,6 +236,14 @@ button {
   font-size: 16px;
   margin: 10px 2px;
   cursor: pointer;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
 }
 
 </style>
