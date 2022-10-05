@@ -1,15 +1,18 @@
 import { createRouter, createWebHashHistory } from "vue-router";
-import HelloWorld from "@/components/HelloWorld.vue";
+import Home from "@/components/Home.vue";
 import Courses from "@/components/Course.vue";
 import Skills from "@/components/Skill.vue";
 import LearningJourney from "@/components/LearningJourney.vue";
 import Roles from "@/components/Role.vue";
+import AssignSkillstoCourse from "@/components/AssignSkillstoCourse.vue";
+import AddSkill from "@/components/AddSkill.vue";
+import AddRole from "@/components/AddRole.vue";
 
 const routes = [
   {
     path: "/",
     name: "Home",
-    component: HelloWorld,
+    component: Home,
     meta: {
       visible: false,
     },
@@ -42,6 +45,30 @@ const routes = [
     path: "/Courses",
     name: "Courses",
     component: Courses,
+    meta: {
+      visible: true,
+    },
+  },
+  {
+    path: "/AssignSkillstoCourse",
+    name: "Assign Skills to Course",
+    component: AssignSkillstoCourse,
+    meta: {
+      visible: true,
+    },
+  },
+  {
+    path: "/AddSkill",
+    name: "Add Skill",
+    component: AddSkill,
+    meta: {
+      visible: true,
+    },
+  },
+  {
+    path: "/AddRole",
+    name: "Add Role",
+    component: AddRole,
     meta: {
       visible: true,
     },

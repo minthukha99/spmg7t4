@@ -7,7 +7,9 @@
         </c-col>
         <c-col>
           <div class="d-flex">
-            <button type="button" style="float:right">+ Add skill</button>
+            <button type="button" style="float:right">
+              <router-link to="/AddSkill">+ Add skill</router-link>
+            </button>
           </div>
         </c-col>
       </row>
@@ -16,7 +18,8 @@
           <thead>
             <tr>
               <th scope="col">Index</th>
-              <th scope="col">Name</th>
+              <th scope="col">Skill Name</th>
+              <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
               <th scope="col">Action 3</th>
@@ -26,6 +29,7 @@
             <tr>
             <td scope="row" data-label="Index">1.</td>
             <td scope="row" data-label="Name"><strong>Skill123</strong></td>
+            <td scope="row" data-label="Status">Active/Deactive</td>
             <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
             <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
             <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
@@ -37,9 +41,45 @@
   </header>
 </template>
   
+
 <script>
+import axios from "axios";
+
 export default {
   name: 'Skills',
+
+  mounted() {
+        this.getSkills()
+
+    },
+
+  methods: {
+
+    getSkills() {
+
+      let url = "http://localhost:3000/skills";
+      axios.get(url)
+      .then(response => {
+      
+          var data = response
+
+          console.log(data)
+          // for (var skill of data) {
+          //     this.skills.push(
+          //         {id: skil.id,
+          //         name: skill.name}
+          //     )
+
+              // this.skills.push(skill.id)
+              
+          // }
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+    }
+  }
 }
 </script>
 
@@ -57,7 +97,7 @@ header {
   }
 
   .skillList {
-    width: 75%;
+    width: 85%;
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
