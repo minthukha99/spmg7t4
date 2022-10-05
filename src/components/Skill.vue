@@ -72,18 +72,18 @@ header {
   }
 
   table tr {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  padding: .35em;
-}
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: .35em;
+  }
 
-table th,
-table td {
-  padding: .625em;
-  text-align: center;
-}
+  table th,
+  table td {
+    padding: .625em;
+    text-align: center;
+  }
 
-@media screen and (max-width: 700px) {
+  @media screen and (max-width: 700px) {
     table {
       border: 0;
     }
@@ -140,6 +140,4 @@ table td {
     margin: 10px 2px;
     cursor: pointer;
   }
-
-  
 </style>
