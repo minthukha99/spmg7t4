@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="skillList">
+    <div class="skillList" onload="getSkills()">
       <row>
         <c-col>
           <h1>Skills</h1>
@@ -14,7 +14,7 @@
         </c-col>
       </row>
       <div>
-        <table>
+        <!-- <table>
           <thead>
             <tr>
               <th scope="col">Index</th>
@@ -35,7 +35,19 @@
             <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
           </tr>
           </tbody>
-        </table>
+        </table> -->
+      <!-- <table id="tableComponent">
+          <tr v-for="(item) in skillsList">{{ item }} </tr>
+      </table> -->
+
+      <!-- for (var skill in response.data) {
+      console.log(response.data[skill].skillName)
+      } -->
+
+      <tr v-for="skill in skillList" :key="skill">
+        <td>{{ skill }}</td>
+      </tr>
+      
       </div>
     </div>
   </header>
@@ -43,44 +55,54 @@
   
 
 <script>
+ //to store all the skills after calling api 
 import axios from "axios";
-
 export default {
   name: 'Skills',
-
   mounted() {
         this.getSkills()
-
-    },
-
+  },
+  data() {
+    return{
+      skillsList:[]
+    }
+  },
   methods: {
-
     getSkills() {
-
-      let url = "http://localhost:3000/skills";
+      //var skillsList = []
+      const url = "http://localhost:3000/skills";
       axios.get(url)
-      .then(response => {
-      
-          var data = response
+      //   .then(response => {
+      //     var skillData = response.data
+      //     console.log(skillData)
 
-          console.log(data)
-          // for (var skill of data) {
-          //     this.skills.push(
-          //         {id: skil.id,
-          //         name: skill.name}
-          //     )
+      //     for (var x in skillData) {
+      //       console.log(skillData[x])
+      //       skillsList.push(skillData[x].skillName)
 
-              // this.skills.push(skill.id)
-              
+      //     }
+      //     console.log(skillsList)
+      // })
+        .then(response => {
+          this.skillsList = response.data
+
+          console.log(response.data) //give me 
+          // for (var x in response.data) {
+          //     console.log(response.data[x].skillName)
           // }
-
-      })
+          for (var x in response.data) {
+            console.log(response.data[x].skillName)
+          }
+        })
       .catch(error => {
           console.log(error.message)
       })
     }
   }
 }
+
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
