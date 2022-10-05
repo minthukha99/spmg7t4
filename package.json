@@ -9,13 +9,17 @@
     "run": "nodemon ./Backend/server.js"
   },
   "dependencies": {
+    "-": "0.0.1",
     "@coreui/vue": "^4.4.0",
+    "axios": "^0.27.2",
     "core-js": "^3.8.3",
     "express": "^4.18.1",
     "mongoose": "^6.6.3",
     "mongoose-sequence": "^5.3.1",
     "nodemon": "^2.0.20",
+    "save": "^2.9.0",
     "vue": "^3.2.13",
+    "vue-axios": "^3.4.1",
     "vue-router": "^4.1.5"
   },
   "devDependencies": {

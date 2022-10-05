@@ -27,9 +27,46 @@
   </div>
 </template>
   
+
 <script>
+import axios from "axios";
+
 export default {
   name: 'Skills',
+
+  mounted() {
+        this.getSkills()
+
+    },
+
+  methods: {
+
+    getSkills() {
+
+      let url = "https://localhost:8000/skills";
+      axios.get(url)
+      .then(response => {
+      
+          var data = response
+
+          console.log(data)
+
+          // for (var skill of data) {
+          //     this.skills.push(
+          //         {id: skil.id,
+          //         name: skill.name}
+          //     )
+
+              // this.skills.push(skill.id)
+              
+          // }
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+    }
+  }
 }
 </script>
 
