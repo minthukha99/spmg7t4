@@ -14,11 +14,12 @@
         </c-col>
       </row>
       <div>
-        <!-- <table>
+        <table>
           <thead>
             <tr>
               <th scope="col">Index</th>
               <th scope="col">Skill Name</th>
+              <th scope="col">Roles requiring skill</th>
               <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
@@ -26,28 +27,27 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-            <td scope="row" data-label="Index">1.</td>
-            <td scope="row" data-label="Name"><strong>Skill123</strong></td>
+            <tr v-for="(skill,index) in skillsList" :key="skill.id">
+            <td scope="row" data-label="Index">{{ index +1}}</td>
+            <td scope="row" data-label="skillName">{{ skill.skillName }}</td>
+
+            <!-- show in bullet point if got data, else dash -->
+            <td v-if="skill.roleName =='' ">
+              -
+            </td>
+            <td v-else>
+              <ul scope="row" data-label="roleName" v-for="x in skill.roleName" :key="x">
+                <li> {{x}}</li>
+              </ul>
+            </td>
+
             <td scope="row" data-label="Status">Active/Deactive</td>
             <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
             <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
-            <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
+            <td scope="row" data-label="Action 3"><a href="#"><td>Deactivate</td></a></td>
           </tr>
           </tbody>
-        </table> -->
-      <!-- <table id="tableComponent">
-          <tr v-for="(item) in skillsList">{{ item }} </tr>
-      </table> -->
-
-      <!-- for (var skill in response.data) {
-      console.log(response.data[skill].skillName)
-      } -->
-
-      <tr v-for="skill in skillList" :key="skill">
-        <td>{{ skill }}</td>
-      </tr>
-      
+        </table>
       </div>
     </div>
   </header>
@@ -69,31 +69,31 @@ export default {
   },
   methods: {
     getSkills() {
-      //var skillsList = []
       const url = "http://localhost:3000/skills";
       axios.get(url)
-      //   .then(response => {
-      //     var skillData = response.data
-      //     console.log(skillData)
-
-      //     for (var x in skillData) {
-      //       console.log(skillData[x])
-      //       skillsList.push(skillData[x].skillName)
-
-      //     }
-      //     console.log(skillsList)
-      // })
         .then(response => {
-          this.skillsList = response.data
-
-          console.log(response.data) //give me 
-          // for (var x in response.data) {
-          //     console.log(response.data[x].skillName)
-          // }
-          for (var x in response.data) {
-            console.log(response.data[x].skillName)
+          var skillData = response.data
+          console.log("SkillData=", skillData)
+          for (var skill of skillData) {
+            // if (skill.roleName == "") {
+            //   console.log("Adsfsdf")
+            //   skill.roleName = " "
+            // }
+            this.skillsList.push(
+              {
+                id: skill._id,
+                roleName: skill.roleName,
+                skillName: skill.skillName,
+                //v: skill._v
+              }       
+            );
+            // console.log(this.skillsList.roleName + "AA")
+            // if (this.skillsList.roleName == []) {
+            //   console.log("DD")
+            // }
           }
-        })
+          console.log("SkillsList=",this.skillsList)
+      })
       .catch(error => {
           console.log(error.message)
       })
