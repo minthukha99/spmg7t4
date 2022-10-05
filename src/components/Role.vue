@@ -26,10 +26,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td scope="row" data-label="Index">1.</td>
-              <td scope="row" data-label="Name"><strong>Role123</strong></td>
-              <td scope="row" data-label="Skills">Teamwork, Project Management123</td>
+            <tr v-for="availableRole in availableRoles" :key="availableRole.id">
+              <td scope="row" data-label="Index">{{availableRole.id}}</td>
+              <td scope="row" data-label="Name"><strong>{{availableRole.name}}</strong></td>
+              <td scope="row" data-label="Skills">{{availableRole.skills}}</td>
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
               <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
               <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
@@ -43,12 +43,83 @@
 
   
 <script>
+import axios from "axios";
+
+
 export default {
   name: 'Roles',
+
+  data() {
+    return {
+      availableRoles: [],
+    }
+  },
+
+  mounted() {
+    
+    this.getAvailableRoles()
+    // this.deactivateSkills()
+
+  },
+
+  methods: {
+
+    getAvailableRoles() {
+
+      let url = "http://localhost:3000/availableroles";
+      axios.get(url)
+      .then(response => {
+      
+          var data = response.data
+
+          console.log(data)
+
+          for (var availableRole of data) {
+            // console.log(availableRole)
+            // console.log(availableRole._id)
+            // console.log(availableRole.roleName)
+            this.availableRoles.push(
+                  {id: availableRole._id,
+                  name: availableRole.roleName,
+                  skills: availableRole.skillName}
+              )
+
+              // this.availableRole.push(availableRole._id)
+              
+          }
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+    },
+
+  //   deactivateRoles() {
+
+  //     let url = "http://localhost:3000/delete/1";
+  //     axios.put(url)
+  //     .then(response => {
+      
+  //         var data = response
+
+  //         console.log(data)
+
+  //     })
+  //     .catch(error => {
+  //         console.log(error.message)
+  //     })
+
+  //   }
+
+  }
 }
+
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 header {
   margin-top: 20px;
@@ -144,4 +215,5 @@ button {
   margin: 10px 2px;
   cursor: pointer;
 }
+
 </style>
