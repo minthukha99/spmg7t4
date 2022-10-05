@@ -1,6 +1,6 @@
 <template>
   <header>
-    <div class="skillList" onload="getSkills()">
+    <div class="skillList">
       <row>
         <c-col>
           <h1>Skills</h1>
@@ -36,12 +36,18 @@
               -
             </td>
             <td v-else>
-              <ul scope="row" data-label="roleName" v-for="x in skill.roleName" :key="x">
+              <ul scope="row" data-label="skillName" v-for="x in skill.roleName" :key="x">
                 <li> {{x}}</li>
               </ul>
             </td>
 
-            <td scope="row" data-label="Status">Active/Deactive</td>
+            <td v-if="skill.status ==false " class="inactive">
+              <p>Inactive</p>
+            </td>
+            <td v-else class="active">
+              <p>Active</p>
+            </td>
+
             <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
             <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
             <td scope="row" data-label="Action 3"><a href="#"><td>Deactivate</td></a></td>
@@ -84,6 +90,7 @@ export default {
                 id: skill._id,
                 roleName: skill.roleName,
                 skillName: skill.skillName,
+                status: skill.status
                 //v: skill._v
               }       
             );
@@ -107,7 +114,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 header {
     margin-top: 20px;
     height: auto;
@@ -202,4 +208,12 @@ header {
     margin: 10px 2px;
     cursor: pointer;
   }
+
+.inactive {
+color: rgba(184, 56, 56, 0.77);
+}
+
+.active {
+  color: rgba(40, 190, 42, 0.77);
+}
 </style>
