@@ -7,7 +7,9 @@
         </c-col>
         <c-col>
           <div class="d-flex">
-            <button type="button" style="float:right">+ Add skill</button>
+            <button type="button" style="float:right">
+              <router-link to="/AddSkill">+ Add skill</router-link>
+            </button>
           </div>
         </c-col>
       </row>
@@ -16,7 +18,7 @@
           <thead>
             <tr>
               <th scope="col">Index</th>
-              <th scope="col">Name</th>
+              <th scope="col">Skill Name</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
               <th scope="col">Action 3</th>
@@ -57,7 +59,7 @@ header {
   }
 
   .skillList {
-    width: 75%;
+    width: 85%;
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
