@@ -8,7 +8,7 @@
         <c-col>
           <div class="d-flex">
             <button type="button" style="float:right">
-              <router-link to="/AddCourse">+ Add course</router-link>
+              <router-link to="/AssignSkillstoCourse">+ Assign Skills (this should be inside table</router-link>
             </button>
           </div>
         </c-col>
@@ -20,6 +20,7 @@
               <th scope="col">Index</th>
               <th scope="col">Course Name</th>
               <th scope="col">Skills</th>
+              <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
               <th scope="col">Action 3</th>
@@ -30,6 +31,7 @@
               <td scope="row" data-label="Index">1.</td>
               <td scope="row" data-label="Name"><strong>Course123</strong></td>
               <td scope="row" data-label="Skills">Teamwork, Project Management123</td>
+              <td scope="row" data-label="Status">Active/Deactive</td>
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
               <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
               <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>

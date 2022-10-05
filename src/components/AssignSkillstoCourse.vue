@@ -1,10 +1,10 @@
 <template>
-    ADD COURSE
+    Assign skills to course
 </template>
   
 <script>
 export default {
-    name: 'Add Course',
+    name: 'Assign Skills to Course',
 }
 </script>
 
