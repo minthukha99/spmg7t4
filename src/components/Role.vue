@@ -24,6 +24,7 @@
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
               <th scope="col">Action 3</th>
+           
             </tr>
           </thead>
           <tbody>
@@ -41,6 +42,7 @@
                 </ul>
               </td>
 
+              
               <td v-if="role.status ==false " class="inactive">
                 <p >Inactive</p>
               </td>
@@ -48,10 +50,16 @@
                 <p >Active</p>
               </td>
 
-              <!-- <td scope="row" data-label="Status">{{role.status}}</td> -->
+              <td v-if="role.status ==false">
+                <a href="#">
+              <td>Activate</td></a>
+              </td>
+              <td v-else class="active">
+                <a href="#">Deactivate</a>
+              </td>
+
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
-              <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
-              <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
+              <td scope="row" data-label="Action 4"><a href="#"> Add to Learning Journey</a></td>
             </tr>
           </tbody>
         </table>
@@ -113,7 +121,7 @@ header {
 }
 
 .roleList {
-  width: 85%;
+  width: 95%;
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
@@ -204,5 +212,9 @@ button {
 }
 .active{
   color: rgba(40, 190, 42, 0.77);
+}
+a{
+  color: blue;
+  text-decoration: underline;
 }
 </style>

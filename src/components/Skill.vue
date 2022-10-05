@@ -23,7 +23,7 @@
               <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
-              <th scope="col">Action 3</th>
+            
             </tr>
           </thead>
           <tbody>
@@ -48,9 +48,14 @@
               <p>Active</p>
             </td>
 
+            <td v-if="skill.status ==false">
+              <a href="#"><td>Activate</td></a>
+            </td>
+            <td v-else class="active">
+              <a href="#">Deactivate</a>
+            </td>
+
             <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
-            <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
-            <td scope="row" data-label="Action 3"><a href="#"><td>Deactivate</td></a></td>
           </tr>
           </tbody>
         </table>
@@ -125,7 +130,7 @@ header {
   }
 
   .skillList {
-    width: 85%;
+    width: 95%;
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
@@ -215,5 +220,10 @@ color: rgba(184, 56, 56, 0.77);
 
 .active {
   color: rgba(40, 190, 42, 0.77);
+}
+
+a {
+  color: blue;
+  text-decoration: underline;
 }
 </style>
