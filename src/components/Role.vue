@@ -20,6 +20,7 @@
               <th scope="col">Index</th>
               <th scope="col">Role Name</th>
               <th scope="col">Skills needed</th>
+              <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
               <th scope="col">Action 3</th>
@@ -30,6 +31,7 @@
               <td scope="row" data-label="Index">1.</td>
               <td scope="row" data-label="Name"><strong>Role123</strong></td>
               <td scope="row" data-label="Skills">Teamwork, Project Management123</td>
+              <td scope="row" data-label="Status">Active/Deactive</td>
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
               <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
               <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
