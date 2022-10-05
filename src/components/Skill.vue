@@ -50,7 +50,6 @@ export default {
           var data = response
 
           console.log(data)
-
           // for (var skill of data) {
           //     this.skills.push(
           //         {id: skil.id,
