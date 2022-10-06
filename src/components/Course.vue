@@ -1,18 +1,18 @@
 <template>
   <header>
     <div class="courseList">
-      <row>
-        <c-col>
+      <div class="row">
+        <div class="col">
           <h1>Courses</h1>
-        </c-col>
-        <c-col>
+        </div>  
+        <div class="col">
           <div class="d-flex">
             <button type="button" style="float:right">
-              <router-link to="/AssignSkillstoCourse">+ Assign Skills (this should be inside table</router-link>
+              <router-link to="/AssignSkillstoCourse" class="special">+ Assign Skills (this should be inside table)</router-link>
             </button>
           </div>
-        </c-col>
-      </row>
+        </div>
+      </div>
       <div>
         <table>
           <thead>
@@ -135,7 +135,7 @@ table td {
 
 button {
   background-color: #000;
-  color: white;
+  /* color: white; */
   border: none;
   padding: 15px 32px;
   text-align: center;
@@ -145,5 +145,10 @@ button {
   margin: 10px 2px;
   cursor: pointer;
 }
+
+.special {
+    color:white; 
+    text-decoration: none;
+  }
 </style>
   

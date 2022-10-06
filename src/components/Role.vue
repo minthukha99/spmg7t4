@@ -1,18 +1,19 @@
 <template>
   <header>
     <div class="roleList">
-      <row>
-        <c-col>
+      <div class="row">
+        <div class="col">
           <h1>Roles</h1>
-        </c-col>
-        <c-col>
-          <div class="d-flex">
-            <button type="button" style="float:right">
-              <router-link to="/AddRole">+Add role</router-link>
-            </button>
-          </div>
-        </c-col>
-      </row>
+        </div>
+        <div class="col">
+        <div class="d-flex">
+          <button type="button" style="float:right">
+            <router-link to="/AddRole" class="special">+ Add Role</router-link>
+          </button>
+        </div>
+      </div>
+      </div>
+      
       <div>
         <table>
           <thead>
@@ -217,4 +218,9 @@ a{
   color: blue;
   text-decoration: underline;
 }
+
+.special {
+    color:white; 
+    text-decoration: none;
+  }
 </style>

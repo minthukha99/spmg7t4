@@ -1,18 +1,16 @@
 <template>
   <header>
-    <div class="skillList">
-      <row>
-        <c-col>
-          <h1>Skills</h1>
-        </c-col>
-        <c-col>
-          <div class="d-flex">
-            <button type="button" style="float:right">
-              <router-link to="/AddSkill">+ Add skill</router-link>
+    <div class="skillList row">
+      <div class="col">
+        <h1>Skills</h1>
+      </div>
+      <div class="col">
+        <div class="d-flex">
+            <button type="button" style="float:right" >
+              <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
             </button>
           </div>
-        </c-col>
-      </row>
+      </div>
       <div>
         <table>
           <thead>
@@ -37,7 +35,7 @@
             </td>
             <td v-else>
               <ul scope="row" data-label="skillName" v-for="x in skill.roleName" :key="x">
-                <li> {{x}}</li>
+                <li>{{x}}</li>
               </ul>
             </td>
 
@@ -225,5 +223,10 @@ header {
   a {
     color: blue;
     text-decoration: underline;
+  }
+
+  .special {
+    color:white; 
+    text-decoration: none;
   }
 </style>
