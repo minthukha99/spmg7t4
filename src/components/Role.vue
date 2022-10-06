@@ -1,18 +1,19 @@
 <template>
   <header>
     <div class="roleList">
-      <row>
-        <c-col>
+      <div class="row">
+        <div class="col">
           <h1>Roles</h1>
-        </c-col>
-        <c-col>
-          <div class="d-flex">
-            <button type="button" style="float:right">
-              <router-link to="/AddRole">+Add role</router-link>
-            </button>
-          </div>
-        </c-col>
-      </row>
+        </div>
+        <div class="col">
+        <div class="d-flex">
+          <button type="button" style="float:right">
+            <router-link to="/AddRole" class="special">+ Add Role</router-link>
+          </button>
+        </div>
+      </div>
+      </div>
+      
       <div>
         <table>
           <thead>
@@ -25,7 +26,7 @@
               <th scope="col">Activate / Deactivate</th>
             </tr>
           </thead>
-          <tbody>
+          <!-- <tbody>
             <tr v-for="role in roles" :key="role.id">
               <td scope="row" data-label="Index">{{role.id}}</td>
               <td scope="row" data-label="Name"><strong>{{role.name}}</strong></td>
@@ -44,7 +45,7 @@
                 </button>
               </td>
 
-              <!-- <td scope="row" data-label="Action 2" v-if="role.status = !role.status">
+              <td scope="row" data-label="Action 2" v-if="role.status = !role.status">
                 <button v-on:click="deactivateRoles(role.name)">
                   <span :class="{red: !role.status}">Deactivate</span>
                 </button>
@@ -54,8 +55,57 @@
                 <button v-on:click="deactivateRoles(role.name)">
                   <span :class="{green: role.status}">Activate</span>
                 </button>
-              </td> -->
+              </td>
               
+              <th scope="col">Action 1</th>
+              <th scope="col">Action 2</th>
+              <th scope="col">Action 3</th>
+           
+            </tr>
+          </thead> -->
+          <tbody>
+            <tr v-for="(role,index) in rolesList" :key="role.id">
+              <td scope="row" data-label="Index">{{ index +1}}</td>
+              <td scope="row" data-label="Name">{{ role.roleName }}</td>
+              <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
+              <!-- show in bullet point if got data, else dash -->
+              <td v-if="role.skillName =='' ">
+                -
+              </td>
+              <td v-else>
+                <ul scope="row" data-label="roleName" v-for="x in role.skillName" :key="x">
+                  <li> {{x}}</li>
+                </ul>
+              </td>
+
+              
+              <td v-if="role.status == false " class="inactive">
+                <p >Inactive</p>
+              </td>
+              <td v-else class="active">
+                <p >Active</p>
+              </td>
+
+              <td v-if="role.status ==false">
+                <button v-on:click="activateRoles(role.roleName)" :class="{green: role.status}">Activate</button>
+              </td>
+
+              <td v-else class="active">
+                <button v-on:click="deactivateRoles(role.roleName)" :class="{green: role.status}">Deactivate</button>
+              </td>
+
+              <!-- <td scope="row" data-label="Action 2">
+                <button>
+                  
+                  <span v-if="role.status = false" v-on:click="activateRoles(role.roleName)" :class="{green: role.status}">Activate</span> /
+                  <span v-else v-on:click="deactivateRoles(role.roleName)" :class="{red: !role.status}">Deactivate</span> 
+                  
+                  
+                </button>
+              </td> -->
+
+              <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
+              <td scope="row" data-label="Action 4"><a href="#"> Add to Learning Journey</a></td>
             </tr>
           </tbody>
         </table>
@@ -68,61 +118,49 @@
 <script>
 import axios from "axios";
 
-
 export default {
   name: 'Roles',
 
+  mounted() {
+    this.getRoles()
+  },
+
   data() {
     return {
-      roles: [],
-      toggle: false,
+      rolesList: []
     }
   },
 
-  mounted() {
-    
-    this.getRoles()
-    // this.deactivateSkills()
-
-  },
-
   methods: {
-
     getRoles() {
-
-      let url = "http://localhost:3000/roles";
+      const url = "http://localhost:3000/roles";
       axios.get(url)
-      .then(response => {
-      
-          var data = response.data
-
-          console.log(data)
-
-          for (var role of data) {
-            console.log(role)
-            // console.log(role._id)
-            // console.log(role.roleName)
-            this.roles.push(
-                  {id: role._id,
-                  name: role.roleName,
-                  skills: role.skillName,
-                  status: role.status}
-              )
-              
+        .then(response => {
+          var roleData = response.data
+          // console.log("roleData=", roleData)
+          for (var role of roleData) {
+          this.rolesList.push(
+              {
+              id: role._id,
+              roleName: role.roleName,
+              skillName: role.skillName,
+              status: role.status
+              }
+            );
           }
-
-      })
-      .catch(error => {
+          // console.log("rolesList=", this.rolesList)
+        })
+        .catch(error => {
           console.log(error.message)
-      })
+        })
     },
-
 
     deactivateRoles(roleName) {
 
       let url = "http://localhost:3000/deleterole/"+roleName;
       axios.put(url)
       .then(response => {
+        console.log("deactived role:", roleName)
         // this.getRoles()
         location.reload()
 
@@ -140,6 +178,7 @@ export default {
       .then(response => {
         // this.getRoles()
         location.reload()
+        console.log("activated role:", roleName)
 
       })
       .catch(error => {
@@ -149,8 +188,8 @@ export default {
     }
 
   }
-}
 
+}
 
 
 </script>
@@ -169,7 +208,7 @@ header {
 }
 
 .roleList {
-  width: 85%;
+  width: 95%;
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
@@ -193,6 +232,7 @@ table th,
 table td {
   padding: .625em;
   text-align: center;
+  word-wrap: break-word;
 }
 
 @media screen and (max-width: 700px) {
@@ -261,4 +301,20 @@ button {
   color: green;
 }
 
+.inactive {
+  color: rgba(184, 56, 56, 0.77);
+  
+}
+.active{
+  color: rgba(40, 190, 42, 0.77);
+}
+a{
+  color: blue;
+  text-decoration: underline;
+}
+
+.special {
+    color:white; 
+    text-decoration: none;
+  }
 </style>

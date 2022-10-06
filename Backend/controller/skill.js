@@ -33,7 +33,7 @@ const getSkill = async (req, res) => {
 
 const updateSkill = async (req, res) => {
     const id = req.params;
-    await skill.updateOne({skillName:id.id}, req.body)
+    await skill.updateOne({ skillName: id.id }, req.body)
     return res.status(200).json({
         "message": "Skill updated success!",
         "skillName": id.id
@@ -45,13 +45,23 @@ const deleteSkill = async (req, res) => {
     const data = {
         "status": false
     }
-    await skill.updateOne({skillName:id.id}, data)
+    await skill.updateOne({ skillName: id.id }, data)
     return res.status(200).json({
         "message": "Skill delete success! (Soft delete)",
-        "Rolename": id
+        "skillName": id
     });
 };
-
+const activateSkill = async (req, res) => {
+    const id = req.params
+    const data = {
+        "status": true
+    }
+    await skill.updateOne({ skillName: id.id }, data)
+    return res.status(200).json({
+        "message": "Skill is set back to available",
+        "skillName": id
+    });
+};
 
 
 // const getRoleSkills = async (req, res) => {
@@ -60,6 +70,6 @@ const deleteSkill = async (req, res) => {
 // };
 
 
-module.exports = { createSkill, getAllSkills, updateSkill , deleteSkill,getAllAvaliableSkills,getSkill}
+module.exports = { createSkill, getAllSkills, updateSkill, deleteSkill, getAllAvaliableSkills, getSkill, activateSkill }
 
 
