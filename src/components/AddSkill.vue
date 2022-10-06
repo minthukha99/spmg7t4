@@ -18,9 +18,10 @@
                 <button value="Cancel" class="special">
                     <router-link to="/Skills" class="special">Cancel</router-link>
                 </button> 
-                <button @click='createSkill()' type="submit" value="Save" class="special">
-                    <router-link to="/Skills" class="special">Save</router-link>
+                <button @click='createSkill(); $router.go(-1)' type="submit" value="Save" class="special">
+                    Save
                 </button>  
+               
             </form>
         </div>
     </div>
