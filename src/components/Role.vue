@@ -42,7 +42,8 @@
                 </ul>
               </td>
 
-              
+              <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
+
               <td v-if="role.status == false " class="inactive">
                 <p >Inactive</p>
               </td>
@@ -58,7 +59,6 @@
                 <button v-on:click="deactivateRoles(role.roleName)" :class="{green: role.status}">Deactivate</button>
               </td>
 
-              <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
               <td scope="row" data-label="Action 4"><a href="#"> Add to Learning Journey</a></td>
             </tr>
           </tbody>
