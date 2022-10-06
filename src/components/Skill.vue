@@ -19,20 +19,43 @@
             <tr>
               <th scope="col">Index</th>
               <th scope="col">Skill Name</th>
+              <th scope="col">Roles requiring skill</th>
               <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
-              <th scope="col">Action 3</th>
+            
             </tr>
           </thead>
           <tbody>
-            <tr>
-            <td scope="row" data-label="Index">1.</td>
-            <td scope="row" data-label="Name"><strong>Skill123</strong></td>
-            <td scope="row" data-label="Status">Active/Deactive</td>
+            <tr v-for="(skill,index) in skillsList" :key="skill.id">
+            <td scope="row" data-label="Index">{{ index +1}}</td>
+            <td scope="row" data-label="skillName">{{ skill.skillName }}</td>
+
+            <!-- show in bullet point if got data, else dash -->
+            <td v-if="skill.roleName =='' ">
+              -
+            </td>
+            <td v-else>
+              <ul scope="row" data-label="skillName" v-for="x in skill.roleName" :key="x">
+                <li> {{x}}</li>
+              </ul>
+            </td>
+
+            <td v-if="skill.status ==false " class="inactive">
+              <p>Inactive</p>
+            </td>
+            <td v-else class="active">
+              <p>Active</p>
+            </td>
+
+            <td v-if="skill.status ==false">
+              <a href="#"><td>Activate</td></a>
+            </td>
+            <td v-else class="active">
+              <a href="#">Deactivate</a>
+            </td>
+
             <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
-            <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
-            <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
           </tr>
           </tbody>
         </table>
@@ -43,37 +66,45 @@
   
 
 <script>
+ //to store all the skills after calling api 
 import axios from "axios";
-
 export default {
   name: 'Skills',
-
   mounted() {
         this.getSkills()
-
-    },
-
+  },
+  data() {
+    return{
+      skillsList:[]
+    }
+  },
   methods: {
-
     getSkills() {
-
-      let url = "http://localhost:3000/skills";
+      const url = "http://localhost:3000/skills";
       axios.get(url)
-      .then(response => {
-      
-          var data = response
-
-          console.log(data)
-          // for (var skill of data) {
-          //     this.skills.push(
-          //         {id: skil.id,
-          //         name: skill.name}
-          //     )
-
-              // this.skills.push(skill.id)
-              
-          // }
-
+        .then(response => {
+          var skillData = response.data
+          console.log("SkillData=", skillData)
+          for (var skill of skillData) {
+            // if (skill.roleName == "") {
+            //   console.log("Adsfsdf")
+            //   skill.roleName = " "
+            // }
+            this.skillsList.push(
+              {
+                id: skill._id,
+                roleName: skill.roleName,
+                skillName: skill.skillName,
+                status: skill.status
+                //v: skill._v
+              }       
+            );
+            // console.log(this.skillsList.roleName + "AA")
+            // if (this.skillsList.roleName == []) {
+            //   console.log("DD")
+            // }
+          }
+          console.log("SkillsList=",this.skillsList)
       })
       .catch(error => {
           console.log(error.message)
@@ -81,11 +112,13 @@ export default {
     }
   }
 }
+
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 header {
     margin-top: 20px;
     height: auto;
@@ -97,7 +130,7 @@ header {
   }
 
   .skillList {
-    width: 85%;
+    width: 95%;
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
@@ -170,7 +203,7 @@ header {
 
   button {
     background-color: #000;
-    color: white;
+    /* color: white; */
     border: none;
     padding: 15px 32px;
     text-align: center;
@@ -179,5 +212,18 @@ header {
     font-size: 16px;
     margin: 10px 2px;
     cursor: pointer;
+  }
+
+  .inactive {
+  color: rgba(184, 56, 56, 0.77);
+  }
+
+  .active {
+    color: rgba(40, 190, 42, 0.77);
+  }
+
+  a {
+    color: blue;
+    text-decoration: underline;
   }
 </style>
