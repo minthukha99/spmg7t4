@@ -24,7 +24,7 @@
                     <input type="checkbox" id="three" />Third checkbox</label>
             </div> -->
             
-            +Add Skill
+            <a href="#AddSkill" target="_blank"> +Add Skill </a>
             <br>
             <br>
            

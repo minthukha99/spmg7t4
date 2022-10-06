@@ -62,7 +62,7 @@ header {
 }
 
 .courseList {
-  width: 85%;
+  width: 95%;
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
