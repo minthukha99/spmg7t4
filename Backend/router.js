@@ -12,6 +12,7 @@ router.get("/availableroles", roleController.getAllAvaliableRoles);
 router.get("/role/:id", roleController.getRole);
 router.put("/updaterole/:id", roleController.updateRole);
 router.put("/deleterole/:id", roleController.deleteRole);
+router.put("/activaterole/:id", roleController.activateRole);
 
 
 //Roles
@@ -21,5 +22,6 @@ router.get("/availableskills", skillController.getAllAvaliableSkills);
 router.get("/skill/:id", skillController.getSkill);
 router.put("/updateskill/:id", skillController.updateSkill);
 router.put("/deleteskill/:id", skillController.deleteSkill);
+router.put("/activateskill/:id", skillController.activateSkill);
 
 module.exports = router
