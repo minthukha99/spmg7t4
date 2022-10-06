@@ -26,43 +26,7 @@
               <th scope="col">Activate / Deactivate</th>
             </tr>
           </thead>
-          <!-- <tbody>
-            <tr v-for="role in roles" :key="role.id">
-              <td scope="row" data-label="Index">{{role.id}}</td>
-              <td scope="row" data-label="Name"><strong>{{role.name}}</strong></td>
-              <td scope="row" data-label="Skills">{{role.skills}}</td>
-              <td scope="row" data-label="Skills" v-if="role.status">Active</td>
-              <td scope="row" data-label="Skills" v-else>Inactive</td>
-              <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
 
-              <td scope="row" data-label="Action 2">
-                <button v-on:click="role.status = !role.status">
-                  
-                  <span v-on:click= "activateRoles(role.name)" :class="{green: role.status}">Activate</span> /
-                  <span v-on:click= "deactivateRoles(role.name)" :class="{red: !role.status}">Deactivate</span> 
-                  
-                  
-                </button>
-              </td>
-
-              <td scope="row" data-label="Action 2" v-if="role.status = !role.status">
-                <button v-on:click="deactivateRoles(role.name)">
-                  <span :class="{red: !role.status}">Deactivate</span>
-                </button>
-              </td>
-
-              <td scope="row" data-label="Action 2" v-else>
-                <button v-on:click="deactivateRoles(role.name)">
-                  <span :class="{green: role.status}">Activate</span>
-                </button>
-              </td>
-              
-              <th scope="col">Action 1</th>
-              <th scope="col">Action 2</th>
-              <th scope="col">Action 3</th>
-           
-            </tr>
-          </thead> -->
           <tbody>
             <tr v-for="(role,index) in rolesList" :key="role.id">
               <td scope="row" data-label="Index">{{ index +1}}</td>
@@ -93,16 +57,6 @@
               <td v-else class="active">
                 <button v-on:click="deactivateRoles(role.roleName)" :class="{green: role.status}">Deactivate</button>
               </td>
-
-              <!-- <td scope="row" data-label="Action 2">
-                <button>
-                  
-                  <span v-if="role.status = false" v-on:click="activateRoles(role.roleName)" :class="{green: role.status}">Activate</span> /
-                  <span v-else v-on:click="deactivateRoles(role.roleName)" :class="{red: !role.status}">Deactivate</span> 
-                  
-                  
-                </button>
-              </td> -->
 
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
               <td scope="row" data-label="Action 4"><a href="#"> Add to Learning Journey</a></td>
