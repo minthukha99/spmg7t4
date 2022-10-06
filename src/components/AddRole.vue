@@ -1,12 +1,12 @@
 <template>
     <div class="header">
-        <div class="form header-middle-text">
+        <div class="header-middle-text">
             <h1>Add Role</h1>
             <form>
-                <label for="roleName">Role name:</label><br>
+                <label for="roleName">Name of the Role</label><br>
                 <input type="text" id="roleName" name="roleName"><br>
                 <br>
-                <label for="skillsNeeded" class="multiselect" >Skills needed:</label>
+                <label for="skillsNeeded" class="multiselect" >Skills required</label>
                 <div class="selectBox" onclick="showCheckboxes()">
                     <select>
                         <option selected>Select an option</option>
@@ -38,13 +38,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.form{
-    /* margin:20px;
-    width: 60%;
-    padding-left: 20px; */
-    /* border: 1px solid black; */
-}
-
 input[type=text],
 select {
     width: 80%;
@@ -103,6 +96,6 @@ button {
 .special {
     color:white; 
     text-decoration: none;
-  }
+}
 
 </style>
