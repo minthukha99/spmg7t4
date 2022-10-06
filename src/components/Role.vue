@@ -35,10 +35,10 @@
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
 
               <td scope="row" data-label="Action 2">
-                <button v-on:click="deactivateRoles(role.name) ; role.status = !role.status">
+                <button v-on:click="role.status = !role.status">
                   
-                  <span :class="{green: role.status}">Activate</span> /
-                  <span :class="{red: !role.status}">Deactivate</span> 
+                  <span v-on:click= "activateRoles(role.name)" :class="{green: role.status}">Activate</span> /
+                  <span v-on:click= "deactivateRoles(role.name)" :class="{red: !role.status}">Deactivate</span> 
                   
                   
                 </button>
@@ -121,6 +121,21 @@ export default {
     deactivateRoles(roleName) {
 
       let url = "http://localhost:3000/deleterole/"+roleName;
+      axios.put(url)
+      .then(response => {
+        // this.getRoles()
+        location.reload()
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+
+    },
+
+    activateRoles(roleName) {
+
+      let url = "http://localhost:3000/activaterole/"+roleName;
       axios.put(url)
       .then(response => {
         // this.getRoles()
