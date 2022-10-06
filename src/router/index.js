@@ -54,7 +54,7 @@ const routes = [
     name: "Assign Skills to Course",
     component: AssignSkillstoCourse,
     meta: {
-      visible: true,
+      visible: false,
     },
   },
   {
@@ -62,7 +62,7 @@ const routes = [
     name: "Add Skill",
     component: AddSkill,
     meta: {
-      visible: true,
+      visible: false,
     },
   },
   {
@@ -70,7 +70,7 @@ const routes = [
     name: "Add Role",
     component: AddRole,
     meta: {
-      visible: true,
+      visible: false,
     },
   },
 
