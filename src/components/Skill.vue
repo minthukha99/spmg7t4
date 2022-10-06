@@ -30,9 +30,9 @@
             <td scope="row" data-label="Index">1.</td>
             <td scope="row" data-label="Name"><strong>Skill123</strong></td>
             <td scope="row" data-label="Status">Active/Deactive</td>
-            <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
-            <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
-            <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
+            <td scope="row" data-label="Action 1"><a href="#" class="special">Edit</a></td>
+            <td scope="row" data-label="Action 2"><a href="#" class="special">Activate</a></td>
+            <td scope="row" data-label="Action 3"><a href="#" class="special">Deactivate</a></td>
           </tr>
           </tbody>
         </table>
@@ -170,7 +170,7 @@ header {
 
   button {
     background-color: #000;
-    color: white;
+    /* color: white; */
     border: none;
     padding: 15px 32px;
     text-align: center;
@@ -179,5 +179,13 @@ header {
     font-size: 16px;
     margin: 10px 2px;
     cursor: pointer;
+  }
+
+  a {
+    color: white;
+  }
+
+  .special {
+    color: #2c3e50;
   }
 </style>
