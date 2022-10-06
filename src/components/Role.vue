@@ -42,8 +42,7 @@
                 </ul>
               </td>
 
-              <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
-
+              
               <td v-if="role.status == false " class="inactive">
                 <p >Inactive</p>
               </td>
@@ -51,12 +50,14 @@
                 <p >Active</p>
               </td>
 
+              <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
+
               <td v-if="role.status ==false">
-                <button v-on:click="activateRoles(role.roleName)" :class="{green: role.status}">Activate</button>
+                <button v-on:click="activateRoles(role.roleName)">Activate</button>
               </td>
 
               <td v-else class="active">
-                <button v-on:click="deactivateRoles(role.roleName)" :class="{green: role.status}">Deactivate</button>
+                <button v-on:click="deactivateRoles(role.roleName)">Deactivate</button>
               </td>
 
               <td scope="row" data-label="Action 4"><a href="#"> Add to Learning Journey</a></td>
@@ -244,15 +245,8 @@ button {
   display: inline-block;
   font-size: 16px;
   margin: 10px 2px;
+  color: white;
   cursor: pointer;
-}
-
-.red {
-  color: red;
-}
-
-.green {
-  color: green;
 }
 
 .inactive {

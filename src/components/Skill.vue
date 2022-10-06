@@ -19,41 +19,46 @@
               <th scope="col">Skill Name</th>
               <th scope="col">Roles requiring skill</th>
               <th scope="col">Status</th>
-              <th scope="col">Action 1</th>
-              <th scope="col">Action 2</th>
+              <th scope="col">Edit</th>
+              <th scope="col">Activate / Deactivate</th>
+              
             
             </tr>
           </thead>
           <tbody>
             <tr v-for="(skill,index) in skillsList" :key="skill.id">
-            <td scope="row" data-label="Index">{{ index +1}}</td>
-            <td scope="row" data-label="skillName">{{ skill.skillName }}</td>
+              <td scope="row" data-label="Index">{{ index +1}}</td>
+              <td scope="row" data-label="skillName">{{ skill.skillName }}</td>
 
-            <!-- show in bullet point if got data, else dash -->
-            <td v-if="skill.roleName =='' ">
-              -
-            </td>
-            <td v-else>
-              <ul scope="row" data-label="skillName" v-for="x in skill.roleName" :key="x">
-                <li>{{x}}</li>
-              </ul>
-            </td>
+              <!-- show in bullet point if got data, else dash -->
+              <td v-if="skill.roleName =='' ">
+                -
+              </td>
+              <td v-else>
+                <ul scope="row" data-label="skillName" v-for="x in skill.roleName" :key="x">
+                  <li>{{x}}</li>
+                </ul>
+              </td>
 
-            <td v-if="skill.status ==false " class="inactive">
-              <p>Inactive</p>
-            </td>
-            <td v-else class="active">
-              <p>Active</p>
-            </td>
+              <td v-if="skill.status ==false " class="inactive">
+                <p>Inactive</p>
+              </td>
+              <td v-else class="active">
+                <p>Active</p>
+              </td>
 
-            <td v-if="skill.status ==false">
-              <a href="#"><td>Activate</td></a>
-            </td>
-            <td v-else class="active">
-              <a href="#">Deactivate</a>
-            </td>
+              <td scope="row" data-label="Action 1"><a href="#">Edit</a>
+              </td>
 
-            <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
+              <td v-if="skill.status ==false">
+                <button v-on:click="activateSkills(skill.skillName)">Activate</button>
+              </td>
+
+              <td v-else class="active">
+                <button v-on:click="deactivateSkills(skill.skillName)">Deactivate</button>
+              </td>
+
+              
           </tr>
           </tbody>
         </table>
@@ -71,12 +76,15 @@ export default {
   mounted() {
         this.getSkills()
   },
+
   data() {
     return{
       skillsList:[]
     }
   },
+
   methods: {
+
     getSkills() {
       const url = "http://localhost:3000/skills";
       axios.get(url)
@@ -107,7 +115,40 @@ export default {
       .catch(error => {
           console.log(error.message)
       })
+    },
+
+    deactivateSkills(skillName) {
+
+      let url = "http://localhost:3000/deleteskill/"+skillName;
+      axios.put(url)
+      .then(response => {
+        console.log("deactived role:", skillName)
+        // this.getRoles()
+        location.reload()
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+
+    },
+
+    activateSkills(skillName) {
+
+      let url = "http://localhost:3000/activateskill/"+skillName;
+      axios.put(url)
+      .then(response => {
+        // this.getRoles()
+        location.reload()
+        console.log("activated role:", skillName)
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+
     }
+
   }
 }
 
@@ -210,6 +251,7 @@ header {
     font-size: 16px;
     margin: 10px 2px;
     cursor: pointer;
+    color: white;
   }
 
   .inactive {
