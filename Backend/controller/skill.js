@@ -62,6 +62,15 @@ const activateSkill = async (req, res) => {
         "skillName": id
     });
 };
+const assignSkillToCourse = async (req, res) => {
+    const id = req.params
+    const data = req.body
+    await skill.updateOne({ skillName: id.id }, data)
+    return res.status(200).json({
+        "message": "Skill is set back to available",
+        "skillName": id
+    });
+};
 
 
 // const getRoleSkills = async (req, res) => {
