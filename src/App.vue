@@ -1,12 +1,12 @@
 <template>
   <div class="app-wrapper">
-    <router-view v-if="currentRoute === '/'" />
-    <div v-else>
+    <!-- <router-view v-if="currentRoute === '/'" />
+    <div v-else> -->
       <NavigationBar />
       <div class="app-content-wrapper">
         <router-view />
       </div>
-    </div>
+    <!-- </div> -->
     <BottomBar />
   </div>
 </template>
