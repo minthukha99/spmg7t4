@@ -1,12 +1,15 @@
 <template>
     <div class="learningJourney">
       <header>
-        <div class="header-middle-text">
-          <h3>Schedule Learning Time</h3>
-          <p>Learning a little each day adds up. Research shows that students who make learning a habit are more likely to reach their goals. Set time aside to learn and get reminders using your learning scheduler.</p>
-          <button type="button"><strong>Get Started</strong></button>
-        </div>
         <div class="section">
+          <a href="#">Trail</a>
+          <p style="font-weight: bold;">Admin Intermediate</p>
+          <div class="meter">
+            <span style="width: 25%"></span>
+          </div>
+        </div>
+        <!-- don't delete the codes first in case y'all cannot figure out how to work with the above code -->
+        <!-- <div class="section">
           <div class="pie" data-value="80"></div>
           <h4>Leadership Communication Skills for Influence and Impact</h4>
           <p>Develop the communication skills that will make you irreplaceable, influential and unstoppable as a 21st century leader</p>
@@ -15,24 +18,14 @@
               Continue Learning
             </button>
           </span>
-        </div>
-        <div class="section">
-          <div class="pie" data-value="0"></div>
-          <h4>Speak Like a Pro: Public Speaking for Professionals</h4>
-          <p>Master presentation skills and impromptu speaking, conquer speech anxiety, and get your point across to any audience</p>
-          <span>
-            <button type="button">
-              Start Learning
-            </button>
-          </span>
-        </div>
+        </div> -->
       </header>
     </div>
 </template>
   
 <script>
     export default {
-    name: 'Learning Journey',
+      name: 'Learning Journey',
     }
 </script>
 
@@ -78,7 +71,7 @@
     cursor: pointer;
   }
 
-  .pie {
+  /* .pie {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -567,6 +560,67 @@
   .pie[data-value="100"]:before {
     background-color: #4CC9D8;
     transform: rotate(0.5turn);
+  } */
+
+  .meter {
+    box-sizing: content-box;
+    height: 20px; /* Can be anything */
+    position: relative;
+    background: #555;
+    border-radius: 25px;
+    padding:2px;
   }
+  .meter > span {
+    display: block;
+    height: 100%;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    background-color: rgb(43, 194, 83);
+    position: relative;
+    overflow: hidden;
+  }
+  .meter > span:after,
+  .animate > span > span {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+    );
+    z-index: 1;
+    background-size: 50px 50px;
+    animation: move 2s linear infinite;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    overflow: hidden;
+  }
+
+  .animate > span:after {
+    display: none;
+  }
+
+  @keyframes move {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 50px 50px;
+    }
+  }
+
 </style>
   
