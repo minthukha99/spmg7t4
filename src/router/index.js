@@ -7,7 +7,9 @@ import Roles from "@/components/Role.vue";
 import AssignSkillstoCourse from "@/components/AssignSkillstoCourse.vue";
 import AddSkill from "@/components/AddSkill.vue";
 import AddRole from "@/components/AddRole.vue";
+import AssignSkillstoRole from "@/components/AssignSkillstoRole.vue";
 import LJComponent from "@/components/LJComponent.vue";
+
 
 const routes = [
   {
@@ -91,7 +93,16 @@ const routes = [
       visible: false,
     },
   },
-
+  {
+  path: "/AssignSkillstoRole/:id",
+  name: "user",
+  component: AssignSkillstoRole,
+  props: true,
+  meta: {
+      visible: false,
+    },
+  }
+  
 ];
 
 // testing
