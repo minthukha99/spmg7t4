@@ -45,6 +45,7 @@ const routes = [
     path: "/Courses",
     name: "Courses",
     component: Courses,
+    props: true,
     meta: {
       visible: true,
     },

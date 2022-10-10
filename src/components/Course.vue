@@ -7,9 +7,6 @@
         </div>  
         <div class="col">
           <div class="d-flex">
-            <button type="button" style="float:right">
-              <router-link to="/AssignSkillstoCourse" class="special">+ Assign Skills (this should be inside table)</router-link>
-            </button>
           </div>
         </div>
       </div>
@@ -23,18 +20,55 @@
               <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
-              <th scope="col">Action 3</th>
+    
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td scope="row" data-label="Index">1.</td>
-              <td scope="row" data-label="Name"><strong>Course123</strong></td>
-              <td scope="row" data-label="Skills">Teamwork, Project Management123</td>
-              <td scope="row" data-label="Status">Active/Deactive</td>
-              <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
-              <td scope="row" data-label="Action 2"><a href="#">Activate</a></td>
-              <td scope="row" data-label="Action 3"><a href="#">Deactivate</a></td>
+            <tr v-for="(course,index) in coursesList" :key="course.id">
+              <td scope="row" data-label="Index">{{ index +1}}</td>
+              <td scope="row" data-label="courseName">{{ course.id }}</td>
+              <td scope="row" data-label="courseName">{{ course.courseName }}</td>
+              <!-- <td scope="row" data-label="courseDesc">{{ course.courseDesc }}</td>
+              <td scope="row" data-label="courseName">{{ course.courseCat }}</td>
+              <td scope="row" data-label="courseName">{{ course.courseType }}</td> -->
+              <td scope="row" data-label="courseStatus">{{ course.courseStatus }}</td>
+            
+              <!-- show in bullet point if got data, else dash -->
+              <!-- <td v-if="skill.roleName =='' ">
+                -
+              </td>
+              <td v-else>
+                <ul scope="row" data-label="skillName" v-for="x in skill.roleName" :key="x">
+                  <li>{{x}}</li>
+                </ul>
+              </td> -->
+            
+              <!-- <td v-if="skill.status ==false " class="inactive">
+                <p>Inactive</p>
+              </td>
+              <td v-else class="active">
+                <p>Active</p>
+              </td> -->
+              <!-- <td scope="row" data-label="Action 1"><a href="#">Edit</a>
+              </td> -->
+            
+              <td v-if="course.courseStatus == 'Active'" class="deactive">
+                <button>Deactivate</button>
+              </td>
+
+              <td  v-else-if="course.courseStatus == 'Retired'" class="retired">
+                <button>Activate</button>
+              </td>
+
+              <td v-else>
+                -
+              </td>
+              
+              <td>
+                <button>
+                  <router-link to="/AssignSkillstoCourse" class="special">+ Assign Skills</router-link>
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -44,9 +78,46 @@
 </template>
   
 <script>
-    export default {
-    name: 'Courses',
+import axios from "axios";
+export default {
+  name: 'Courses',
+  mounted() {
+    this.getCourses()
+  },
+
+  data() {
+    return {
+      coursesList: []
     }
+  },
+
+  methods: {
+    getCourses() {
+      const url = "http://localhost:3000/courses";
+      axios.get(url)
+        .then(response => {
+          var coursesData = response.data
+          for (var course of coursesData) {
+            console.log(course)
+            this.coursesList.push(
+              {
+                id: course.Course_ID,
+                courseCat: course.Course_Category,
+                courseDesc: course.Course_Desc,
+                courseName: course.Course_Name,
+                courseStatus: course.Course_Status,
+                courseType: course.Course_Type
+              }
+            );
+          }
+      
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+    },
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -86,6 +157,7 @@ table th,
 table td {
   padding: .625em;
   text-align: center;
+  
 }
 
 @media screen and (max-width: 700px) {
@@ -135,7 +207,8 @@ table td {
 
 button {
   background-color: #000;
-  /* color: white; */
+  
+  color: white; 
   border: none;
   padding: 15px 32px;
   text-align: center;
