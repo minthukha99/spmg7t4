@@ -3,7 +3,7 @@
         <div class="header-middle-text">
             <h1>Add Skill</h1>
             <form>
-                <label for="skillName">Name of the Skill</label><br>
+                <label for="skillName">Skill Name</label><br>
                 <input v-model="skillName" id="skillName" name="skillName"><br>
                 <br>
                 <label for="skillsNeeded" class="multiselect" >Roles that require skill</label>
@@ -29,14 +29,11 @@
   
 <script>
 import axios from "axios";
-
 export default {
   name: 'Roles',
-
   mounted() {
     this.getRoles()
   },
-
   data() {
     return {
       rolesList: [],
@@ -44,7 +41,6 @@ export default {
       skillName: ""
     }
   },
-
     methods: {
         getRoles() {
             const url = "http://localhost:3000/roles";
@@ -68,16 +64,15 @@ export default {
                 console.log(error.message)
             })
         },
-
-
         createSkill(){
-
             let url = "http://localhost:3000/skill";
             axios.post(url, {
                 skillName: this.skillName,
-                roleName: this.selectedRoles
+                roleName: this.selectedRoles,
+                status: true,
+                // skillDetail: ,
+                // courses: []
             })
-
             .then(response => {
                 console.log("new role:", this.skillName, this.selectedRoles)
                 location.reload()
@@ -86,12 +81,7 @@ export default {
                 console.log(error.message)
             })
 
-
         }
-
-
-
-
 
     }
 }

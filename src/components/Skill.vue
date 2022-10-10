@@ -99,7 +99,7 @@ export default {
                 skillName: skill.skillName,
                 status: skill.status
                 //v: skill._v
-              }       
+              }
             );
             // console.log(this.skillsList.roleName + "AA")
             // if (this.skillsList.roleName == []) {
