@@ -2,7 +2,7 @@
     <div class="learningJourney">
       <header>
         <div class="section">
-          <a href="#">Trail</a>
+          <router-link to="/LJComponent" class="special">Learning Journey 1</router-link>
           <p style="font-weight: bold;">Admin Intermediate</p>
           <div class="meter">
             <span style="width: 25%"></span>
@@ -39,14 +39,6 @@
     justify-content: flex-start;
     flex-direction: column;
     position: relative;
-  }
-
-  .header-middle-text {
-    width: 75%;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    border: 1px dotted black;
   }
 
   .section {

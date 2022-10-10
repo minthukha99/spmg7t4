@@ -7,6 +7,7 @@ import Roles from "@/components/Role.vue";
 import AssignSkillstoCourse from "@/components/AssignSkillstoCourse.vue";
 import AddSkill from "@/components/AddSkill.vue";
 import AddRole from "@/components/AddRole.vue";
+import LJComponent from "@/components/LJComponent.vue";
 
 const routes = [
   {
@@ -78,6 +79,14 @@ const routes = [
     path: "/AddRole",
     name: "Add Role",
     component: AddRole,
+    meta: {
+      visible: false,
+    },
+  },
+  {
+    path: "/LJComponent",
+    name: "Learning Journey Profile",
+    component: LJComponent,
     meta: {
       visible: false,
     },
