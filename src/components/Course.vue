@@ -18,8 +18,8 @@
           <thead>
             <tr>
               <th scope="col">Index</th>
-              <th scope="col">Course Name</th>
-              <th scope="col">Skills</th>
+              <th scope="col">Name</th>
+              <th scope="col">Skill(s)</th>
               <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
@@ -62,7 +62,7 @@ header {
 }
 
 .courseList {
-  width: 95%;
+  width: 80%;
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;
