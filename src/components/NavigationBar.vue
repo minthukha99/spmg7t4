@@ -1,33 +1,12 @@
 <template>
   <header class="header">
       <nav class="nav links text-white" v-if="fullView">
-          <!-- <router-link id="home" to="/">
-              <img class="homeimg" src="../assets/ljms.png" alt="LJMS Icon" />
-          </router-link> -->
-      
           <!--added in a class called topnav (removed)-->
-          <!-- <template :key="route.path" v-for="(route) in routes">
+          <template :key="route.path" v-for="(route) in routes">
               <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
               {{ route.name }}
               </router-link>
-          </template> -->
-          <div>
-            <router-link to="/">Home</router-link>
-          </div>
-          <div>
-            <router-link to="/LearningJourney">Learning Journey</router-link>
-          </div>
-          <div>
-            <router-link to="/skills">Skills</router-link>
-          </div>
-          <div>
-            <router-link to="/roles">Roles</router-link>
-          </div>
-          <div>
-            <router-link to="/courses">Courses</router-link>
-          </div>
-    
-         
+          </template>
       </nav>
 
       <nav class="nav small" v-else>
@@ -39,11 +18,7 @@
       </div>
   
       <div id="home-dropdown-small" :class="dropdownClass" @click="showButton">
-          <!-- router link to home -->
-          <router-link :to="routes[0].path.toLowerCase()">
-          Home
-          </router-link>
-          <!-- Router link to other paths -->
+          <!-- Router link to paths -->
           <template :key="route.path" v-for="(route) in routes">
               <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
                   {{ route.name }}

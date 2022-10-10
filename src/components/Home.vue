@@ -2,16 +2,16 @@
   <div class="home-page-wrapper">
     <!--top header-->
     <header class="header">
-      <nav class="links text-white" v-if="fullView">
+      <!-- <nav class="links text-white" v-if="fullView">
         <template :key="route.path" v-for="route in routes">
           <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
             {{ route.name }}
           </router-link>
         </template>
-      </nav>
+      </nav> -->
 
       <!-- If on small screen -->
-      <nav class="nav small" v-else>
+      <!-- <nav class="nav small" v-else>
         <div id="nav-icon3" :class="classNames" @click="showButton">
           <span></span>
           <span></span>
@@ -20,7 +20,6 @@
         </div>
 
         <div id="home-dropdown-small" :class="dropdownClass" @click="showButton">
-          <!-- Router link to other paths -->
           <template :key="route.path" v-for="route in routes">
             <router-link
               v-if="route.meta.visible"
@@ -30,7 +29,7 @@
             </router-link>
           </template>
         </div>
-      </nav>
+      </nav> -->
       <div class="header-middle-text d-flex">
         <h1><i>Learning Journey Management System</i></h1>
         <p>This website is only meant for internal use ⚠️ </p>
@@ -54,54 +53,54 @@
   
   export default {
     name: "Home",
-    components: {
-      NavigationBar,
-    },
-    data() {
-      return {
-        fullView: true,
-        dropdownClass: "dropdown-content",
-        dropdownShown: false,
-        views: ["Learning Journey", "Skills", "Roles", "Courses"],
-        classNames: { open: false, "ml-auto": true },
-      };
-    },
-    methods: {
-      showButton() {
-        if (this.dropdownShown) {
-          this.dropdownShown = false;
-          this.dropdownClass = "dropdown-content";
-          this.classNames.open = false;
-        } else {
-          this.dropdownShown = true;
-          this.dropdownClass = "dropdown-content show-content";
-          this.classNames.open = true;
-        }
-      },
-    },
-    computed: {
-      routes() {
-        console.log(this.$router.options.routes);
-        return this.$router.options.routes;
-      },
-    },
-    created() {
-      if (window.innerWidth < 760) {
-        this.fullView = false;
-      }
-      //   track the width on resize
-      window.addEventListener("resize", () => {
-        if (window.innerWidth > 760) {
-          //   reset it if you expand the screen
-          this.dropdownShown = false;
-          this.dropdownClass = "dropdown-content";
-          this.fullView = true;
-          this.classNames.open = false;
-        } else {
-          this.fullView = false;
-        }
-      });
-    }, 
+    // components: {
+    //   NavigationBar,
+    // },
+    // data() {
+    //   return {
+    //     fullView: true,
+    //     dropdownClass: "dropdown-content",
+    //     dropdownShown: false,
+    //     views: ["Learning Journey", "Skills", "Roles", "Courses"],
+    //     classNames: { open: false, "ml-auto": true },
+    //   };
+    // },
+    // methods: {
+    //   showButton() {
+    //     if (this.dropdownShown) {
+    //       this.dropdownShown = false;
+    //       this.dropdownClass = "dropdown-content";
+    //       this.classNames.open = false;
+    //     } else {
+    //       this.dropdownShown = true;
+    //       this.dropdownClass = "dropdown-content show-content";
+    //       this.classNames.open = true;
+    //     }
+    //   },
+    // },
+    // computed: {
+    //   routes() {
+    //     console.log(this.$router.options.routes);
+    //     return this.$router.options.routes;
+    //   },
+    // },
+    // created() {
+    //   if (window.innerWidth < 760) {
+    //     this.fullView = false;
+    //   }
+    //   //   track the width on resize
+    //   window.addEventListener("resize", () => {
+    //     if (window.innerWidth > 760) {
+    //       //   reset it if you expand the screen
+    //       this.dropdownShown = false;
+    //       this.dropdownClass = "dropdown-content";
+    //       this.fullView = true;
+    //       this.classNames.open = false;
+    //     } else {
+    //       this.fullView = false;
+    //     }
+    //   });
+    // }, 
   };
 
 </script>
