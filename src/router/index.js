@@ -86,7 +86,6 @@ const routes = [
     },
   },
   {
-
     path: "/LJComponent",
     name: "Learning Journey Profile",
     component: LJComponent,
@@ -94,7 +93,16 @@ const routes = [
       visible: false,
     },
   },
-
+  {
+  path: "/AssignSkillstoRole/:id",
+  name: "user",
+  component: AssignSkillstoRole,
+  props: true,
+  meta: {
+      visible: false,
+    },
+  }
+  
 ];
 
 // testing
