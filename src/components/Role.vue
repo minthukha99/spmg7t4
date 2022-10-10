@@ -19,11 +19,12 @@
           <thead>
             <tr>
               <th scope="col">Index</th>
-              <th scope="col">Role Name</th>
-              <th scope="col">Skills needed</th>
+              <th scope="col">Name</th>
+              <th scope="col">Skills</th>
               <th scope="col">Status</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Activate / Deactivate</th>
+              <th scope="col">Action 1</th>
+              <th scope="col">Action 2</th>
+              <th scope="col">Action 3</th>
             </tr>
           </thead>
 
@@ -37,27 +38,27 @@
                 -
               </td>
               <td v-else>
-                <ul scope="row" data-label="roleName" v-for="x in role.skillName" :key="x">
+                <ul scope="row" data-label="Skills" v-for="x in role.skillName" :key="x">
                   <li> {{x}}</li>
                 </ul>
               </td>
 
               
-              <td v-if="role.status == false " class="inactive">
-                <p >Inactive</p>
+              <td v-if="role.status == false " class="inactive" data-label="Status">
+                Inactive
               </td>
-              <td v-else class="active">
-                <p >Active</p>
+              <td v-else class="active" data-label="Status">
+                Active
               </td>
 
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
 
               <td v-if="role.status ==false">
-                <button v-on:click="activateRoles(role.roleName)">Activate</button>
+                <a v-on:click="activateRoles(role.roleName)">Activate</a>
               </td>
 
               <td v-else class="active">
-                <button v-on:click="deactivateRoles(role.roleName)">Deactivate</button>
+                <a v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
               </td>
 
               <td scope="row" data-label="Action 4"><a href="#"> Add to Learning Journey</a></td>
@@ -163,7 +164,7 @@ header {
 }
 
 .roleList {
-  width: 95%;
+  width: 80%;
   flex-direction: column;
   align-items: flex-start;
   padding: 20px;

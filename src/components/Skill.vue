@@ -16,11 +16,11 @@
           <thead>
             <tr>
               <th scope="col">Index</th>
-              <th scope="col">Skill Name</th>
-              <th scope="col">Roles requiring skill</th>
+              <th scope="col">Name</th>
+              <th scope="col">Affected Roles</th>
               <th scope="col">Status</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Activate / Deactivate</th>
+              <th scope="col">Action 1</th>
+              <th scope="col">Action 2</th>
               
             
             </tr>
@@ -28,37 +28,35 @@
           <tbody>
             <tr v-for="(skill,index) in skillsList" :key="skill.id">
               <td scope="row" data-label="Index">{{ index +1}}</td>
-              <td scope="row" data-label="skillName">{{ skill.skillName }}</td>
+              <td scope="row" data-label="Name">{{ skill.skillName }}</td>
 
               <!-- show in bullet point if got data, else dash -->
               <td v-if="skill.roleName =='' ">
                 -
               </td>
               <td v-else>
-                <ul scope="row" data-label="skillName" v-for="x in skill.roleName" :key="x">
+                <ul scope="row" v-for="x in skill.roleName" :key="x">
                   <li>{{x}}</li>
                 </ul>
               </td>
 
-              <td v-if="skill.status ==false " class="inactive">
-                <p>Inactive</p>
+              <td v-if="skill.status ==false " data-label="Status" class="inactive">
+                Inactive
               </td>
-              <td v-else class="active">
-                <p>Active</p>
+              <td v-else data-label="Status" class="active">
+                Active
               </td>
 
               <td scope="row" data-label="Action 1"><a href="#">Edit</a>
               </td>
 
-              <td v-if="skill.status ==false">
-                <button v-on:click="activateSkills(skill.skillName)">Activate</button>
+              <td v-if="skill.status == false" data-label="Action 2">
+                <a v-on:click="activateSkills(skill.skillName)">Activate</a>
               </td>
 
-              <td v-else class="active">
-                <button v-on:click="deactivateSkills(skill.skillName)">Deactivate</button>
+              <td v-else data-label="Action 2">
+                <a v-on:click="deactivateSkills(skill.skillName)">Deactivate</a>
               </td>
-
-              
           </tr>
           </tbody>
         </table>
@@ -66,8 +64,6 @@
     </div>
   </header>
 </template>
-  
-
 <script>
  //to store all the skills after calling api 
 import axios from "axios";
@@ -158,7 +154,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-header {
+  header {
     margin-top: 20px;
     height: auto;
     display: flex;
@@ -169,7 +165,7 @@ header {
   }
 
   .skillList {
-    width: 95%;
+    width: 80%;
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
