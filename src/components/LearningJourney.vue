@@ -2,8 +2,8 @@
     <div class="learningJourney">
       <header>
         <div class="section">
-          <router-link to="/LJComponent" class="special">Learning Journey 1</router-link>
-          <p style="font-weight: bold;">Admin Intermediate</p>
+          <router-link to="/LJComponent"><b>Human Resource Personnel</b></router-link>
+          <p>Admin Intermediate</p>
           <div class="meter">
             <span style="width: 25%"></span>
           </div>
