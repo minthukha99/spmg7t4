@@ -66,6 +66,14 @@ const routes = [
     },
   },
   {
+    path: "/UpdateSkill",
+    name: "Update Skill",
+    component: UpdateSkill,
+    meta: {
+      visible: false,
+    },
+  },
+  {
     path: "/AddRole",
     name: "Add Role",
     component: AddRole,
