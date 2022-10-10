@@ -43,14 +43,6 @@
           </p>
         </div>
       </section>
-      <section class="about-wrapper container">
-        <div class="text-center">
-          <h2 class="mb-1">Meet the Team</h2>
-          <p>
-            We are a group of students applying Scrum and Agile methodologies while building this Learning Journey Management System, LJMS for short. This system helps to assists our target audiences (Staff, HR personnel, Manager) to better manage one's career progression in the company.
-          </p>
-        </div>
-      </section>
     </header>
   </div>
 </template>
@@ -120,7 +112,8 @@
   }
 
   .header {
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    padding: 0.5rem;
     height: auto;
     display: flex;
     align-items: center;
@@ -147,6 +140,9 @@
     align-content: center;
   }
 
+  a {
+    font-weight: bold;
+  }
   .small {
     /* position:inherit; */
     /* text-align: center; */
