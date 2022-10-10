@@ -191,7 +191,7 @@ export default {
     text-align: center;
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 780px) {
     table {
       border: 0;
     }
