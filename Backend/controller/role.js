@@ -48,7 +48,18 @@ const deleteRole = async (req, res) => {
     }
     await role.updateOne({ roleName: id.id }, data)
     return res.status(200).json({
-        "message": "Skill delete success! (Soft delete)",
+        "message": "Role delete success! (Soft delete)",
+        "Rolename": id
+    });
+};
+const activateRole = async (req, res) => {
+    const id = req.params
+    const data = {
+        "status": true
+    }
+    await role.updateOne({ roleName: id.id }, data)
+    return res.status(200).json({
+        "message": "Role status is set back to available",
         "Rolename": id
     });
 };
@@ -61,6 +72,6 @@ const deleteRole = async (req, res) => {
 // };
 
 
-module.exports = { createRole, getAllRoles, updateRole, deleteRole, getRole, getAllAvaliableRoles }
+module.exports = { createRole, getAllRoles, updateRole, deleteRole, getRole, getAllAvaliableRoles, activateRole }
 
 
