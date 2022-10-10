@@ -198,7 +198,7 @@ table td {
   word-wrap: break-word;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 780px) {
   table {
     border: 0;
   }
