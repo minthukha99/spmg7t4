@@ -25,6 +25,7 @@
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
               <th scope="col">Action 3</th>
+              <th scope="col">Action 4</th>
             </tr>
           </thead>
 
@@ -61,7 +62,13 @@
                 <a v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
               </td>
 
-              <td scope="row" data-label="Action 4"><a href="#"> Add to Learning Journey</a></td>
+              <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td>
+
+              <td scope="row" data-label="Action 4">
+                <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
+                <!-- <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link> -->
+                <!-- <router-link to="/AssignSkillstoRole">Assign skills</router-link> -->
+              </td>
             </tr>
           </tbody>
         </table>
@@ -93,7 +100,7 @@ export default {
       axios.get(url)
         .then(response => {
           var roleData = response.data
-          // console.log("roleData=", roleData)
+          console.log("roleData=", roleData)
           for (var role of roleData) {
           this.rolesList.push(
               {
@@ -191,7 +198,7 @@ table td {
   word-wrap: break-word;
 }
 
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 780px) {
   table {
     border: 0;
   }

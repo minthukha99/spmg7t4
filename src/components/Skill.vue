@@ -99,7 +99,7 @@ export default {
                 skillName: skill.skillName,
                 status: skill.status
                 //v: skill._v
-              }       
+              }
             );
             // console.log(this.skillsList.roleName + "AA")
             // if (this.skillsList.roleName == []) {
@@ -191,7 +191,7 @@ export default {
     text-align: center;
   }
 
-  @media screen and (max-width: 700px) {
+  @media screen and (max-width: 780px) {
     table {
       border: 0;
     }
