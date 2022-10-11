@@ -1,63 +1,59 @@
-// NOT IN USE
-
 <template>
     <div class="header">
         <div class="header-middle-text">
-            <h1>Assign Skills to <u> {{ id }}</u> </h1>
+            <h1>Update Role</h1>
+
+            <p>{{id}}</p>
+
             <form>
-                Skills assigned:
-                <ul v-for="skill in role.skillsAssignedList" :key="skill.id">
-                    <li>{{ skill }} </li>
-                </ul>
+                <label for="roleName">Name of the Role</label><br>
+                <input v-model="newRoleName" id="roleName" name="roleName"><br>
                 <br>
-                <br>
-            
-                <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
+                <label for="skillsNeeded" class="multiselect" >Skills required</label>
                 <div class="selectBox">
                     <select multiple v-model="selectedSkills">
                         <option selected="true" disabled="disabled">Select an option</option>
-                        <option v-for="skill in skillsList" :key="skill.id">>{{skill.skillName}}</option>
+                        <option v-for="skill in skillsList" :key="skill.id">>{{skill.skillName}}</option>       
                     </select>
                 </div>
                 <br>
                 <br>
-                <!-- <button type="button">
+                <button type="button">
                     <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
-                </button> -->
+                </button>
                 <button value="Cancel" class="special">
                     <router-link to="/Roles" class="special">Cancel</router-link>
-                </button>
-                <!-- <a v-on:click="deactivateRoles(role.roleName)">Deactivate</a> -->
-                <!-- <button @click='updateRole(roleToBeUpdated); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
-                <button @click='updateRole();  $router.push("/Roles")' type="submit" value="Save" class="special">
+                </button> 
+                <button @click='updateRole(roleName); $router.push("/Roles")' value="Save" class="special">
                     Save
-                </button>
-
+                </button>  
+                
             </form>
         </div>
     </div>
 </template>
-  
+
 <script>
+
 import axios from "axios";
 export default {
-    props: ['id'],
-    //  GUIDE: the :role in path: "/AssignSkillstoRole/:role",
-    name: 'AssignSkillstoRoles',
+    name: 'UpdateRole/:id',
     mounted() {
-        this.getSkills(),
-        this.getRole()
+        this.getSkills()
     },
+
+    props: ['id'],
+
     data() {
-        return {
-            skillsList: [],
-            skillsAssignedList : [],
-            selectedSkills: [],
-            roleName: "",
-            role: {} 
-        }
+    return{
+        skillsList:[],
+        selectedSkills: [],
+        newRoleName: '',
+    }
     },
+
     methods: {
+
         getSkills() {
             const url = "http://localhost:3000/skills";
             axios.get(url)
@@ -74,62 +70,47 @@ export default {
                             }
                         );
                     }
+                    
                     // console.log("SkillsList=", this.skillsList)
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
         },
-        // createRole() {
-        //     let url = "http://localhost:3000/role";
-        //     axios.post(url, {
-        //         roleName: this.roleName,
-        //         skillName: this.selectedSkills
-        //     })
 
-        //         .then(response => {
-        //             console.log("new role:", this.roleName, this.selectedSkills)
-        //             location.reload()
-        //         })
-        //         .catch(error => {
-        //             console.log(error.message)
-        //         })
-        // },
-        
-        getRole() {
-            var that = this
-            const url = "http://localhost:3000/role/"+this.id;
-            axios.get(url)
-                .then(response => {
-                    that.role = response.data
-                    // console.log(response.data)
-                    // console.log("roleName:" + response.data[0].roleName)
-                    // console.log("skills:" + response.data[0].skillName)
-                    that.role["roleName"] = response.data[0].roleName
-                    that.role["skillsAssignedList"] = response.data[0].skillName
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
-        },
-        updateRole() {
+        updateRole(){
+
+            console.log(roleName)
+
             let url = "http://localhost:3000/updaterole/" + this.id;
-            axios.put(url, {
-                roleName: this.id,
-                skillName: this.selectedSkills,
-            })
-                .then(response => {
-                    console.log("success")
+            console.log(url)
 
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })   
-        }
-    },
-    
+            console.log(this.newRoleName)
+            axios.put(url, {
+                roleName: this.newRoleName,
+                skillName: this.selectedSkills
+            })
+
+            .then(response => {
+                console.log("hello", roleName)
+                // location.reload()
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
+
+        },
+
+        
+        
+
+    }
 }
 
+
+
+
+  
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -166,7 +147,7 @@ input[type=submit] {
     justify-content: flex-start;
     flex-direction: column;
     position: relative;
-}
+  }
 
 .header-middle-text {
     width: 75%;
@@ -190,7 +171,8 @@ button {
 }
 
 .special {
-    color: white;
+    color:white; 
     text-decoration: none;
 }
+
 </style>
