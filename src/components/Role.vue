@@ -51,7 +51,7 @@
                 Active
               </td>
 
-              <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
+              <router-link to="/UpdateRole">Update</router-link>
 
               <td v-if="role.status ==false">
                 <a v-on:click="activateRoles(role.roleName)">Activate</a>

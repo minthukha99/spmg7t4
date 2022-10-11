@@ -7,6 +7,8 @@ import Roles from "@/components/Role.vue";
 import AssignSkillstoCourse from "@/components/AssignSkillstoCourse.vue";
 import AddSkill from "@/components/AddSkill.vue";
 import AddRole from "@/components/AddRole.vue";
+import UpdateSkill from "@/components/UpdateSkill.vue";
+import UpdateRole from "@/components/UpdateRole.vue";
 
 const routes = [
   {
@@ -17,6 +19,7 @@ const routes = [
       visible: true,
     },
   },
+  
   {
     path: "/LearningJourney",
     name: "Learning Journey",
@@ -66,14 +69,14 @@ const routes = [
       visible: false,
     },
   },
-  // {
-  //   path: "/UpdateSkill",
-  //   name: "Update Skill",
-  //   component: UpdateSkill,
-  //   meta: {
-  //     visible: false,
-  //   },
-  // },
+  {
+    path: "/UpdateSkill",
+    name: "Update Skill",
+    component: UpdateSkill,
+    meta: {
+      visible: false,
+    },
+  },
   {
     path: "/AddRole",
     name: "Add Role",
@@ -82,6 +85,14 @@ const routes = [
       visible: false,
     },
   },
+  {
+    path: "/UpdateRole",
+    name: "Update Role",
+    component: UpdateRole,
+    meta: {
+      visible: false,
+    }
+  }
 
 ];
 
