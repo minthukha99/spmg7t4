@@ -16,7 +16,7 @@
             <tr>
               <th scope="col">Index</th>
               <th scope="col">Name</th>
-              <th scope="col">Skill(s)</th>
+              <th scope="col">Course Name</th>
               <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
@@ -66,7 +66,7 @@
               
               <td>
                 <button>
-                  <router-link to="/AssignSkillstoCourse" class="special">+ Assign Skills</router-link>
+                  <router-link :to="`/AssignSkillstoCourse/${course.id}`" class="special">+ Assign Skills</router-link>
                 </button>
               </td>
             </tr>

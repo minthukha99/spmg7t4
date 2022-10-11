@@ -1,8 +1,9 @@
 <template>
     <div class="header">
         <div class="header-middle-text">
+            <h1>UPDATE FUNCTION NOT WORKING YET AS NO SKILL TABLE COLUMN UNDER COURSES </h1>
             <h1>
-                Assign Skills to <u> {{ id }}</u>
+                Assign Skills to <u> {{ courseSelected.courseName }}</u>
             </h1>
             <form>
                 <!-- <ul v-for="skill in role.skillsAssignedList" :key="skill.id">
@@ -19,7 +20,7 @@
                 <p> <strong>Course Description: </strong> Course Description: {{ courseSelected.courseDesc }}</p>
                 <p> <strong>Course Status: </strong>  {{ courseSelected.courseStatus }}</p>
                 <p> <strong>Course Type: </strong> {{ courseSelected.courseType }}</p>
-                Skills assigned:
+                <p> <strong> Skills assigned: </strong></p>
                 <br>
                 <br>
 
@@ -40,7 +41,7 @@
                 </button>
                 <!-- <a v-on:click="deactivateRoles(role.roleName)">Deactivate</a> -->
                 <!-- <button @click='updateRole(roleToBeUpdated); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
-                <button @click='updateRole();  $router.push("/Roles")' type="submit" value="Save" class="special">
+                <button @click='updateCourse();  $router.push("/courses")' type="submit" value="Save" class="special">
                     Save
                 </button>
 
@@ -132,7 +133,7 @@ export default {
             
         },
 
-        // updateRole() {
+        // updateCourse()) {
         //     let url = "http://localhost:3000/updaterole/" + this.id;
         //     axios.put(url, {
         //         roleName: this.id,
