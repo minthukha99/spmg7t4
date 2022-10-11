@@ -2,16 +2,14 @@
     <div class="header">
         <div class="header-middle-text">
             <h1>Assign Skills to <u> {{ id }}</u> </h1>
-            
             <form>
-                <label for="roleName">Course name:</label>
-                {{ role }}
+                Skills assigned:
+                <ul v-for="skill in role.skillsAssignedList" :key="skill.id">
+                    <li>{{ skill }} </li>
+                </ul>
                 <br>
                 <br>
-                Skill assigned:
-                <!-- {{ role.skillName }} -->
-                
-
+            
                 <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
                 <div class="selectBox">
                     <select multiple v-model="selectedSkills">
@@ -27,7 +25,9 @@
                 <button value="Cancel" class="special">
                     <router-link to="/Roles" class="special">Cancel</router-link>
                 </button>
-                <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special">
+                <!-- <a v-on:click="deactivateRoles(role.roleName)">Deactivate</a> -->
+                <!-- <button @click='updateRole(roleToBeUpdated); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
+                <button @click='updateRole();  $router.push("/Roles")' type="submit" value="Save" class="special">
                     Save
                 </button>
 
@@ -40,7 +40,7 @@
 import axios from "axios";
 export default {
     props: ['id'],
-    //  the :role in path: "/AssignSkillstoRole/:role",
+    //  GUIDE: the :role in path: "/AssignSkillstoRole/:role",
     name: 'AssignSkillstoRoles',
     mounted() {
         this.getSkills(),
@@ -49,9 +49,10 @@ export default {
     data() {
         return {
             skillsList: [],
+            skillsAssignedList : [],
             selectedSkills: [],
             roleName: "",
-            role : null 
+            role: {} 
         }
     },
     methods: {
@@ -71,58 +72,58 @@ export default {
                             }
                         );
                     }
-                    
                     // console.log("SkillsList=", this.skillsList)
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
         },
-        createRole() {
-            let url = "http://localhost:3000/role";
-            axios.post(url, {
-                roleName: this.roleName,
-                skillName: this.selectedSkills
-            })
+        // createRole() {
+        //     let url = "http://localhost:3000/role";
+        //     axios.post(url, {
+        //         roleName: this.roleName,
+        //         skillName: this.selectedSkills
+        //     })
 
-                .then(response => {
-                    console.log("new role:", this.roleName, this.selectedSkills)
-                    location.reload()
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
-        },
+        //         .then(response => {
+        //             console.log("new role:", this.roleName, this.selectedSkills)
+        //             location.reload()
+        //         })
+        //         .catch(error => {
+        //             console.log(error.message)
+        //         })
+        // },
         
         getRole() {
             var that = this
             const url = "http://localhost:3000/role/"+this.id;
             axios.get(url)
                 .then(response => {
-                    console.log(response)
                     that.role = response.data
-                    var data = response
-                    
-                    console.log(data[0])
-                        // [{ "roleDetail": "", "_id": "63395f4fb5d0eb0bd71e1646", "roleName": "afdsf", "status": true, "__v": 0, "skillName": ["Skill2", "Skill3"] }]
-
-                        // this.rolesList.push(
-                        //     {
-                        //         id: role._id,
-                        //         roleName: role.roleName,
-                        //         skillName: role.skillName,
-                        //         status: role.status
-                        //     }
-                        // );
-                    
-                    
+                    // console.log(response.data)
+                    // console.log("roleName:" + response.data[0].roleName)
+                    // console.log("skills:" + response.data[0].skillName)
+                    that.role["roleName"] = response.data[0].roleName
+                    that.role["skillsAssignedList"] = response.data[0].skillName
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
         },
+        updateRole() {
+            let url = "http://localhost:3000/updaterole/" + this.id;
+            axios.put(url, {
+                roleName: this.id,
+                skillName: this.selectedSkills,
+            })
+                .then(response => {
+                    console.log("success")
 
-       
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })   
+        }
     },
     
 }
