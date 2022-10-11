@@ -57,9 +57,10 @@ const routes = [
     },
   },
   {
-    path: "/AssignSkillstoCourse",
+    path: "/AssignSkillstoCourse/:id",
     name: "Assign Skills to Course",
     component: AssignSkillstoCourse,
+    props: true,
     meta: {
       visible: false,
     },
