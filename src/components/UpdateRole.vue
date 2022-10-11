@@ -2,9 +2,12 @@
     <div class="header">
         <div class="header-middle-text">
             <h1>Update Role</h1>
+
+            <p>{{id}}</p>
+
             <form>
                 <label for="roleName">Name of the Role</label><br>
-                <input v-model="roleName" id="roleName" name="roleName"><br>
+                <input v-model="newRoleName" id="roleName" name="roleName"><br>
                 <br>
                 <label for="skillsNeeded" class="multiselect" >Skills required</label>
                 <div class="selectBox">
@@ -21,7 +24,7 @@
                 <button value="Cancel" class="special">
                     <router-link to="/Roles" class="special">Cancel</router-link>
                 </button> 
-                <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special">
+                <button @click='updateRole(roleName); $router.push("/Roles")' value="Save" class="special">
                     Save
                 </button>  
                 
@@ -29,21 +32,23 @@
         </div>
     </div>
 </template>
-  
+
 <script>
 
 import axios from "axios";
 export default {
-    name: 'add roles',
+    name: 'UpdateRole/:id',
     mounted() {
         this.getSkills()
     },
+
+    props: ['id'],
 
     data() {
     return{
         skillsList:[],
         selectedSkills: [],
-        roleName: ""
+        newRoleName: '',
     }
     },
 
@@ -54,45 +59,50 @@ export default {
             axios.get(url)
                 .then(response => {
                     var skillData = response.data
-                    console.log("SkillData=", skillData)
+                    // console.log("SkillData=", skillData)
                     for (var skill of skillData) {
-
                         this.skillsList.push(
-                        {
-                            id: skill._id,
-                            roleName: skill.roleName,
-                            skillName: skill.skillName,
-                            status: skill.status
-                        }       
+                            {
+                                id: skill._id,
+                                roleName: skill.roleName,
+                                skillName: skill.skillName,
+                                status: skill.status
+                            }
                         );
-
                     }
-                console.log("SkillsList=",this.skillsList)
-            })
-            .catch(error => {
-                console.log(error.message)
-            })
+                    
+                    // console.log("SkillsList=", this.skillsList)
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
         },
 
-        UpdateRole(){
+        updateRole(){
 
-            let url = "http://localhost:3000/updaterole/:id";
+            console.log(roleName)
+
+            let url = "http://localhost:3000/updaterole/" + this.id;
+            console.log(url)
+
+            console.log(this.newRoleName)
             axios.put(url, {
-                roleName: this.roleName,
+                roleName: this.newRoleName,
                 skillName: this.selectedSkills
             })
 
             .then(response => {
                 console.log("hello", roleName)
-                location.reload()
+                // location.reload()
             })
             .catch(error => {
                 console.log(error.message)
             })
 
-        }
+        },
+
         
-    
+        
 
     }
 }
