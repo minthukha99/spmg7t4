@@ -54,12 +54,12 @@
 
               <td scope="row" data-label="Action 1"><a href="#">Edit</a></td>
 
-              <td v-if="role.status ==false">
-                <a v-on:click="activateRoles(role.roleName)">Activate</a>
+              <td v-if="role.status ==false" >
+                <a class="mouseover" v-on:click="activateRoles(role.roleName)">Activate</a>
               </td>
 
-              <td v-else class="active">
-                <a v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
+              <td v-else >
+                <a class="mouseover" v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
               </td>
 
               <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td>
@@ -196,6 +196,10 @@ table td {
   padding: .625em;
   text-align: center;
   word-wrap: break-word;
+}
+
+.mouseover{
+  cursor: pointer;
 }
 
 @media screen and (max-width: 780px) {

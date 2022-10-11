@@ -51,11 +51,11 @@
               </td>
 
               <td v-if="skill.status == false" data-label="Action 2">
-                <a v-on:click="activateSkills(skill.skillName)">Activate</a>
+                <a class="mouseover" v-on:click="activateSkills(skill.skillName)">Activate</a>
               </td>
 
-              <td v-else data-label="Action 2">
-                <a v-on:click="deactivateSkills(skill.skillName)">Deactivate</a>
+              <td v-else data-label="Action 2" >
+                <a class="mouseover" v-on:click="deactivateSkills(skill.skillName)">Deactivate</a>
               </td>
           </tr>
           </tbody>
@@ -154,7 +154,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  header {
+header {
     margin-top: 20px;
     height: auto;
     display: flex;
@@ -189,6 +189,9 @@ export default {
   table td {
     padding: .625em;
     text-align: center;
+  }
+  .mouseover {
+    cursor: pointer;
   }
 
   @media screen and (max-width: 780px) {
