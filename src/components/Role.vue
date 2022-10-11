@@ -25,7 +25,6 @@
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
               <th scope="col">Action 3</th>
-              <th scope="col">Action 4</th>
             </tr>
           </thead>
 
@@ -52,7 +51,9 @@
                 Active
               </td>
 
-              <router-link to="/UpdateRole">Update</router-link>
+              <td>
+                <router-link :to="`/UpdateRole/${role.roleName}`">Edit</router-link>
+              </td>
 
               <td v-if="role.status ==false">
                 <a v-on:click="activateRoles(role.roleName)">Activate</a>
@@ -64,11 +65,11 @@
 
               <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td>
 
-              <td scope="row" data-label="Action 4">
+              <!-- <td scope="row" data-label="Action 4">
                 <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
-                <!-- <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link> -->
-                <!-- <router-link to="/AssignSkillstoRole">Assign skills</router-link> -->
-              </td>
+                <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
+                <router-link to="/AssignSkillstoRole">Assign skills</router-link>
+              </td> -->
             </tr>
           </tbody>
         </table>

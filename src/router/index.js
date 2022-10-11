@@ -89,9 +89,10 @@ const routes = [
     },
   },
   {
-    path: "/UpdateRole/:roleName",
+    path: "/UpdateRole/:id",
     name: "Update Role",
     component: UpdateRole,
+    props: true,
     meta: {
       visible: false,
     }
