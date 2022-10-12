@@ -2,9 +2,12 @@
     <div class="header">
         <div class="header-middle-text">
             <h1>Update Skill</h1>
+
+            <p>{{id}}</p>
+
             <form>
                 <label for="skillName">Skill Name</label><br>
-                <input v-model="skillName" id="skillName" name="skillName"><br>
+                <input v-model="newSkillName" id="skillName" name="skillName"><br>
                 <br>
                 <label for="skillsNeeded" class="multiselect" >Roles that require skill</label>
                 <div class="selectBox">
@@ -21,7 +24,6 @@
                 <button @click='updateSkill(skillName); $router.push("/Skills")' value="Save" class="special">
                     Save
                 </button>  
-               
             </form>
         </div>
     </div>
@@ -30,20 +32,23 @@
 <script>
 import axios from "axios";
 export default {
-  name: 'updateSkill/:id',
-  mounted() {
-    this.getRoles()
-  },
 
-//   props: ['id'],
+    name: 'updateSkill/:id',
 
-  data() {
-    return {
-      rolesList: [],
-      selectedRoles: [],
-      newskillName: '',
-    }
-  },
+    mounted() {
+        this.getRoles()
+    },
+
+    props: ['id'],
+
+    data() {
+        return {
+        rolesList: [],
+        selectedRoles: [],
+        newSkillName: '',
+        }
+    },
+
     methods: {
         getRoles() {
             const url = "http://localhost:3000/roles";
@@ -74,9 +79,11 @@ export default {
             let url = "http://localhost:3000/updateskill/" + this.id;
             console.log(url)
 
+            console.log(this.newSkillName)
+
             axios.put(url, {
-                roleName: this.roleName,
-                skillName: this.newskillName
+                roleName: this.selectedRoles,
+                skillName: this.newSkillName
             })
 
             .then(response => {
