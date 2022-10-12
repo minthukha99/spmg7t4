@@ -148,7 +148,7 @@ const updateRole = async (req, res) => {
         `UPDATE spm.LJMSRole
         SET roleName = '${role.roleName},'
         roleDetail = '${role.roleDetail}'
-        WHERE roleID = ${identifier}
+        WHERE (roleID = '${identifier}' or roleName = '${identifier}')
         `
     ).catch(e =>{
         return res.status(400).json({
