@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="header-middle-text">
-            <h1>Add Skill</h1>
+            <h1>Update Skill</h1>
             <form>
                 <label for="skillName">Skill Name</label><br>
                 <input v-model="skillName" id="skillName" name="skillName"><br>
@@ -18,7 +18,7 @@
                 <button value="Cancel" class="special">
                     <router-link to="/Skills" class="special">Cancel</router-link>
                 </button> 
-                <button @click='createSkill(); $router.go(-1)' type="submit" value="Save" class="special">
+                <button @click='updateSkill(skillName); $router.push("/Skills")' value="Save" class="special">
                     Save
                 </button>  
                
@@ -30,15 +30,18 @@
 <script>
 import axios from "axios";
 export default {
-  name: 'Roles',
+  name: 'updateSkill/:id',
   mounted() {
     this.getRoles()
   },
+
+//   props: ['id'],
+
   data() {
     return {
       rolesList: [],
       selectedRoles: [],
-      skillName: ""
+      newskillName: '',
     }
   },
     methods: {
@@ -64,23 +67,25 @@ export default {
                 console.log(error.message)
             })
         },
-        createSkill(){
-            let url = "http://localhost:3000/skill";
-            axios.post(url, {
-                skillName: this.skillName,
-                roleName: this.selectedRoles,
-                status: true,
-                // skillDetail: ,
-                // courses: []
+
+        updateSkill() {
+            console.log(skillName)
+
+            let url = "http://localhost:3000/updateskill/" + this.id;
+            console.log(url)
+
+            axios.put(url, {
+                roleName: this.roleName,
+                skillName: this.newskillName
             })
+
             .then(response => {
-                console.log("new role:", this.skillName, this.selectedRoles)
-                location.reload()
+                console.log("hello", skillName)
             })
+
             .catch(error => {
                 console.log(error.message)
             })
-
         }
 
     }
