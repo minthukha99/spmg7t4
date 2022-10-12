@@ -47,8 +47,10 @@
                 Active
               </td>
 
-              <td scope="row" data-label="Action 1"><a href="#">Edit</a>
+              <td>
+                <router-link  :to="`/UpdateSkill/${skill.skillName}`">Edit</router-link>
               </td>
+
 
               <td v-if="skill.status == false" data-label="Action 2">
                 <a class="mouseover" v-on:click="activateSkills(skill.skillName)">Activate</a>

@@ -2,9 +2,12 @@
     <div class="header">
         <div class="header-middle-text">
             <h1>Update Skill</h1>
+
+            <p>{{id}}</p>
+
             <form>
-                <label for="skillName">Name of the Skill</label><br>
-                <input v-model="skillName" id="skillName" name="skillName"><br>
+                <label for="skillName">Skill Name</label><br>
+                <input v-model="newSkillName" id="skillName" name="skillName"><br>
                 <br>
                 <label for="skillsNeeded" class="multiselect" >Roles that require skill</label>
                 <div class="selectBox">
@@ -18,32 +21,33 @@
                 <button value="Cancel" class="special">
                     <router-link to="/Skills" class="special">Cancel</router-link>
                 </button> 
-                <button @click='createSkill(); $router.go(-1)' type="submit" value="Save" class="special">
+                <button @click='updateSkill(skillName); $router.push("/Skills")' value="Save" class="special">
                     Save
                 </button>  
-               
             </form>
         </div>
     </div>
 </template>
-
+  
 <script>
 import axios from "axios";
-
 export default {
-  name: 'Roles',
 
-  mounted() {
-    this.getRoles()
-  },
+    name: 'updateSkill/:id',
 
-  data() {
-    return {
-      rolesList: [],
-      selectedRoles: [],
-      skillName: ""
-    }
-  },
+    mounted() {
+        this.getRoles()
+    },
+
+    props: ['id'],
+
+    data() {
+        return {
+        rolesList: [],
+        selectedRoles: [],
+        newSkillName: '',
+        }
+    },
 
     methods: {
         getRoles() {
@@ -69,13 +73,93 @@ export default {
             })
         },
 
+        updateSkill() {
+            console.log(skillName)
 
+            let url = "http://localhost:3000/updateskill/" + this.id;
+            console.log(url)
 
+            console.log(this.newSkillName)
 
+            axios.put(url, {
+                roleName: this.selectedRoles,
+                skillName: this.newSkillName
+            })
 
+            .then(response => {
+                console.log("hello", skillName)
+            })
 
-
+            .catch(error => {
+                console.log(error.message)
+            })
+        }
 
     }
 }
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+
+
+input[type=text],
+select {
+    width: 80%;
+    padding: 12px 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    background-color: #000;
+    color: white;
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+}
+
+.header {
+    margin-top: 20px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    position: relative;
+  }
+
+.header-middle-text {
+    width: 75%;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    /* border: 1px dotted black; */
+}
+
+button {
+    background-color: #000;
+    /* color: white; */
+    border: none;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+}
+
+.special {
+    color:white; 
+    text-decoration: none;
+  }
+</style>
