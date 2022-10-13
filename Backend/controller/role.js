@@ -175,17 +175,11 @@ const updateRole = async (req, res) => {
             result : "Fail to update role"
         });
     });
-    const actionRole = await db.query(
-        `
-        select * from spm.LJMSRole
-        where roleName = '${role.roleName}'
-        `
-    );
     console.log(role.skillName);
     const removeRoleSkill = await db.query(
         `
         delete from spm.RoleSkill
-        where RoleID = ${actionRole.roldID}
+        where RoleID = (select roleID from spm.LJMSRole where roleName = '${role.roleName}')
         `
     ).catch(e =>{
         return res.status(400).json({
@@ -201,14 +195,20 @@ const updateRole = async (req, res) => {
     var sqlStr = `INSERT INTO spm.RoleSkill (skillID,roleID) VALUES`;
     allSkills.forEach(skill => {
         if(role.skillName.includes(skill.skillName)){
-            sqlStr += `(${skill.skillID},${result.insertId}),`
+            sqlStr += `(${skill.skillID},(select roleID from spm.LJMSRole where roleName = '${role.roleName}')),`
         }
     });
-    console.log(removeRoleSkill);
+    //console.log(removeRoleSkill);
+    sqlStr = sqlStr.slice(0, -1);
     console.log(sqlStr);
+    const skillResult = await db.query(
+        `
+        ${sqlStr}
+        `
+    );
     return res.status(200).json({
         status : 200,
-        result: result
+        result: "Updated successfully"
     });
 
 };
