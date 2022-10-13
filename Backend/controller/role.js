@@ -41,9 +41,13 @@ const getAllRoles = async (req, res) =>{
 const createRole = async (req, res) => {
     const role = req.body;
     const skills = role.skillName
+    var roleDetail = "No description"
+    if(role.roleDetail){
+        roleDetail = role.roleDetail;
+    }
     const result = await db.query(
         `INSERT INTO spm.LJMSRole (roleName,roleDetail) VALUES 
-        ("${role.roleName}","${role.roleDetail}")
+        ("${role.roleName}","${roleDetail}")
         `
     ).catch(error =>{
         return res.status(400).json({
@@ -51,12 +55,27 @@ const createRole = async (req, res) => {
             result: "Fail to create Role",
             data: role
         });
-    })
-    var sqlStr = `INSERT INTO RoleSkill (skillID,roleID) VALUES`;
+    });
+    var whereConditon = `(`
     skills.forEach(skill => {
-        sqlStr += `(${skill},${result.insertId}),`
+        whereConditon += `'${skill}',`
+    });
+    whereConditon = whereConditon.slice(0, -1);
+    whereConditon += `)`
+    const skill = await db.query(
+        `
+        select * from spm.Skill
+        where skillName in ${whereConditon}
+        `
+    )
+    //console.log(whereConditon);
+    //console.log(skill)
+    var sqlStr = `INSERT INTO RoleSkill (skillID,roleID) VALUES`;
+    skill.forEach(s => {
+        sqlStr += `(${s.skillID},${result.insertId}),`
     });
     sqlStr = sqlStr.slice(0, -1);
+   //console.log(sqlStr);
     const skillResult = await db.query(
         `
         ${sqlStr}
@@ -144,9 +163,19 @@ const getRole = async (req, res) => {
 const updateRole = async (req, res) => {
     const role = req.body;
     const identifier = req.params.id;
+    const skills = await db.query(
+        `
+        SELECT t2.RoleSkillID,t2.skillID,t1.skillName,t2.roleID,t3.roleName FROM spm.Skill t1
+        inner join spm.RoleSkill t2
+        on t1.skillID = t2.skillID
+        inner join spm.LJMSRole t3
+        on t3.roleID = t2.roleID
+        where t3.roleName = '${identifier}'
+        `
+    );
     const result = await db.query(
         `UPDATE spm.LJMSRole
-        SET roleName = '${role.roleName},'
+        SET roleName = '${role.roleName}',
         roleDetail = '${role.roleDetail}'
         WHERE (roleID = '${identifier}' or roleName = '${identifier}')
         `
@@ -155,7 +184,19 @@ const updateRole = async (req, res) => {
             status : 400,
             result : "Fail to update role"
         });
-    })
+    });
+    console.log("skills",skills)
+    var queryDelete = `delete from spm.RoleSkill where RoleSkillID in (`;
+    skills.forEach(skill => {
+        console.log(skill)
+        if(!role.skillName.includes(skill.skillName)){
+            queryDelete += `'${skill.RoleSkillID}',`
+        };
+    });
+    queryDelete = queryDelete.slice(0, -1);
+    queryDelete += `)`;
+    //console.log(queryDelete)
+    //console.log(queryDelete)
     return res.status(200).json({
         status : 200,
         result: result
