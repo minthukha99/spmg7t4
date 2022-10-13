@@ -68,19 +68,19 @@ const createRole = async (req, res) => {
         where skillName in ${whereConditon}
         `
     )
-    //console.log(whereConditon);
-    //console.log(skill)
+    console.log(whereConditon);
+    console.log(skill)
     var sqlStr = `INSERT INTO RoleSkill (skillID,roleID) VALUES`;
     skill.forEach(s => {
         sqlStr += `(${s.skillID},${result.insertId}),`
     });
     sqlStr = sqlStr.slice(0, -1);
-   //console.log(sqlStr);
+    console.log(sqlStr);
     const skillResult = await db.query(
         `
         ${sqlStr}
         `
-    )
+    );
     return res.status(200).json({
         status : 200,
         result: {
@@ -163,16 +163,6 @@ const getRole = async (req, res) => {
 const updateRole = async (req, res) => {
     const role = req.body;
     const identifier = req.params.id;
-    const skills = await db.query(
-        `
-        SELECT t2.RoleSkillID,t2.skillID,t1.skillName,t2.roleID,t3.roleName FROM spm.Skill t1
-        inner join spm.RoleSkill t2
-        on t1.skillID = t2.skillID
-        inner join spm.LJMSRole t3
-        on t3.roleID = t2.roleID
-        where t3.roleName = '${identifier}'
-        `
-    );
     const result = await db.query(
         `UPDATE spm.LJMSRole
         SET roleName = '${role.roleName}',
@@ -185,18 +175,37 @@ const updateRole = async (req, res) => {
             result : "Fail to update role"
         });
     });
-    console.log("skills",skills)
-    var queryDelete = `delete from spm.RoleSkill where RoleSkillID in (`;
-    skills.forEach(skill => {
-        console.log(skill)
-        if(!role.skillName.includes(skill.skillName)){
-            queryDelete += `'${skill.RoleSkillID}',`
-        };
+    const actionRole = await db.query(
+        `
+        select * from spm.LJMSRole
+        where roleName = '${role.roleName}'
+        `
+    );
+    console.log(role.skillName);
+    const removeRoleSkill = await db.query(
+        `
+        delete from spm.RoleSkill
+        where RoleID = ${actionRole.roldID}
+        `
+    ).catch(e =>{
+        return res.status(400).json({
+            status : 400,
+            result : "Fail to update roleSkills"
+        });
     });
-    queryDelete = queryDelete.slice(0, -1);
-    queryDelete += `)`;
-    //console.log(queryDelete)
-    //console.log(queryDelete)
+    const allSkills = await db.query(
+        `
+        select * from spm.Skill
+        `
+    );
+    var sqlStr = `INSERT INTO spm.RoleSkill (skillID,roleID) VALUES`;
+    allSkills.forEach(skill => {
+        if(role.skillName.includes(skill.skillName)){
+            sqlStr += `(${skill.skillID},${result.insertId}),`
+        }
+    });
+    console.log(removeRoleSkill);
+    console.log(sqlStr);
     return res.status(200).json({
         status : 200,
         result: result
