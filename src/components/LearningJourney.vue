@@ -1,6 +1,7 @@
 <template>
     <div class="learningJourney">
       <header>
+        <!--  should v for and repeat this component for all courses taken by user  -->
         <div class="section">
           <h1>List of Learning Journeys</h1>
           <h5>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
@@ -30,6 +31,26 @@
             </div>
           </div>
         </div>
+
+  <!-- this part is for users to add new learning journeys in addition to their exisiting one, -->
+        <!-- submit button doesnt work yet lol -->
+        <div class="section">
+          <!-- <router-link to="/LJComponent"><b>Human Resource Personnel</b></router-link> -->
+          <b>Add a Learning Journey</b>
+          <div class="selectBox">
+            <select>
+              <option selected="true" disabled="disabled">Select an option</option>
+              <option v-for="role in rolesList" :key="role.id">{{role.roleName}}</option>
+            </select>
+          </div>
+          <br>
+          <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
+          <button >
+            Add to Learning Journey
+          </button>
+
+        </div>
+        <!-- don't delete the codes first in case y'all cannot figure out how to work with the above code -->
         <!-- <div class="section">
           <div class="pie" data-value="80"></div>
           <h4>Leadership Communication Skills for Influence and Impact</h4>
@@ -45,9 +66,45 @@
 </template>
   
 <script>
-    export default {
-      name: 'Learning Journey',
+import axios from "axios";
+export default {
+  name: 'Learning Journey',
+  mounted() {
+    this.getRoles()
+  },
+
+  data() {
+    return {
+      rolesList: [],
+      roleName: ""
     }
+  },
+
+  methods: {
+    getRoles() {
+      const url = "http://localhost:3000/roles";
+      axios.get(url)
+        .then(response => {
+          var roleData = response.data
+          console.log("roleData=", roleData)
+          for (var role of roleData) {
+            this.rolesList.push(
+              {
+                id: role._id,
+                roleName: role.roleName,
+                skillName: role.skillName,
+                status: role.status
+              }
+            );
+          }
+          // console.log("rolesList=", this.rolesList)
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+    },
+  }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
