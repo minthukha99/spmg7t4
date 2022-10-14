@@ -269,6 +269,7 @@ button {
 .active{
   color: rgba(40, 190, 42, 0.77);
 }
+
 a{
   color: blue;
   text-decoration: underline;

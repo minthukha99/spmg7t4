@@ -53,11 +53,11 @@
               </td> -->
             
               <td v-if="course.courseStatus == 'Active'" class="deactive">
-                <button>Deactivate</button>
+                <a>Deactivate</a>
               </td>
 
               <td  v-else-if="course.courseStatus == 'Retired'" class="retired">
-                <button>Activate</button>
+                <a>Activate</a>
               </td>
 
               <td v-else>
@@ -65,9 +65,9 @@
               </td>
               
               <td>
-                <button>
-                  <router-link :to="`/AssignSkillstoCourse/${course.id}`" class="special">+ Assign Skills</router-link>
-                </button>
+                <a>
+                  <router-link :to="`/AssignSkillstoCourse/${course.id}`">Assign Skills</router-link>
+                </a>
               </td>
             </tr>
           </tbody>
@@ -207,7 +207,6 @@ table td {
 
 button {
   background-color: #000;
-  
   color: white; 
   border: none;
   padding: 15px 32px;
@@ -220,8 +219,13 @@ button {
 }
 
 .special {
-    color:white; 
-    text-decoration: none;
-  }
+  color:white; 
+  text-decoration: none;
+}
+
+a{
+  color: blue;
+  text-decoration: underline;
+}
 </style>
   
