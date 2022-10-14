@@ -30,7 +30,6 @@
             </div>
           </div>
         </div>
-        <!-- don't delete the codes first in case y'all cannot figure out how to work with the above code -->
         <!-- <div class="section">
           <div class="pie" data-value="80"></div>
           <h4>Leadership Communication Skills for Influence and Impact</h4>
