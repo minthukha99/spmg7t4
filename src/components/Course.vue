@@ -4,6 +4,9 @@
       <div class="row">
         <div class="col">
           <h1>Courses</h1>
+          <div class="search-wrapper">
+            <input type="text" v-model="searchValue" placeholder="Search Course Name"/>
+          </div>
         </div>  
         <div class="col">
           <div class="d-flex">
@@ -15,8 +18,8 @@
           <thead>
             <tr>
               <th scope="col">Index</th>
+              <th scope="col">Code</th>
               <th scope="col">Name</th>
-              <th scope="col">Course Name</th>
               <th scope="col">Status</th>
               <th scope="col">Action 1</th>
               <th scope="col">Action 2</th>
@@ -24,14 +27,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(course,index) in coursesList" :key="course.id">
+            <tr v-for="(course, index) in filteredCourses" :key="course.courseName">
               <td scope="row" data-label="Index">{{ index +1}}</td>
-              <td scope="row" data-label="courseName">{{ course.id }}</td>
-              <td scope="row" data-label="courseName">{{ course.courseName }}</td>
+              <td scope="row" data-label="Code">{{ course.id }}</td>
+              <td scope="row" data-label="Name">{{ course.courseName }}</td>
               <!-- <td scope="row" data-label="courseDesc">{{ course.courseDesc }}</td>
               <td scope="row" data-label="courseName">{{ course.courseCat }}</td>
               <td scope="row" data-label="courseName">{{ course.courseType }}</td> -->
-              <td scope="row" data-label="courseStatus">{{ course.courseStatus }}</td>
+              <td scope="row" data-label="Status">{{ course.courseStatus }}</td>
             
               <!-- show in bullet point if got data, else dash -->
               <!-- <td v-if="skill.roleName =='' ">
@@ -53,11 +56,11 @@
               </td> -->
             
               <td v-if="course.courseStatus == 'Active'" class="deactive">
-                <button>Deactivate</button>
+                <a>Deactivate</a>
               </td>
 
               <td  v-else-if="course.courseStatus == 'Retired'" class="retired">
-                <button>Activate</button>
+                <a>Activate</a>
               </td>
 
               <td v-else>
@@ -65,9 +68,9 @@
               </td>
               
               <td>
-                <button>
-                  <router-link :to="`/AssignSkillstoCourse/${course.id}`" class="special">+ Assign Skills</router-link>
-                </button>
+                <a>
+                  <router-link :to="`/AssignSkillstoCourse/${course.id}`">Assign Skills</router-link>
+                </a>
               </td>
             </tr>
           </tbody>
@@ -82,40 +85,76 @@ import axios from "axios";
 export default {
   name: 'Courses',
   mounted() {
-    this.getCourses()
+    // this.getCourses()
   },
 
   data() {
     return {
-      coursesList: []
+      coursesList: [],
+      searchValue: '',
     }
   },
 
   methods: {
-    getCourses() {
-      const url = "http://localhost:3000/courses";
-      axios.get(url)
-        .then(response => {
-          var coursesData = response.data
-          for (var course of coursesData) {
-            console.log(course)
-            this.coursesList.push(
-              {
-                id: course.Course_ID,
-                courseCat: course.Course_Category,
-                courseDesc: course.Course_Desc,
-                courseName: course.Course_Name,
-                courseStatus: course.Course_Status,
-                courseType: course.Course_Type
-              }
-            );
-          }
+    // getCourses() {
+    //   const url = "http://localhost:3000/courses";
+    //   axios.get(url)
+    //     .then(response => {
+    //       var coursesData = response.data
+    //       for (var course of coursesData) {
+    //         console.log(course)
+    //         this.coursesList.push(
+    //           {
+    //             id: course.Course_ID,
+    //             courseCat: course.Course_Category,
+    //             courseDesc: course.Course_Desc,
+    //             courseName: course.Course_Name,
+    //             courseStatus: course.Course_Status,
+    //             courseType: course.Course_Type
+    //           }
+    //         );
+    //       }
       
-        })
-        .catch(error => {
-          console.log(error.message)
-        })
-    },
+    //     })
+    //     .catch(error => {
+    //       console.log(error.message)
+    //     })
+    // },
+  },
+
+  computed: {
+    filteredCourses(){
+      console.log(this.coursesList)
+      if (this.searchValue != " "){
+        return this.coursesList.filter(course => 
+          course.courseName.toLowerCase().includes(this.searchValue.toLowerCase())
+        );
+      } 
+    }
+  },
+  created(){
+    const url = "http://localhost:3000/courses";
+    axios.get(url)
+    .then(response => {
+      var coursesData = response.data
+      for (var course of coursesData) {
+        console.log(course)
+        this.coursesList.push(
+          {
+            id: course.Course_ID,
+            courseCat: course.Course_Category,
+            courseDesc: course.Course_Desc,
+            courseName: course.Course_Name,
+            courseStatus: course.Course_Status,
+            courseType: course.Course_Type
+          }
+        );
+      }
+  
+    })
+    .catch(error => {
+      console.log(error.message)
+    })
   }
 }
 </script>
@@ -207,7 +246,6 @@ table td {
 
 button {
   background-color: #000;
-  
   color: white; 
   border: none;
   padding: 15px 32px;
@@ -219,9 +257,22 @@ button {
   cursor: pointer;
 }
 
-.special {
-    color:white; 
-    text-decoration: none;
-  }
+a{
+  color: blue;
+  text-decoration: underline;
+}
+
+.search-wrapper {
+  position: relative;
+  margin-bottom: 10px;
+}
+.search-wrapper input {
+  padding: 20px;
+  color: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #f8f8f8;
+  width: 80%;
+  
+}
 </style>
   
