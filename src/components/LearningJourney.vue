@@ -2,10 +2,32 @@
     <div class="learningJourney">
       <header>
         <div class="section">
-          <router-link to="/LJComponent"><b>Human Resource Personnel</b></router-link>
-          <p>Admin Intermediate</p>
-          <div class="meter">
-            <span style="width: 25%"></span>
+          <h1>List of Learning Journeys</h1>
+          <h5>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
+          </h5>
+          <!-- search bar -->
+          <!-- <div class="wrap">
+            <div class="search">
+                <input type="text" class="searchTerm" placeholder="What are you looking for?">
+                <button type="submit" class="searchButton">
+                  Search
+                </button>
+            </div>
+          </div> -->
+          <div class="card">
+            <div class="card__image card__image--fence"></div>
+            <div class="card__content">
+              <div class="card__title">
+                Human Resource Personnel
+              </div>
+              <div class="card__text">
+                <div class="meter">
+                  <span style="width: 25%"></span>
+                </div>
+                Number of courses: 13
+              </div>
+              <a class="button"><router-link to="/LJComponent"><b>View Learning Journey</b></router-link></a>
+            </div>
           </div>
         </div>
         <!-- don't delete the codes first in case y'all cannot figure out how to work with the above code -->
@@ -47,10 +69,9 @@
     flex-direction: column;
     align-items: flex-start;
     padding: 20px;
-    border: 1px solid black;
   }
 
-  button {
+  .button {
     background-color: #000;
     color: white;
     border: none;
@@ -62,6 +83,11 @@
     margin: 4px 2px;
     cursor: pointer;
   }
+
+  a {
+    color: white;
+  }
+  
 
   /* .pie {
     width: 60px;
@@ -555,6 +581,8 @@
   } */
 
   .meter {
+    margin-top: 10px;
+    margin-bottom: 10px;
     box-sizing: content-box;
     height: 20px; /* Can be anything */
     position: relative;
@@ -613,6 +641,102 @@
       background-position: 50px 50px;
     }
   }
+
+  .card {
+    background-color: white;
+    border-radius: 0.25rem;
+    box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .card:hover .card__image {
+    filter: contrast(100%);
+  }
+  .card__content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .card__image {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+    filter: contrast(70%);
+    overflow: hidden;
+    position: relative;
+    transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
+  }
+  .card__image::before {
+    content: "";
+    display: block;
+    padding-top: 56.25%;
+  }
+  @media (min-width: 40rem) {
+    .card__image::before {
+      padding-top: 66.6%;
+    }
+  }
+  .card__image--fence {
+    background-image: url(https://www.b2bsustainable.com/wp-content/uploads/2022/02/2.jpg);
+  }
+  .card__title {
+    color: #2c3e50;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+  .card__text {
+    flex: 1 1 auto;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+  }
+  
+  .search {
+    width: 100%;
+    position: relative;
+    display: flex;
+  }
+
+  .searchTerm {
+    width: 100%;
+    border: 3px solid #00B4CC;
+    border-right: none;
+    padding: 5px;
+    height: 20px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #9DBFAF;
+  }
+
+  .searchTerm:focus{
+    color: #00B4CC;
+  }
+
+  .searchButton {
+    width: 40px;
+    height: 36px;
+    border: 1px solid #00B4CC;
+    background: #00B4CC;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+  }
+
+  /*Resize the wrap to see the search bar change!*/
+  /* .wrap{
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } */
 
 </style>
   
