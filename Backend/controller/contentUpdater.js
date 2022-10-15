@@ -126,6 +126,31 @@ const getUserByEmail = async (req, res) => {
         return res.status(200).json(getUser);
     }
 };
-module.exports = { getAllCourse, getCourse, getAllUser, getUser, getUserByEmail}
+const learningJourneyByID = async (req, res) => {
+    const id = req.params.id
+    var resultData = [];
+    CSVToJSON().fromFile('./Backend/RawData/registration.csv')
+        .then(users => {
+            // users is a JSON array
+            // log the JSON array
+            //console.log(users);
+            users.forEach(user => {
+                if(user.Staff_ID == id){
+                    resultData.push(user);
+                }
+            });
+            return res.status(200).json(resultData);
+        }).catch(err => {
+            // log error if any
+            console.log(err);
+            return res.status(400).json({
+                "Status": 400,
+                "Message": err
+            });
+        });        
+};
+
+
+module.exports = { getAllCourse, getCourse, getAllUser, getUser, getUserByEmail, learningJourneyByID}
 
 
