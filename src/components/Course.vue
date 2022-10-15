@@ -56,11 +56,11 @@
               </td> -->
             
               <td v-if="course.courseStatus == 'Active'" class="deactive">
-                <a>Deactivate</a>
+                <a class="mouseover" v-on:click="deactivateCourses(course.courseName)">Deactivate</a>
               </td>
 
               <td  v-else-if="course.courseStatus == 'Retired'" class="retired">
-                <a>Activate</a>
+                <a v-on:click="activateCourses(course.courseName)">Activate</a>
               </td>
 
               <td v-else>
@@ -120,6 +120,38 @@ export default {
     //       console.log(error.message)
     //     })
     // },
+
+    deactivateCourses(courseName) {
+
+      let url = "http://localhost:3000/deleteskill/"+courseName;
+      axios.put(url)
+      .then(response => {
+        console.log("deactived role:", courseName)
+        // this.getRoles()
+        location.reload()
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+
+    },
+
+    activateSkills(courseName) {
+
+      let url = "http://localhost:3000/activateskill/"+courseName;
+      axios.put(url)
+      .then(response => {
+        // this.getRoles()
+        location.reload()
+        console.log("activated role:", courseName)
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+
+    }
   },
 
   computed: {
@@ -274,5 +306,14 @@ a{
   width: 80%;
   
 }
+
+.inactive {
+  color: rgba(184, 56, 56, 0.77);
+}
+
+.active {
+  color: rgba(40, 190, 42, 0.77);
+}
+
 </style>
   
