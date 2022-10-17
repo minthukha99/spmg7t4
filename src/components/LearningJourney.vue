@@ -5,7 +5,7 @@
         <div class="section">
           <!-- this part is for users to add new learning journeys in addition to their existing one, -->
           <!-- submit button doesnt work yet lol -->
-          <h1>Add a Learning Journey</h1>
+          <h1><i>Add a Learning Journey</i></h1>
           <h5>Select a role that you desire and add it to your current list of learning journeys to track your progress.
           </h5>
           <div class="selectBox">
@@ -20,7 +20,7 @@
           </div>
         </div>
         <div class="section">
-          <h1>List of Learning Journeys Added</h1>
+          <h1><i>List of Learning Journeys Added</i></h1>
           <h5>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
           </h5>
           <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
@@ -111,7 +111,7 @@ export default {
 
   .section {
     margin-top: 5px;
-    width: 75%;
+    width: 80%;
     flex-direction: column;
     align-items: flex-start;
     padding: 10px;
