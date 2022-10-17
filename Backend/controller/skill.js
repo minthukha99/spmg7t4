@@ -5,9 +5,13 @@ const e = require("express");
 
 const createSkill = async (req, res) => {
     const skill = req.body;
+    var skillDetail = "No description";
+    if(skill.skillDetail){
+        skillDetail = skill.skillDetail;
+    }
     const result = await db.query(
-        `INSERT INTO spm.LJMSRole (skillName,skillDetail) VALUES 
-        ("${skill.skillName}","${skill.skillDetail}")
+        `INSERT INTO spm.Skill (skillName,skillDetail) VALUES 
+        ("${skill.skillName}","${skillDetail}")
         `
 
     ).catch(error =>{
@@ -127,11 +131,26 @@ const getSkill = async (req, res) => {
 };
 
 const updateSkill = async (req, res) => {
-    const id = req.params;
-    await skill.updateOne({ skillName: id.id }, req.body)
+    const identifier = req.params.id;
+    const skillData = req.body
+    var skillDetail = "No description";
+    if(skillData.skillDetail){
+        skillDetail = skillData.skillDetail;
+    }
+    const result = await db.query(
+        `UPDATE spm.Skill
+        SET skillName = '${skillData.skillName}',skillDetail = '${skillDetail}'
+        WHERE skillName = '${identifier}'
+        `
+    ).catch(e =>{
+        return res.status(400).json({
+            status : 400,
+            result : "Fail to update skill: " + identifier
+        });
+    })
     return res.status(200).json({
-        "message": "Skill updated success!",
-        "skillName": id.id
+        status : 200,
+        result: "update successful!"
     });
 };
 

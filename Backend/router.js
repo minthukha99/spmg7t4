@@ -31,6 +31,7 @@ router.get("/course/:id", coursesController.getCourse);
 router.get("/users/", coursesController.getAllUser);
 router.get("/user/:id", coursesController.getUser);
 router.get("/userByEmail", coursesController.getUserByEmail);
+router.get("/learningjourney/:id", coursesController.learningJourneyByID);
 
 
 module.exports = router
