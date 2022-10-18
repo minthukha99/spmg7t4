@@ -7,6 +7,10 @@
               {{ route.name }}
               </router-link>
           </template>
+          <select>
+            <option selected="true" disabled="disabled">Select your role</option>
+            <option v-for="role in rolesList" :key="role">{{role}}</option>
+          </select>
       </nav>
 
       <nav class="nav small" v-else>
@@ -40,6 +44,8 @@
         dropdownShown: false,
         views: ["Learning Journey", "Skills", "Roles", "Courses"],
         classNames: { open: false, "ml-auto": true },
+        rolesList: ['HR', 'Staff', 'Manager'],
+        roleName: ""
       };
     },
     methods: {
@@ -239,6 +245,15 @@
       #home-dropdown-small {
         width: 150px;
       }
+    }
+
+    select {
+      padding: 10px;
+      color: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      background: #f8f8f8;
+      width: 20%;
+      margin-top: 20px
     }
 
   </style>
