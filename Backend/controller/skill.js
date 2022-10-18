@@ -39,7 +39,7 @@ const getAllSkills = async (req, res) =>{
         on t1.roleID = t2.roleID
         where t2.status = 1
         `
-    )
+    );
     var result = [];
     skills.forEach(skill => {
         var tempRoles = []
@@ -58,7 +58,7 @@ const getAllSkills = async (req, res) =>{
     });
     //const data = helper.emptyOrRows(result);
     const meta = { page };
-    return res.status(200).json(result)
+    return res.status(200).json(result);
 }
 
 const getAllAvaliableSkills = async (req, res) => {
@@ -129,7 +129,24 @@ const getSkill = async (req, res) => {
         roleData
     });
 };
-
+const getskillsByCourse = async (req, res) => {
+    const identifier = req.params.course
+    const page = 1;
+    const offset = helper.getOffset(page, config.listperPage);
+    const skill = await db.query(
+        `SELECT t1.skillID,t1.skillName,t1.skillDetail,t1.status FROM spm.SkillCourse t0
+        inner join spm.Skill t1
+        on t0.skillID = t1.skillID
+        WHERE t0.course_ID = '${identifier}'`
+    ).catch(error =>{
+        return res.status(400).json({
+            status : 400,
+            result : "Skill does not exist: " + identifier 
+        });
+    });
+    const meta = { page };
+    return res.status(200).json(skill);
+};
 const updateSkill = async (req, res) => {
     const identifier = req.params.id;
     const skillData = req.body
@@ -199,6 +216,6 @@ const activateSkill = async (req, res) => {
 // };
 
 
-module.exports = { createSkill, getAllSkills, updateSkill, deleteSkill, getAllAvaliableSkills, getSkill, activateSkill }
+module.exports = {getskillsByCourse, createSkill, getAllSkills, updateSkill, deleteSkill, getAllAvaliableSkills, getSkill, activateSkill }
 
 
