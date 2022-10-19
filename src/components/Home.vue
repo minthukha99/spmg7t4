@@ -35,7 +35,7 @@
   data() {
     return {
       selectedRole: "",
-      rolesList: ['HR', 'Staff', 'Manager'],
+      rolesList: ['HR', 'Staff', 'Manager', 'Learner'],
     };
   },
   mounted() {

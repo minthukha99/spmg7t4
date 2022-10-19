@@ -6,14 +6,50 @@
           <!-- this part is for users to add new learning journeys in addition to their existing one, -->
           <!-- submit button doesnt work yet lol -->
           <h1><i>Add a Learning Journey</i></h1>
-          <h5>Select a role that you desire and add it to your current list of learning journeys to track your progress.
+          <h5>
+            Select a role that you desire and add it to your current list of learning journeys to track your progress.
           </h5>
-          <div class="selectBox">
-            <select>
-              <option selected="true" disabled="disabled">Select an option</option>
-              <option v-for="role in rolesList" :key="role.id">{{role.roleName}}</option>
+          <div class="selectBox" @change="getSkillsForChosenRole">
+            <select v-model="roleSelected">
+              <option selected="true" disabled="disabled">Select a role</option>
+              <option v-for="role in rolesList" :key="role.id" >{{role.roleName}}</option>
             </select>
             <br>
+            <br>
+            
+            <!-- <table v-if="roleSelected != ''"> -->
+              <table >
+              
+              <thead>
+                <tr>
+                  <th scope="col">Skill required</th>
+                  <th scope="col">Courses </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr scope="row" v-for="skill in skillsNeededForRole" :key="skill">
+                  <td scope="col">
+                    {{skill.skillName}}
+                  </td>
+                  <td scope="col"> 
+                    <!-- <ul scope="row" v-for="x in coursesNeededforSkill" :key="x">
+                      <li>{{ x }}</li>
+                    </ul> -->
+                    <!-- test
+                    {{getCourseForChosenSkill(skill.skillName)}} -->
+                    <!-- <ul scope="row" v-for="x in getCourseForChosenSkill(skill.skillName)" :key="x">
+                      <li>{{ x }}</li>
+                    </ul> -->
+                    <!-- <ul scope="row" v-for="x in coursesNeededforSkill" :key="x">
+                      <li>{{ x }}</li>
+                    </ul> -->
+                  </td>
+                </tr>
+              </tbody>
+
+            </table>
+
             <button class="button">
               Add to Learning Journey
             </button>
@@ -61,12 +97,16 @@ export default {
   name: 'Learning Journey',
   mounted() {
     this.getRoles()
+    // this.getCourseForChosenSkill("skill5")
   },
 
   data() {
     return {
       rolesList: [],
-      roleName: ""
+      roleName: "",
+      roleSelected: "",
+      skillsNeededForRole: [],
+      coursesNeededforSkill: []
     }
   },
 
@@ -76,7 +116,7 @@ export default {
       axios.get(url)
         .then(response => {
           var roleData = response.data
-          console.log("roleData=", roleData)
+          // console.log("roleData=", roleData)
           for (var role of roleData) {
             this.rolesList.push(
               {
@@ -93,13 +133,80 @@ export default {
           console.log(error.message)
         })
     },
+    getSkillsForChosenRole() {
+      // console.log(this.roleSelected)
+      const url = "http://localhost:3000/role/" + this.roleSelected;
+      // console.log('URL is', url)
+      axios.get(url)
+        .then(response => {
+          var roleData = response.data
+          // console.log("roleData=", roleData.skillData)
+          for (var skill of roleData.skillData) {
+            this.skillsNeededForRole.push(
+              {
+                skillDetail: skill.skillDetail,
+                skillId: skill.skillID,
+                skillName: skill.skillName,
+              }
+            );
+          }
+          // console.log(this.skillsNeededForRole)
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+    },
+    // getCourseForChosenSkill(id) { 
+    //   const url = "http://localhost:3000/coursebyskill/" + id;
+    //   var myList = []
+    //   axios.get(url)
+    //     .then(response => {
+    //       // console.log("RESPONSE FROM GETCOURSEFORCHOSENSKILL", response.data)
+    //       for (var course of response.data) {
+    //         // this.coursesNeededforSkill.push(course.course_Name)
+    //         myList.push(course.course_Name)
+    //       }
+    //       // this.coursesNeededforSkill = []
+    //       // for (var course of response.data) {
+    //       //   this.coursesNeededforSkill.push(course.course_Name)
+    //       // }
+    //       //       courseCategory: course.course_Category,
+    //       //       courseDesc: course.course_Desc,
+    //       //       courseId: course.course_ID,
+    //       //       courseName: course.course_Name,
+    //       //       courseStatus: course.course_Status,
+    //       //       courseType: course.course_Type
+    //       //     }
+    //       //   );
+    //       // }
+    //     })
+    //     .catch(error => {
+    //       console.log(error.message)
+    //     })
+    //   console.log("myList>>>>>",myList)
+    //   return (myList)
+    // }
+    // getCourseForChosenSkill(id) {
+    //   this.coursesNeededforSkill = []
+    //   const url = "http://localhost:3000/coursebyskill/" + id;
+    //   axios.get(url)
+    //     .then(response => {
+    //       for (var course of response.data) {
+    //         this.coursesNeededforSkill.push(course.course_Name)
+    //       }
+    //     })
+    //     .catch(error => {
+    //       console.log(error.message)
+    //     })
+    //   console.log(this.coursesNeededforSkill)
+    // }
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  header {
+header {
     margin-top: 20px;
     height: auto;
     display: flex;
@@ -759,5 +866,68 @@ export default {
     margin-top: 10px;
   }
 
+    table {
+      border-collapse: collapse;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      table-layout: fixed;
+    }
+  
+    table tr {
+      background-color: #f8f8f8;
+      border: 1px solid #ddd;
+      padding: .35em;
+    }
+  
+    table th,
+    table td {
+      padding: .625em;
+      text-align: center;
+    }
+        @media screen and (max-width: 780px) {
+          table {
+            border: 0;
+          }
+    
+          table thead {
+            border: none;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            width: 1px;
+          }
+    
+          table tr {
+            border-bottom: 3px solid #ddd;
+            display: block;
+            margin-bottom: .625em;
+          }
+    
+          table td {
+            border-bottom: 1px solid #ddd;
+            display: block;
+            font-size: .8em;
+            text-align: right;
+          }
+    
+          table td::before {
+            /*
+          * aria-label has no advantage, it won't be read inside a table
+          content: attr(aria-label);
+          */
+            content: attr(data-label);
+            float: left;
+            font-weight: bold;
+            text-transform: uppercase;
+          }
+    
+          table td:last-child {
+            border-bottom: 0;
+          }
+        }
 </style>
   
