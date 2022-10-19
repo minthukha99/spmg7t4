@@ -16,11 +16,12 @@ router.put("/deleterole/:id", roleController.deleteRole);
 router.put("/activaterole/:id", roleController.activateRole);
 
 
-//Roles
+//Skills
 router.post("/skill", skillController.createSkill);
 router.get("/skills", skillController.getAllSkills);
 router.get("/availableskills", skillController.getAllAvaliableSkills);
 router.get("/skill/:id", skillController.getSkill);
+router.get("/skillbycourse/:course", skillController.getskillsByCourse);
 router.put("/updateskill/:id", skillController.updateSkill);
 router.put("/deleteskill/:id", skillController.deleteSkill);
 router.put("/activateskill/:id", skillController.activateSkill);
@@ -28,9 +29,13 @@ router.put("/activateskill/:id", skillController.activateSkill);
 //courses, users
 router.get("/courses", coursesController.getAllCourse);
 router.get("/course/:id", coursesController.getCourse);
-router.get("/users/", coursesController.getAllUser);
+router.get("/coursebyskill/:skillName", coursesController.getCoursesBySkill);
+router.put("/deactivecourse/:id", coursesController.deactiateCourse);
+router.put("/activatecourse/:id", coursesController.activateCourse);
+router.get("/users", coursesController.getAllUser);
 router.get("/user/:id", coursesController.getUser);
-router.get("/userByEmail", coursesController.getUserByEmail);
+router.get("/userByEmail/:email", coursesController.getUserByEmail);
+router.get("/userByDept/:dept", coursesController.getUserByDept);
 router.get("/learningjourney/:id", coursesController.learningJourneyByID);
 
 

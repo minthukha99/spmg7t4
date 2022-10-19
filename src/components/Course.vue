@@ -95,7 +95,7 @@ export default {
     }
   },
 
-  methods: {
+  // methods: {
     // getCourses() {
     //   const url = "http://localhost:3000/courses";
     //   axios.get(url)
@@ -120,39 +120,7 @@ export default {
     //       console.log(error.message)
     //     })
     // },
-
-    deactivateCourses(courseName) {
-
-      let url = "http://localhost:3000/deleteskill/"+courseName;
-      axios.put(url)
-      .then(response => {
-        console.log("deactived role:", courseName)
-        // this.getRoles()
-        location.reload()
-
-      })
-      .catch(error => {
-          console.log(error.message)
-      })
-
-    },
-
-    activateSkills(courseName) {
-
-      let url = "http://localhost:3000/activateskill/"+courseName;
-      axios.put(url)
-      .then(response => {
-        // this.getRoles()
-        location.reload()
-        console.log("activated role:", courseName)
-
-      })
-      .catch(error => {
-          console.log(error.message)
-      })
-
-    }
-  },
+  // },
 
   computed: {
     filteredCourses(){
@@ -173,12 +141,12 @@ export default {
         console.log(course)
         this.coursesList.push(
           {
-            id: course.Course_ID,
-            courseCat: course.Course_Category,
-            courseDesc: course.Course_Desc,
-            courseName: course.Course_Name,
-            courseStatus: course.Course_Status,
-            courseType: course.Course_Type
+            id: course.course_ID,
+            courseCat: course.course_Category,
+            courseDesc: course.course_Desc,
+            courseName: course.course_Name,
+            courseStatus: course.course_Status,
+            courseType: course.course_Type
           }
         );
       }
