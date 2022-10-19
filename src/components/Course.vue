@@ -95,7 +95,7 @@ export default {
     }
   },
 
-  methods: {
+  // methods: {
     // getCourses() {
     //   const url = "http://localhost:3000/courses";
     //   axios.get(url)
@@ -120,7 +120,7 @@ export default {
     //       console.log(error.message)
     //     })
     // },
-  },
+  // },
 
   computed: {
     filteredCourses(){
@@ -141,12 +141,12 @@ export default {
         console.log(course)
         this.coursesList.push(
           {
-            id: course.Course_ID,
-            courseCat: course.Course_Category,
-            courseDesc: course.Course_Desc,
-            courseName: course.Course_Name,
-            courseStatus: course.Course_Status,
-            courseType: course.Course_Type
+            id: course.course_ID,
+            courseCat: course.course_Category,
+            courseDesc: course.course_Desc,
+            courseName: course.course_Name,
+            courseStatus: course.course_Status,
+            courseType: course.course_Type
           }
         );
       }

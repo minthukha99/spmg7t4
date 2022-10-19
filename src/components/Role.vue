@@ -21,10 +21,10 @@
               <th scope="col">Index</th>
               <th scope="col">Name</th>
               <th scope="col">Skills</th>
-              <th scope="col">Status</th>
               <th scope="col">Action 1</th>
-              <th scope="col">Action 2</th>
-              <th scope="col">Action 3</th>
+              <th scope="col" v-if="selectedRole=='HR'">Action 2</th>
+              <th scope="col" v-if="selectedRole=='HR'">Action 3</th>
+              <th scope="col" v-if="selectedRole=='HR'">Status</th>
             </tr>
           </thead>
 
@@ -43,28 +43,26 @@
                 </ul>
               </td>
 
-              
-              <td v-if="role.status == false " class="inactive" data-label="Status">
-                Inactive
-              </td>
-              <td v-else class="active" data-label="Status">
-                Active
-              </td>
+              <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td>
 
-              <td>
+              <td v-if="selectedRole=='HR' ">
                 <router-link :to="`/UpdateRole/${role.roleName}`">Edit</router-link>
               </td>
 
-              <td v-if="role.status ==false" >
+              <td v-if="role.status ==false && selectedRole=='HR'" >
                 <a class="mouseover" v-on:click="activateRoles(role.roleName)">Activate</a>
               </td>
-
-              <td v-else >
+              <td v-else-if="role.status == true && selectedRole=='HR'">
                 <a class="mouseover" v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
               </td>
 
-              <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td>
-
+              <td v-if="role.status == false && selectedRole=='HR' " class="inactive" data-label="Status">
+                Inactive
+              </td>
+              <td v-else-if="role.status == true && selectedRole=='HR'" class="active" data-label="Status">
+                Active
+              </td>
+              
               <!-- <td scope="row" data-label="Action 4">
                 <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
                 <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
@@ -91,12 +89,14 @@ export default {
 
   data() {
     return {
-      rolesList: []
+      rolesList: [],
+      selectedRole: ""
     }
   },
 
   methods: {
     getRoles() {
+      this.selectedRole = sessionStorage.getItem('selectedRole') // get role saved in session storage
       const url = "http://localhost:3000/roles";
       axios.get(url)
         .then(response => {
