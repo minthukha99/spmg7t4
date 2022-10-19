@@ -63,6 +63,7 @@ export default {
                     roleName: role.roleName,
                     skillName: role.skillName,
                     status: role.status
+                    
                     }
                 );
                 }

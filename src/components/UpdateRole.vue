@@ -49,6 +49,7 @@ export default {
         skillsList:[],
         selectedSkills: [],
         newRoleName: '',
+
     }
     },
 
@@ -67,6 +68,7 @@ export default {
                                 roleName: skill.roleName,
                                 skillName: skill.skillName,
                                 status: skill.status
+        
                             }
                         );
                     }
@@ -83,6 +85,7 @@ export default {
             console.log(roleName)
 
             let url = "http://localhost:3000/updaterole/" + this.id;
+            
             console.log(url)
 
             console.log(this.newRoleName)
@@ -99,14 +102,10 @@ export default {
                 console.log(error.message)
             })
 
-        },
-
-        
-        
+        }  
 
     }
 }
-
 
 </script>
 
