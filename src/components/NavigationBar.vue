@@ -44,7 +44,7 @@ export default {
       dropdownShown: false,
       views: ["Learning Journey", "Skills", "Roles", "Courses"],
       classNames: { open: false, "ml-auto": true },
-      rolesList: ['HR', 'Staff', 'Manager'],
+      rolesList: ['HR', 'Staff', 'Manager','Learner'],
       roleName: "",
       selectedRole: ""
     };
