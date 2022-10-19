@@ -120,7 +120,8 @@ export default {
       let url = "http://localhost:3000/deleteskill/"+skillName;
       axios.put(url)
       .then(response => {
-        console.log("deactived role:", skillName)
+        console.log(url)
+        console.log("deactivated role:", skillName)
         // this.getRoles()
         location.reload()
 
