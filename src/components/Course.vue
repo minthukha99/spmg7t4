@@ -34,7 +34,19 @@
               <!-- <td scope="row" data-label="courseDesc">{{ course.courseDesc }}</td>
               <td scope="row" data-label="courseName">{{ course.courseCat }}</td>
               <td scope="row" data-label="courseName">{{ course.courseType }}</td> -->
-              <td scope="row" data-label="Status">{{ course.courseStatus }}</td>
+              <!-- <td scope="row" data-label="Status">{{ course.courseStatus }}</td> -->
+
+              <td scope="row" v-if="course.courseStatus == 'Retired'" data-label="Status" class="inactive">
+                {{ course.courseStatus }}
+              </td>
+
+              <td scope="row" v-else-if="course.courseStatus == 'Pending'" data-label="Status">
+                {{ course.courseStatus }}
+              </td>
+
+              <td scope="row" v-else data-label="Status" class="active">
+                {{ course.courseStatus }}
+              </td>
             
               <!-- show in bullet point if got data, else dash -->
               <!-- <td v-if="skill.roleName =='' ">
@@ -55,12 +67,12 @@
               <!-- <td scope="row" data-label="Action 1"><a href="#">Edit</a>
               </td> -->
             
-              <td v-if="course.courseStatus == 'Active'" class="deactive">
-                <a>Deactivate</a>
+              <td v-if="course.courseStatus == 'Active'" data-label="Action 2">
+                <a class="mouseover" v-on:click="deactivateCourses(course.id)">Deactivate</a>
               </td>
 
-              <td  v-else-if="course.courseStatus == 'Retired'" class="retired">
-                <a>Activate</a>
+              <td  v-else-if="course.courseStatus == 'Retired'" data-label="Action 2">
+                <a class="mouseover" v-on:click="activateCourses(course.id)">Activate</a>
               </td>
 
               <td v-else>
@@ -96,6 +108,39 @@ export default {
   },
 
   methods: {
+
+    deactivateCourses(courseID) {
+
+      let url = "http://localhost:3000/deactivecourse/"+courseID;
+      axios.put(url)
+      .then(response => {
+        console.log("deactived course:", courseID)
+        // this.getRoles()
+        location.reload()
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+
+    },
+
+    activateCourses(courseID) {
+
+      let url = "http://localhost:3000/activatecourse/"+courseID;
+      axios.put(url)
+      .then(response => {
+        // this.getRoles()
+        location.reload()
+        console.log("activated course:", courseID)
+
+      })
+      .catch(error => {
+          console.log(error.message)
+      })
+
+    },
+
     // getCourses() {
     //   const url = "http://localhost:3000/courses";
     //   axios.get(url)
@@ -132,6 +177,7 @@ export default {
       } 
     }
   },
+
   created(){
     const url = "http://localhost:3000/courses";
     axios.get(url)
@@ -141,12 +187,12 @@ export default {
         console.log(course)
         this.coursesList.push(
           {
-            id: course.Course_ID,
-            courseCat: course.Course_Category,
-            courseDesc: course.Course_Desc,
-            courseName: course.Course_Name,
-            courseStatus: course.Course_Status,
-            courseType: course.Course_Type
+            id: course.course_ID,
+            courseCat: course.course_Category,
+            courseDesc: course.course_Desc,
+            courseName: course.course_Name,
+            courseStatus: course.course_Status,
+            courseType: course.course_Type
           }
         );
       }
@@ -274,5 +320,18 @@ a{
   width: 80%;
   
 }
+
+.inactive {
+  color: rgba(184, 56, 56, 0.77);
+}
+
+.active {
+  color: rgba(40, 190, 42, 0.77);
+}
+
+.mouseover {
+  cursor: pointer;
+}
+
 </style>
   
