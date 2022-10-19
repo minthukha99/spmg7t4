@@ -7,9 +7,9 @@
               {{ route.name }}
               </router-link>
           </template>
-          <select>
+          <select v-model="selectedRole" @change="saveRoleInSession">
             <option selected="true" disabled="disabled">Select your role</option>
-            <option v-for="role in rolesList" :key="role">{{role}}</option>
+            <option v-for="role in rolesList" :key="role" >{{role}}</option>
           </select>
       </nav>
 
@@ -35,62 +35,71 @@
 </template>
   
 <script>
-  export default {
-    name: "NavigationBar",
-    data() {
-      return {
-        fullView: true,
-        dropdownClass: "dropdown-content",
-        dropdownShown: false,
-        views: ["Learning Journey", "Skills", "Roles", "Courses"],
-        classNames: { open: false, "ml-auto": true },
-        rolesList: ['HR', 'Staff', 'Manager'],
-        roleName: ""
-      };
+export default {
+  name: "NavigationBar",
+  data() {
+    return {
+      fullView: true,
+      dropdownClass: "dropdown-content",
+      dropdownShown: false,
+      views: ["Learning Journey", "Skills", "Roles", "Courses"],
+      classNames: { open: false, "ml-auto": true },
+      rolesList: ['HR', 'Staff', 'Manager'],
+      roleName: "",
+      selectedRole: ""
+    };
+  },
+  // get value of selected role from session storage
+  mounted(){
+   this.selectedRole = sessionStorage.getItem('selectedRole')
+  },
+  methods: {
+    showButton() {
+      if (this.dropdownShown) {
+        this.dropdownShown = false;
+        this.dropdownClass = "dropdown-content";
+        this.classNames.open = false;
+      } else {
+        this.dropdownShown = true;
+        this.dropdownClass = "dropdown-content show-content";
+        this.classNames.open = true;
+      }
     },
-    methods: {
-      showButton() {
-        if (this.dropdownShown) {
-          this.dropdownShown = false;
-          this.dropdownClass = "dropdown-content";
-          this.classNames.open = false;
-        } else {
-          this.dropdownShown = true;
-          this.dropdownClass = "dropdown-content show-content";
-          this.classNames.open = true;
-        }
-      },
-    },
-    created() {
-      if (window.innerWidth < 760) {
+    saveRoleInSession() {
+      sessionStorage.setItem('selectedRole', this.selectedRole)
+      location.reload()
+    }
+  },
+  created() {
+    if (window.innerWidth < 760) {
+      this.fullView = false;
+    }
+    //   track the width on resize
+    window.addEventListener("resize", () => {
+      if (window.innerWidth > 760) {
+        //   reset it if you expand the screen
+        this.dropdownShown = false;
+        this.dropdownClass = "dropdown-content";
+        this.fullView = true;
+        this.classNames.open = false;
+      } else {
         this.fullView = false;
       }
-      //   track the width on resize
-      window.addEventListener("resize", () => {
-        if (window.innerWidth > 760) {
-          //   reset it if you expand the screen
-          this.dropdownShown = false;
-          this.dropdownClass = "dropdown-content";
-          this.fullView = true;
-          this.classNames.open = false;
-        } else {
-          this.fullView = false;
-        }
-      });
+    });
+  },
+  computed: {
+    // Current route I guess. Can use to dynamically render navbar active links
+    view() {
+      return this.$route.name;
     },
-    computed: {
-      // Current route I guess. Can use to dynamically render navbar active links
-      view() {
-        return this.$route.name;
-      },
-  
-      // return all routes from router
-      routes() {
-        return this.$router.options.routes;
-      },
+
+    // return all routes from router
+    routes() {
+      return this.$router.options.routes;
     },
-  };
-  </script>
+  },
+};
+</script>
   
 <style scoped>
 
