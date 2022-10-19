@@ -3,6 +3,7 @@ const router = express.Router()
 const roleController =  require('./controller/role')
 const skillController =  require('./controller/skill')
 const coursesController =  require('./controller/contentUpdater')
+const skillCourseController = require('./controller/skillCourse')
 //  Create route handler
 
 //Controller routes
@@ -37,6 +38,10 @@ router.get("/user/:id", coursesController.getUser);
 router.get("/userByEmail/:email", coursesController.getUserByEmail);
 router.get("/userByDept/:dept", coursesController.getUserByDept);
 router.get("/learningjourney/:id", coursesController.learningJourneyByID);
+router.get("/lj", coursesController.insertLJToDatabase);
 
+//assign skill to course
+router.post("/assignskilltocourse", skillCourseController.assignSkillToCourse)
+router.delete("/deleteskillfromcourse", skillCourseController.deleteSkillFromCourse)
 
 module.exports = router
