@@ -2,39 +2,11 @@
   <div class="home-page-wrapper">
     <!--top header-->
     <header class="header">
-      <!-- <nav class="links text-white" v-if="fullView">
-        <template :key="route.path" v-for="route in routes">
-          <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
-            {{ route.name }}
-          </router-link>
-        </template>
-      </nav> -->
-
-      <!-- If on small screen -->
-      <!-- <nav class="nav small" v-else>
-        <div id="nav-icon3" :class="classNames" @click="showButton">
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-
-        <div id="home-dropdown-small" :class="dropdownClass" @click="showButton">
-          <template :key="route.path" v-for="route in routes">
-            <router-link
-              v-if="route.meta.visible"
-              :to="route.path.toLowerCase()"
-            >
-              {{ route.name }}
-            </router-link>
-          </template>
-        </div>
-      </nav> -->
       <div class="header-middle-text d-flex">
         <h1><i>Learning Journey Management System</i></h1>
         <p>This website is only meant for internal use ⚠️ </p>
       </div>
-      <section class="about-wrapper container">
+      <section class="header-middle-text container">
         <div class="text-center">
           <h2 class="mb-1">About Us</h2>
           <p>
@@ -123,7 +95,7 @@
   }
 
   .header-middle-text {
-    width: 75%;
+    width: 80%;
     flex-direction: column;
     align-items: flex-start;
   }
@@ -236,10 +208,6 @@
     left: 50%;
   }
 
-  .about-wrapper {
-      width: 75%;
-    }
-
   @media screen and (max-width: 230px) {
     #home-dropdown-small {
       width: 150px;
@@ -247,33 +215,9 @@
 
   }
 
-  /* @media screen and (max-width: 468px) {
-    h1 {
-      font-size: 40px;
-    }
-
-    .about-wrapper {
-      width: 75%;
-    }
-  }
-
-  @media screen and (max-width: 768px) {
-    h1 {
-      font-size: 40px;
-    }
-
-    .about-wrapper {
-      width: 75%;
-    }
-  } */
-
   @media screen and (max-width: 1280px) {
     h1 {
       font-size: 40px;
-    }
-
-    .about-wrapper {
-      width: 75%;
     }
   }
 

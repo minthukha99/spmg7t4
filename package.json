@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "updateData" : "nodemon ./Backend/updateData.js",
     "run": "nodemon ./Backend/server.js"
   },
   "dependencies": {
@@ -18,6 +19,7 @@
     "express": "^4.18.1",
     "mongoose": "^6.6.3",
     "mongoose-sequence": "^5.3.1",
+    "mysql2": "^2.3.3",
     "nodemon": "^2.0.20",
     "save": "^2.9.0",
     "vue": "^3.2.13",
