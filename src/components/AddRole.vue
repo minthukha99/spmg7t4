@@ -41,7 +41,7 @@ export default {
 
     data() {
     return{
-        skillsList:[],
+        skillsList:[], //list of all skills 
         selectedSkills: [],
         roleName: ""
     }

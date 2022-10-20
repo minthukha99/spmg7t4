@@ -9,7 +9,7 @@
           </div>
           <div class="selectBox">
             <select v-model="selectedSkill">
-              <option selected="true" disabled="disabled">Select an option</option>
+              <option selected="true"></option>
               <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
             </select>
             <p>Currently selected: {{ selectedSkill }}</p>

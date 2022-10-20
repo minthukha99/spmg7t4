@@ -32,25 +32,21 @@
                   <td scope="col">
                     {{skill.skillName}}
                   </td>
+                  <td>
+                    <select v-model="courseSelected">
+                      <option v-for="eachCourse in skill.course" :key="eachCourse">
+                        {{ eachCourse }}
+                      </option>
+                    </select>
+                  </td>
                   <td scope="col"> 
-                    <!-- <ul scope="row" v-for="x in coursesNeededforSkill" :key="x">
-                      <li>{{ x }}</li>
-                    </ul> -->
-                    <!-- test
-                    {{getCourseForChosenSkill(skill.skillName)}} -->
-                    <!-- <ul scope="row" v-for="x in getCourseForChosenSkill(skill.skillName)" :key="x">
-                      <li>{{ x }}</li>
-                    </ul> -->
-                    <!-- <ul scope="row" v-for="x in coursesNeededforSkill" :key="x">
-                      <li>{{ x }}</li>
-                    </ul> -->
                   </td>
                 </tr>
               </tbody>
 
             </table>
 
-            <button class="button">
+            <button class="button" @change="addToLearningJourney">
               Add to Learning Journey
             </button>
           </div>
@@ -97,21 +93,22 @@ export default {
   name: 'Learning Journey',
   mounted() {
     this.getRoles()
-    // this.getCourseForChosenSkill("skill5")
+
   },
 
   data() {
     return {
-      rolesList: [],
-      roleName: "",
-      roleSelected: "",
-      skillsNeededForRole: [],
-      coursesNeededforSkill: []
+      rolesList: [], // a list to store all the possible roles in the company, for the user to choose to work on LJ
+      roleSelected: "", // store value of role user selected
+      skillsNeededForRole: [], // to retrieve and display skills needed for user chosen role
+      coursesNeededforSkill: [], // to retrieve and display the courses needed for the skills needed for user chosen role
+      courseSelected : [] // a list containing all the courses user selected
     }
   },
 
   methods: {
     getRoles() {
+      // retrieve all the roles in the company
       const url = "http://localhost:3000/roles";
       axios.get(url)
         .then(response => {
@@ -127,79 +124,62 @@ export default {
               }
             );
           }
-          // console.log("rolesList=", this.rolesList)
         })
         .catch(error => {
           console.log(error.message)
         })
     },
     getSkillsForChosenRole() {
-      // console.log(this.roleSelected)
+      // get the skills required for a role
       const url = "http://localhost:3000/role/" + this.roleSelected;
-      // console.log('URL is', url)
       axios.get(url)
         .then(response => {
           var roleData = response.data
-          // console.log("roleData=", roleData.skillData)
+          this.skillsNeededForRole = []
           for (var skill of roleData.skillData) {
+            this.coursesNeededforSkill = []
+            this.getCourseForChosenSkill(skill.skillName)            
             this.skillsNeededForRole.push(
               {
                 skillDetail: skill.skillDetail,
                 skillId: skill.skillID,
                 skillName: skill.skillName,
+                course: this.coursesNeededforSkill
               }
             );
           }
-          // console.log(this.skillsNeededForRole)
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+      
+    },
+    getCourseForChosenSkill(id) {
+      // for a given skill id, add the course required for the skill into the list this.coursesNeededforSkill 
+      const url = "http://localhost:3000/coursebyskill/" + id;
+      axios.get(url)
+        .then(response => {
+          for (var course of response.data) {
+            this.coursesNeededforSkill.push(course.course_Name)
+          }
         })
         .catch(error => {
           console.log(error.message)
         })
     },
-    // getCourseForChosenSkill(id) { 
-    //   const url = "http://localhost:3000/coursebyskill/" + id;
-    //   var myList = []
-    //   axios.get(url)
-    //     .then(response => {
-    //       // console.log("RESPONSE FROM GETCOURSEFORCHOSENSKILL", response.data)
-    //       for (var course of response.data) {
-    //         // this.coursesNeededforSkill.push(course.course_Name)
-    //         myList.push(course.course_Name)
-    //       }
-    //       // this.coursesNeededforSkill = []
-    //       // for (var course of response.data) {
-    //       //   this.coursesNeededforSkill.push(course.course_Name)
-    //       // }
-    //       //       courseCategory: course.course_Category,
-    //       //       courseDesc: course.course_Desc,
-    //       //       courseId: course.course_ID,
-    //       //       courseName: course.course_Name,
-    //       //       courseStatus: course.course_Status,
-    //       //       courseType: course.course_Type
-    //       //     }
-    //       //   );
-    //       // }
-    //     })
-    //     .catch(error => {
-    //       console.log(error.message)
-    //     })
-    //   console.log("myList>>>>>",myList)
-    //   return (myList)
-    // }
-    // getCourseForChosenSkill(id) {
-    //   this.coursesNeededforSkill = []
-    //   const url = "http://localhost:3000/coursebyskill/" + id;
-    //   axios.get(url)
-    //     .then(response => {
-    //       for (var course of response.data) {
-    //         this.coursesNeededforSkill.push(course.course_Name)
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error.message)
-    //     })
-    //   console.log(this.coursesNeededforSkill)
-    // }
+    addToLearningJourney() {
+      // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
+      // axios.get(url)
+      //   .then(response => {
+      //     for (var course of response.data) {
+      //       this.coursesNeededforSkill.push(course.course_Name)
+      //     }
+      //   })
+      //   .catch(error => {
+      //     console.log(error.message)
+      //   })
+      
+    }
   }
 }
 </script>
