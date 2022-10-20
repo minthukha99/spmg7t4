@@ -25,7 +25,8 @@
                     <router-link to="/Skills" class="special">Cancel</router-link>
                 </button> 
                 <!-- <button @click='addSkillButton()' type="submit" value="Save" class="special"> -->
-                <button @click='addSkillButton()' class="special">
+                <button @click='addSkillButton()'  class="special">
+                <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
                     Save
                 </button>  
                
@@ -75,19 +76,17 @@ export default {
 
         addSkillButton() {
             console.log(this.skillName)
+            this.errorMessage = ""
             if (this.skillName == "") {
+                
                 console.log("Empty skill name")
                 this.errorMessage += "Skill name is required!"
             }
-            // if at least 1 role is needed for the skill 
-            // if (this.selectedRoles == "") {
-            //     console.log("Empty roles selected")
-            //     this.errorMessage += "Role  is required!"
-            // }
 
             else {
                 console.log("createSkill")
                 this.createSkill()
+                this.$router.replace({ path: '/skills'})
                 // this.$router.push({ path: '/home' });
                 // $router.go(-2)
             }

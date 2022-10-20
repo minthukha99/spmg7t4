@@ -33,7 +33,7 @@
 import axios from "axios";
 export default {
 
-    name: 'updateSkill/:id',
+    name: 'UpdateSkill/:id',
 
     mounted() {
         this.getRoles()
