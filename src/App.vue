@@ -95,16 +95,28 @@ export default {
   input {
     padding: 20px;
     border: 1px solid #ccc;
+    display: inline-block;
+    background: none;
+    /* width: 100%; */
   }
 
   select {
-    width: 80%;
-    padding: 12px 12px;
-    margin: 8px 0;
+    padding: 20px;
+    width: 100%;
     display: inline-block;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+    background: none;
+    margin-bottom: 10px;
+  }
+
+  .selectBox{
+      display:relative;
+      background-color: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      max-height: 200px;
+      width: 100%;
+      overflow: scroll;
   }
   
   table {

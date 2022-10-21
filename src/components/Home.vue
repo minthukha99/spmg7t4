@@ -100,24 +100,6 @@
     overflow-x: hidden;
   }
 
-  .header {
-    /* margin-top: 20px; */
-    padding: 0.5rem;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    max-height: 100vh;
-    position: relative;
-  }
-
-  .header-middle-text {
-    width: 80%;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
   #nav-icon3 {
     width: 45px;
     height: 10px;
@@ -237,19 +219,6 @@
     h1 {
       font-size: 40px;
     }
-  }
-
-  select {
-    padding: 20px;
-    color: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 10px;
-    background: #f8f8f8;
-    width: 50%;
-  }
-
-  .selectBox {
-    margin-top: 10px;
   }
 
 </style>

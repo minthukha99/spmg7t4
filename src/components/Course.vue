@@ -1,24 +1,20 @@
 <template>
   <div class="header">
     <div class="header-middle-text">
-      <div class="row">
-        <div class="col-6">
-          <h1>Courses</h1>
-        </div>
-        <div class="col-6">
-          <div class="search-wrapper">
-        <input type="text" v-model="searchValue" placeholder="Search Course Name"/>
-      </div>
-        </div>
-      </div>
-      
-      <div class="selectBox">
-        <select v-model="selectedSkill">
-          <option selected="true"></option>
-          <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
-        </select>
-        <p>Currently selected: {{ selectedSkill }}</p>
-      </div> 
+      <h1>Courses</h1>
+      <table>
+        <tr>
+          <td>
+            <input type="text" v-model="searchValue" placeholder="Search Course Name"/>
+          </td>
+          <td>
+            <select v-model="selectedSkill">
+              <option selected="true"></option>
+              <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
+            </select>
+          </td>
+        </tr>
+      </table>
       <div>
         <table>
           <thead>
@@ -287,38 +283,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 a {
   color: blue;
   text-decoration: underline;
 }
-
-.search-wrapper {
-  position: relative;
-  margin-bottom: 10px;
-}
-.search-wrapper input {
-  padding: 20px;
-  color: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #f8f8f8;
-  width: 80%;
-}
-
 .mouseover {
   cursor: pointer;
-}
-
-select {
-  padding: 20px;
-  color: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #f8f8f8;
-  width: 50%;
-}
-
-.row {
-  display: block;
 }
 </style>
   

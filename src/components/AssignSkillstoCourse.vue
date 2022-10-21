@@ -24,12 +24,11 @@
                 <br>
 
                 <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
-                <div class="selectBox">
-                    <select multiple v-model="selectedSkills">
-                        <option selected="true" disabled="disabled">Select an option</option>
-                        <option v-for="skill in skillsList" :key="skill.id">>{{skill.skillName}}</option>
-                    </select>
-                </div>
+                <br>
+                <select multiple v-model="selectedSkills">
+                    <option selected="true" disabled="disabled">Select an option</option>
+                    <option v-for="skill in skillsList" :key="skill.id">>{{skill.skillName}}</option>
+                </select>
                 <br>
                 <br>
                 <!-- <button type="button">

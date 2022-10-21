@@ -124,49 +124,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-/* input[type=text],
-select {
-    width: 80%;
-    padding: 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-} */
-
-
-/* input[type=submit] {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
-} */
-
-.selectBox {
-    margin-top: 10px;
-    overflow: scroll;
-    max-height: 200px;
-}
-
 .special {
     color:white; 
     text-decoration: none;
   }
-
-
-.selectBox{
-    display:relative;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
 
 .errorMessage{
   color:red

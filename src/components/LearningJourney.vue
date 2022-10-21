@@ -9,23 +9,21 @@
           <p>
             Select a role that you desire and add it to your current list of learning journeys to track your progress.
           </p>
-          <div class="selectBox" @change="getSkillsForChosenRole">
+          <div @change="getSkillsForChosenRole">
             <select v-model="roleSelected">
               <option selected="true" disabled="disabled">Select a role</option>
               <option v-for="role in rolesList" :key="role.id" >{{role.roleName}}</option>
             </select>
-            <br>
-            <br>
-            
+          </div>
+          <div>
             <!-- <table v-if="roleSelected != ''"> -->
               <table >
-              
-              <thead>
-                <tr>
-                  <th scope="col">Skill required</th>
-                  <th scope="col">Courses </th>
-                </tr>
-              </thead>
+                <thead>
+                  <tr>
+                    <th scope="col">Skill required</th>
+                    <th scope="col">Courses </th>
+                  </tr>
+                </thead>
 
               <tbody>
                 <tr scope="row" v-for="skill in skillsNeededForRole" :key="skill">
@@ -799,19 +797,6 @@ export default {
     line-height: 1.5;
     margin-bottom: 0.5rem;
   }
-
-  select {
-    padding: 20px;
-    color: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background: #f8f8f8;
-    width: 50%;
-  }
-
-  .selectBox {
-    margin-top: 10px;
-  }
-
   .special {
     color:white; 
     text-decoration: none;

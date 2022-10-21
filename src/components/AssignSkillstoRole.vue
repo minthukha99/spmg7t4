@@ -10,20 +10,13 @@
                     <li>{{ skill }} </li>
                 </ul>
                 <br>
-                <br>
-            
-                <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
-                <div class="selectBox">
-                    <select multiple v-model="selectedSkills">
-                        <option selected="true" disabled="disabled">Select an option</option>
-                        <option v-for="skill in skillsList" :key="skill.id">>{{skill.skillName}}</option>
-                    </select>
-                </div>
+                Skills to be assigned:
+                <select multiple v-model="selectedSkills">
+                    <option selected="true" disabled="disabled">Select an option</option>
+                    <option v-for="skill in skillsList" :key="skill.id">>{{skill.skillName}}</option>
+                </select>
                 <br>
                 <br>
-                <!-- <button type="button">
-                    <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
-                </button> -->
                 <button value="Cancel" class="special">
                     <router-link to="/Roles" class="special">Cancel</router-link>
                 </button>
@@ -134,15 +127,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-select {
-    width: 80%;
-    padding: 12px 12px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
 .special {
     color: white;
     text-decoration: none;

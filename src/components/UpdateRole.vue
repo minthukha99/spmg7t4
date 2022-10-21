@@ -8,13 +8,11 @@
                 <input v-model="newRoleName" id="roleName" name="roleName"><br>
                 <br>
                 <label for="skillsNeeded" class="multiselect" >Skills required</label>
-                <div class="selectBox">
-                    <select multiple v-model="selectedSkills">
-                        <option selected="true" disabled="disabled">Select an option</option>
-                        <option v-for="skill in skillsList" :key="skill.id">{{skill.skillName}}</option>       
-                    </select>
-                </div>
                 <br>
+                <select multiple v-model="selectedSkills">
+                    <option selected="true" disabled="disabled">Select an option</option>
+                    <option v-for="skill in skillsList" :key="skill.id">{{skill.skillName}}</option>       
+                </select>
                 <br>
                 <button type="button">
                     <router-link to="/AddSkill" class="special">+ Add Skill</router-link>

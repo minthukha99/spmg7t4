@@ -154,12 +154,4 @@ input[type=submit] {
 input:focus::placeholder {
   color: transparent;
 }
-.selectBox{
-    display:relative;
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
-
-
 </style>
