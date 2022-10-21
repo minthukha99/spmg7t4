@@ -4,22 +4,17 @@
     <header class="header">
       <div class="header-middle-text d-flex">
         <h1><i>Learning Journey Management System</i></h1>
-        <p>This website is only meant for internal use ⚠️ </p>
       </div>
-      <section class="header-middle-text container">
-        <div class="text-center">
-          <h2 class="mb-1">About Us</h2>
+      <section class="header-middle-text container"><div class="text-center">
+          <h5 class="mb-1">Read the following instructions</h5>
           <p>
-            We are a group of students applying Scrum and Agile methodologies while building this Learning Journey Management System, LJMS for short. This system helps to assists our target audiences (Staff, HR personnel, Manager) to better manage one's career progression in the company.
+            Select your <b>role</b> before venturing to the other parts of the website
           </p>
         </div>
-        <br>
-        <h3> Select Role:
         <select v-model="selectedRole" @change="saveRoleInSession">
           <option selected="true" disabled="disabled">Select your role</option>
           <option v-for="role in rolesList" :key="role">{{role}}</option>
         </select>
-        </h3>
       </section>
     </header>
   </div>
@@ -242,6 +237,18 @@
     h1 {
       font-size: 40px;
     }
+  }
+
+  select {
+    padding: 20px;
+    color: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: #f8f8f8;
+    width: 50%;
+  }
+
+  .selectBox {
+    margin-top: 10px;
   }
 
 </style>
