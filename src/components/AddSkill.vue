@@ -6,12 +6,17 @@
                 <label for="skillName">Skill Name</label><br>
                 <input v-model="skillName" id="skillName" name="skillName"><br>
                 <br>
-                <label for="skillsNeeded" class="multiselect" >Roles that require skill</label>
+                <label for="skillDetail">Skill Details</label><br>
+                <input v-model="skillDetail" placeholder="No description" onfocus="this.placeholder=''" onblur="this.placeholder='No Description'">
+                <br>
+                <br>
+                <label for="rolesNeeded" class="multiselect" >Roles that require skill</label>
                 <div class="selectBox">
-                    <select multiple v-model="selectedRoles">
-                        <option selected="true" disabled="disabled">Select an option (if any)</option>
-                        <option v-for="role in rolesList" :key="role.id">>{{role.roleName}}</option>       
-                    </select>
+                    <option selected="true" disabled="disabled">Select an option (if any)</option>    
+                    <div v-for="role in rolesList" :key="role.id">
+                        <input type="checkbox" :id="role.id" :value="role.roleName" v-model="selectedRoles">
+                        <label :for="role.id">{{role.roleName}}</label>
+                    </div>
                 </div>
                 <br>
                 <br>
@@ -38,7 +43,8 @@ export default {
     return {
       rolesList: [],
       selectedRoles: [],
-      skillName: ""
+      skillName: "",
+      skillDetail: ""
     }
   },
     methods: {
@@ -62,6 +68,7 @@ export default {
             })
             .catch(error => {
                 console.log(error.message)
+                
             })
         },
         createSkill(){
@@ -70,6 +77,7 @@ export default {
                 skillName: this.skillName,
                 roleName: this.selectedRoles,
                 status: true,
+                skillDetail: this.skillDetail
                 // skillDetail: ,
                 // courses: []
             })
@@ -150,4 +158,13 @@ button {
     color:white; 
     text-decoration: none;
   }
+
+
+.selectBox{
+
+    display:relative;
+    background-color: white;
+    outline-style: solid;
+}
+
 </style>
