@@ -6,9 +6,9 @@
           <!-- this part is for users to add new learning journeys in addition to their existing one, -->
           <!-- submit button doesnt work yet lol -->
           <h1><i>Add a Learning Journey</i></h1>
-          <h5>
+          <p>
             Select a role that you desire and add it to your current list of learning journeys to track your progress.
-          </h5>
+          </p>
           <div class="selectBox" @change="getSkillsForChosenRole">
             <select v-model="roleSelected">
               <option selected="true" disabled="disabled">Select a role</option>
@@ -53,8 +53,8 @@
         </div>
         <div class="section">
           <h1><i>List of Learning Journeys Added</i></h1>
-          <h5>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
-          </h5>
+          <p>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
+          </p>
           <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
           <div class="card">
             <!-- <div class="card__image card__image--fence"></div> -->
@@ -846,68 +846,68 @@ header {
     margin-top: 10px;
   }
 
+  table {
+    border-collapse: collapse;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  table tr {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: .35em;
+  }
+
+  table th,
+  table td {
+    padding: .625em;
+    text-align: center;
+  }
+  @media screen and (max-width: 780px) {
     table {
-      border-collapse: collapse;
-      margin: 0;
+      border: 0;
+    }
+
+    table thead {
+      border: none;
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
       padding: 0;
-      width: 100%;
-      table-layout: fixed;
+      position: absolute;
+      width: 1px;
     }
-  
+
     table tr {
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      padding: .35em;
+      border-bottom: 3px solid #ddd;
+      display: block;
+      margin-bottom: .625em;
     }
-  
-    table th,
+
     table td {
-      padding: .625em;
-      text-align: center;
+      border-bottom: 1px solid #ddd;
+      display: block;
+      font-size: .8em;
+      text-align: right;
     }
-        @media screen and (max-width: 780px) {
-          table {
-            border: 0;
-          }
-    
-          table thead {
-            border: none;
-            clip: rect(0 0 0 0);
-            height: 1px;
-            margin: -1px;
-            overflow: hidden;
-            padding: 0;
-            position: absolute;
-            width: 1px;
-          }
-    
-          table tr {
-            border-bottom: 3px solid #ddd;
-            display: block;
-            margin-bottom: .625em;
-          }
-    
-          table td {
-            border-bottom: 1px solid #ddd;
-            display: block;
-            font-size: .8em;
-            text-align: right;
-          }
-    
-          table td::before {
-            /*
-          * aria-label has no advantage, it won't be read inside a table
-          content: attr(aria-label);
-          */
-            content: attr(data-label);
-            float: left;
-            font-weight: bold;
-            text-transform: uppercase;
-          }
-    
-          table td:last-child {
-            border-bottom: 0;
-          }
-        }
+
+    table td::before {
+      /*
+    * aria-label has no advantage, it won't be read inside a table
+    content: attr(aria-label);
+    */
+      content: attr(data-label);
+      float: left;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    table td:last-child {
+      border-bottom: 0;
+    }
+  }
 </style>
   
