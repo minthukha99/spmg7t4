@@ -161,14 +161,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-  .inactive {
-    color: rgba(184, 56, 56, 0.77);
-  }
-
-  .active {
-    color: rgba(40, 190, 42, 0.77);
-  }
-
   a {
     color: blue;
     text-decoration: underline;

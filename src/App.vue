@@ -171,4 +171,12 @@ export default {
       border-bottom: 0;
     }
   }
+
+  .inactive {
+    color: rgba(184, 56, 56, 0.77);
+  }
+
+  .active {
+    color: rgba(40, 190, 42, 0.77);
+  }
 </style>

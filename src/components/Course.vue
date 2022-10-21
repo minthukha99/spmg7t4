@@ -1,10 +1,17 @@
 <template>
   <div class="header">
     <div class="header-middle-text">
-      <h1>Courses</h1>
-      <div class="search-wrapper">
+      <div class="row">
+        <div class="col-6">
+          <h1>Courses</h1>
+        </div>
+        <div class="col-6">
+          <div class="search-wrapper">
         <input type="text" v-model="searchValue" placeholder="Search Course Name"/>
       </div>
+        </div>
+      </div>
+      
       <div class="selectBox">
         <select v-model="selectedSkill">
           <option selected="true"></option>
@@ -296,14 +303,6 @@ a {
   border: 1px solid rgba(0, 0, 0, 0.12);
   background: #f8f8f8;
   width: 80%;
-  
-}
-.inactive {
-  color: rgba(184, 56, 56, 0.77);
-}
-
-.active {
-  color: rgba(40, 190, 42, 0.77);
 }
 
 .mouseover {
@@ -318,10 +317,8 @@ select {
   width: 50%;
 }
 
-.selectBox {
-  margin-top: 10px;
-  margin-bottom: 10px;
+.row {
+  display: block;
 }
-
 </style>
   
