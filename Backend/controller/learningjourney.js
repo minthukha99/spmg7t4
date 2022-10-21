@@ -7,7 +7,7 @@ const createLJ = async (req, res) => {
     const LJInfo = req.body;
     const result = await db.query(
         `INSERT INTO spm.LearningJourney (roleID,staff_ID) values
-        ('select roleID from spm.role where roleName = '${LJInfo.roleName}'',
+        ((select roleID from spm.LJMSRole where roleName = '${LJInfo.roleName}'),
         '${LJInfo.staff_ID}')
         `
 
@@ -103,5 +103,4 @@ const updateCourseFromLJ = async (req,res) => {
 }
 
 module.exports = { createLJ, GetLjbyStaffID, deleteLj, addCourseToLJ, updateCourseFromLJ}
-
 
