@@ -1,7 +1,6 @@
 <template>
     <div class="header">
         <div class="header-middle-text">
-            <h1>UPDATE FUNCTION NOT WORKING YET AS NO SKILL TABLE COLUMN UNDER COURSES </h1>
             <h1>
                 Assign Skills to <u> {{ courseSelected.courseName }}</u>
             </h1>
@@ -17,7 +16,7 @@
                 that.courseSelected["courseType"] = response.data.Course_Type -->
                 <p> <strong>Course Code: </strong> {{ courseSelected.courseId }} </p>
                 <p> <strong>Course Name: </strong>  {{ courseSelected.courseName }}</p>
-                <p> <strong>Course Description: </strong> Course Description: {{ courseSelected.courseDesc }}</p>
+                <p> <strong>Course Description: </strong> {{ courseSelected.courseDesc }}</p>
                 <p> <strong>Course Status: </strong>  {{ courseSelected.courseStatus }}</p>
                 <p> <strong>Course Type: </strong> {{ courseSelected.courseType }}</p>
                 <p> <strong> Skills assigned: </strong></p>
@@ -115,13 +114,13 @@ export default {
             // console.log(url)
             axios.get(url)
                 .then(response => {
+                    console.log('Response:' ,response)
                     that.role = response.data
-                    console.log(response.data)
-                    that.courseSelected["courseId"] = response.data.Course_ID
-                    that.courseSelected["courseName"] = response.data.Course_Name
-                    that.courseSelected["courseDesc"] = response.data.Course_Desc
-                    that.courseSelected["courseStatus"] = response.data.Course_Status
-                    that.courseSelected["courseType"] = response.data.Course_Type
+                    that.courseSelected["courseId"] = response.data.course_ID
+                    that.courseSelected["courseName"] = response.data.course_Name
+                    that.courseSelected["courseDesc"] = response.data.course_Desc
+                    that.courseSelected["courseStatus"] = response.data.course_Status
+                    that.courseSelected["courseType"] = response.data.course_Type
                     // console.log("roleName:" + response.data[0].roleName)
                     // console.log("skills:" + response.data[0].skillName)
                     // that.role["roleName"] = response.data[0].roleName
@@ -130,6 +129,7 @@ export default {
                 .catch(error => {
                     console.log(error.message)
                 })
+                // console.log('HERE',this.courseSelected)
             
         },
 

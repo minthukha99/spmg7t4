@@ -18,12 +18,20 @@
                         <label :for="role.id">{{role.roleName}}</label>
                     </div>
                 </div>
-                <br>
-                <br>
+                <div v-if="errorMessage" class= "errorMessage"> 
+                    {{ errorMessage }}
+                </div>
+                <div v-else>
+                    <br>
+                    <br>
+                </div>
+                
                 <button value="Cancel" class="special">
                     <router-link to="/Skills" class="special">Cancel</router-link>
                 </button> 
-                <button @click='createSkill(); $router.go(-1)' type="submit" value="Save" class="special">
+                <!-- <button @click='addSkillButton()' type="submit" value="Save" class="special"> -->
+                <button @click='addSkillButton()'  class="special">
+                <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
                     Save
                 </button>  
                
@@ -35,7 +43,7 @@
 <script>
 import axios from "axios";
 export default {
-  name: 'Roles',
+  name: 'AddSkill',
   mounted() {
     this.getRoles()
   },
@@ -45,6 +53,7 @@ export default {
       selectedRoles: [],
       skillName: "",
       skillDetail: ""
+      errorMessage: ""
     }
   },
     methods: {
@@ -71,6 +80,25 @@ export default {
                 
             })
         },
+
+        addSkillButton() {
+            console.log(this.skillName)
+            this.errorMessage = ""
+            if (this.skillName == "") {
+                
+                console.log("Empty skill name")
+                this.errorMessage += "Skill name is required!"
+            }
+
+            else {
+                console.log("createSkill")
+                this.createSkill()
+                this.$router.replace({ path: '/skills'})
+                // this.$router.push({ path: '/home' });
+                // $router.go(-2)
+            }
+        },
+
         createSkill(){
             let url = "http://localhost:3000/skill";
             axios.post(url, {
@@ -97,8 +125,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
 input[type=text],
 select {
     width: 80%;
@@ -167,4 +193,7 @@ button {
     outline-style: solid;
 }
 
+.errorMessage{
+  color:red
+}
 </style>

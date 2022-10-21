@@ -6,14 +6,14 @@
           <h1>Roles</h1>
         </div>
         <div class="col">
-        <div class="d-flex">
-          <button type="button" style="float:right">
-            <router-link to="/AddRole" class="special">+ Add Role</router-link>
-          </button>
+          <div class="d-flex">
+            <button type="button" style="float:right">
+              <router-link to="/AddRole" class="special">+ Add Role</router-link>
+            </button>
+          </div>
         </div>
       </div>
-      </div>
-      
+
       <div>
         <table>
           <thead>
@@ -21,10 +21,10 @@
               <th scope="col">Index</th>
               <th scope="col">Name</th>
               <th scope="col">Skills</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action 1</th>
-              <th scope="col">Action 2</th>
-              <th scope="col">Action 3</th>
+              <th scope="col" v-if="selectedRole=='HR'">Action 1</th>
+              <th scope="col" v-if="selectedRole=='HR'">Action 2</th>
+              <!-- <th scope="col" v-if="selectedRole=='HR'">Action 3</th> -->
+              <th scope="col" v-if="selectedRole=='HR'">Status</th>
             </tr>
           </thead>
 
@@ -43,27 +43,25 @@
                 </ul>
               </td>
 
-              
-              <td v-if="role.status == false " class="inactive" data-label="Status">
-                Inactive
-              </td>
-              <td v-else class="active" data-label="Status">
-                Active
-              </td>
+              <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
 
-              <td>
+              <td v-if="selectedRole=='HR' ">
                 <router-link :to="`/UpdateRole/${role.roleName}`">Edit</router-link>
               </td>
 
-              <td v-if="role.status ==false" >
+              <td v-if="role.status ==false && selectedRole=='HR'">
                 <a class="mouseover" v-on:click="activateRoles(role.roleName)">Activate</a>
               </td>
-
-              <td v-else >
+              <td v-else-if="role.status == true && selectedRole=='HR'">
                 <a class="mouseover" v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
               </td>
 
-              <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td>
+              <td v-if="role.status == false && selectedRole=='HR' " class="inactive" data-label="Status">
+                Inactive
+              </td>
+              <td v-else-if="role.status == true && selectedRole=='HR'" class="active" data-label="Status">
+                Active
+              </td>
 
               <!-- <td scope="row" data-label="Action 4">
                 <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
@@ -91,24 +89,26 @@ export default {
 
   data() {
     return {
-      rolesList: []
+      rolesList: [],
+      selectedRole: ""
     }
   },
 
   methods: {
     getRoles() {
+      this.selectedRole = sessionStorage.getItem('selectedRole') // get role saved in session storage
       const url = "http://localhost:3000/roles";
       axios.get(url)
         .then(response => {
           var roleData = response.data
           console.log("roleData=", roleData)
           for (var role of roleData) {
-          this.rolesList.push(
+            this.rolesList.push(
               {
-              id: role._id,
-              roleName: role.roleName,
-              skillName: role.skillName,
-              status: role.status
+                id: role._id,
+                roleName: role.roleName,
+                skillName: role.skillName,
+                status: role.status
               }
             );
           }
@@ -121,33 +121,33 @@ export default {
 
     deactivateRoles(roleName) {
 
-      let url = "http://localhost:3000/deleterole/"+roleName;
+      let url = "http://localhost:3000/deleterole/" + roleName;
       axios.put(url)
-      .then(response => {
-        console.log("deactived role:", roleName)
-        // this.getRoles()
-        location.reload()
+        .then(response => {
+          console.log("deactived role:", roleName)
+          // this.getRoles()
+          location.reload()
 
-      })
-      .catch(error => {
+        })
+        .catch(error => {
           console.log(error.message)
-      })
+        })
 
     },
 
     activateRoles(roleName) {
 
-      let url = "http://localhost:3000/activaterole/"+roleName;
+      let url = "http://localhost:3000/activaterole/" + roleName;
       axios.put(url)
-      .then(response => {
-        // this.getRoles()
-        location.reload()
-        console.log("activated role:", roleName)
+        .then(response => {
+          // this.getRoles()
+          location.reload()
+          console.log("activated role:", roleName)
 
-      })
-      .catch(error => {
+        })
+        .catch(error => {
           console.log(error.message)
-      })
+        })
 
     }
 
@@ -199,7 +199,7 @@ table td {
   word-wrap: break-word;
 }
 
-.mouseover{
+.mouseover {
   cursor: pointer;
 }
 
@@ -264,19 +264,20 @@ button {
 
 .inactive {
   color: rgba(184, 56, 56, 0.77);
-  
+
 }
-.active{
+
+.active {
   color: rgba(40, 190, 42, 0.77);
 }
 
-a{
+a {
   color: blue;
   text-decoration: underline;
 }
 
 .special {
-    color:white; 
-    text-decoration: none;
-  }
+  color: white;
+  text-decoration: none;
+}
 </style>
