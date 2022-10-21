@@ -6,13 +6,26 @@
                 <label for="roleName">Name of the Role</label><br>
                 <input v-model="roleName" id="roleName" name="roleName"><br>
                 <br>
+                <label for="roleDetail">Role Details</label><br>
+                <input v-model="roleDetail" placeholder="No description" onfocus="this.placeholder=''" onblur="this.placeholder='No Description'">
+                <br>
+                <br>
                 <label for="skillsNeeded" class="multiselect" >Skills required</label>
                 <div class="selectBox">
-                    <select multiple v-model="selectedSkills">
+                    <!-- <select multiple v-model="selectedSkills"> -->
+                        
                         <option selected="true" disabled="disabled">Select an option</option>
-                        <option v-for="skill in skillsList" :key="skill.id">{{skill.skillName}}</option>       
-                    </select>
+                        <div v-for="skill in skillsList" :key="skill.id">
+                            <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills">
+                            <label :for="skill.id">{{skill.skillName}}</label>
+                        </div>  
+                    <!-- </select> -->
                 </div>
+
+        <li v-for="(option, index) in options" :key="index">
+          <input type="checkbox" :id="index" :value="option.value" v-model="selected">
+          <label :for="index">{{ option.text }}</label>
+        </li>
                 <br>
                 <br>
                 <button type="button">
@@ -43,7 +56,8 @@ export default {
     return{
         skillsList:[], //list of all skills 
         selectedSkills: [],
-        roleName: ""
+        roleName: "",
+        roleDetail: ""
     }
     },
 
@@ -59,7 +73,7 @@ export default {
 
                         this.skillsList.push(
                         {
-                            id: skill._id,
+                            id: skill.id,
                             roleName: skill.roleName,
                             skillName: skill.skillName,
                             status: skill.status
@@ -79,7 +93,8 @@ export default {
             let url = "http://localhost:3000/role";
             axios.post(url, {
                 roleName: this.roleName,
-                skillName: this.selectedSkills
+                skillName: this.selectedSkills,
+                roleDetail: this.roleDetail
             })
 
             .then(response => {
@@ -166,5 +181,17 @@ button {
     color:white; 
     text-decoration: none;
 }
+
+input:focus::placeholder {
+  color: transparent;
+}
+
+.selectBox{
+
+    display:relative;
+    background-color: white;
+    outline-style: solid;
+}
+
 
 </style>
