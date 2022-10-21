@@ -13,6 +13,13 @@
             We are a group of students applying Scrum and Agile methodologies while building this Learning Journey Management System, LJMS for short. This system helps to assists our target audiences (Staff, HR personnel, Manager) to better manage one's career progression in the company.
           </p>
         </div>
+        <br>
+        <h3> Select Role:
+        <select v-model="selectedRole" @change="saveRoleInSession">
+          <option selected="true" disabled="disabled">Select your role</option>
+          <option v-for="role in rolesList" :key="role">{{role}}</option>
+        </select>
+        </h3>
       </section>
     </header>
   </div>
@@ -24,7 +31,23 @@
   import NavigationBar from "@/components/NavigationBar.vue";
   
   export default {
-    name: "Home",
+  name: "Home",
+  data() {
+    return {
+      selectedRole: "",
+      rolesList: ['HR', 'Staff', 'Manager', 'Learner'],
+    };
+  },
+  mounted() {
+    this.selectedRole = sessionStorage.getItem('selectedRole')
+  },
+  methods: {
+    saveRoleInSession() {
+      sessionStorage.setItem('selectedRole', this.selectedRole)
+      location.reload()
+    }
+  },
+  
     // components: {
     //   NavigationBar,
     // },
