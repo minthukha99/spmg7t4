@@ -52,7 +52,7 @@ export default {
       rolesList: [],
       selectedRoles: [],
       skillName: "",
-      skillDetail: ""
+      skillDetail: "",
       errorMessage: ""
     }
   },
