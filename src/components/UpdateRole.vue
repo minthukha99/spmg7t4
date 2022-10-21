@@ -1,9 +1,7 @@
 <template>
     <div class="header">
         <div class="header-middle-text">
-            <h1>Update Role</h1>
-
-            <p>{{id}}</p>
+            <h1>Update Role: {{id}}</h1>
 
             <form>
                 <label for="roleName">Name of the Role</label><br>
@@ -170,6 +168,10 @@ button {
 .special {
     color:white; 
     text-decoration: none;
+}
+
+input {
+    padding: 20px;
 }
 
 </style>

@@ -11,8 +11,7 @@
                 <br>
                 <br>
                 <label for="rolesNeeded" class="multiselect" >Roles that require skill</label>
-                <div class="selectBox">
-                    <option selected="true" disabled="disabled">Select an option (if any)</option>    
+                <div class="selectBox">  
                     <div v-for="role in rolesList" :key="role.id">
                         <input type="checkbox" :id="role.id" :value="role.roleName" v-model="selectedRoles">
                         <label :for="role.id">{{role.roleName}}</label>
@@ -125,28 +124,39 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-input[type=text],
+/* input[type=text],
 select {
     width: 80%;
-    padding: 12px 12px;
+    padding: 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-}
+} */
 
-input[type=submit] {
+
+/* input[type=submit] {
     background-color: #000;
     color: white;
     border: none;
-    padding: 15px 32px;
+    padding: 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     margin: 10px 2px;
     cursor: pointer;
+} */
+
+input {
+    padding: 20px;
+}
+
+.selectBox {
+    margin-top: 10px;
+    overflow: scroll;
+    max-height: 200px;
 }
 
 .header {

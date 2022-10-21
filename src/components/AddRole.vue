@@ -122,7 +122,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-input[type=text],
+/* input[type=text],
 select {
     width: 80%;
     padding: 12px 12px;
@@ -144,7 +144,7 @@ input[type=submit] {
     font-size: 16px;
     margin: 10px 2px;
     cursor: pointer;
-}
+} */
 
 .header {
     margin-top: 20px;
@@ -191,6 +191,16 @@ input:focus::placeholder {
     display:relative;
     background-color: white;
     outline-style: solid;
+}
+
+input {
+    padding: 20px;
+}
+
+.selectBox {
+    margin-top: 10px;
+    overflow: scroll;
+    max-height: 200px;
 }
 
 
