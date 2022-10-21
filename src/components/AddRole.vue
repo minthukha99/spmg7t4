@@ -154,14 +154,11 @@ input[type=submit] {
 input:focus::placeholder {
   color: transparent;
 }
-
-.selectBox {
+.selectBox{
     display:relative;
     background-color: white;
-    outline-style: solid;
-    margin-top: 10px;
-    overflow: scroll;
-    max-height: 200px;
+    border: 1px solid #ccc;
+    padding: 10px;
 }
 
 

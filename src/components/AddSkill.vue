@@ -164,7 +164,8 @@ select {
 .selectBox{
     display:relative;
     background-color: white;
-    outline-style: solid;
+    border: 1px solid #ccc;
+    padding: 10px;
 }
 
 .errorMessage{

@@ -46,7 +46,7 @@
 
             </table>
 
-            <button class="button" @change="addToLearningJourney">
+            <button class="button special" @change="addToLearningJourney">
               Add to Learning Journey
             </button>
           </div>
@@ -68,7 +68,7 @@
                 </div>
                 Number of courses: 13
               </div>
-              <a class="button"><router-link to="/LJComponent"><b>View Learning Journey</b></router-link></a>
+              <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link></button>
             </div>
           </div>
         </div>
@@ -810,6 +810,11 @@ export default {
 
   .selectBox {
     margin-top: 10px;
+  }
+
+  .special {
+    color:white; 
+    text-decoration: none;
   }
 
 </style>
