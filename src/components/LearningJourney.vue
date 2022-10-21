@@ -1,8 +1,8 @@
 <template>
     <div class="learningJourney">
-      <header>
+      <div class="header">
         <!--  should v for and repeat this component for all courses taken by user  -->
-        <div class="section">
+        <div class="header-middle-text">
           <!-- this part is for users to add new learning journeys in addition to their existing one, -->
           <!-- submit button doesnt work yet lol -->
           <h1><i>Add a Learning Journey</i></h1>
@@ -51,7 +51,7 @@
             </button>
           </div>
         </div>
-        <div class="section">
+        <div class="header-middle-text">
           <h1><i>List of Learning Journeys Added</i></h1>
           <p>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
           </p>
@@ -83,7 +83,7 @@
             </button>
           </span>
         </div> -->
-      </header>
+      </div>
     </div>
 </template>
   
@@ -186,40 +186,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-header {
-    margin-top: 20px;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .section {
-    margin-top: 5px;
-    width: 80%;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-  }
-
-  h1, h5 {
-    margin: 0;
-  }
-
-  .button {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 5px;
-    cursor: pointer;
-  }
 
   a {
     color: white;
@@ -846,68 +812,5 @@ header {
     margin-top: 10px;
   }
 
-  table {
-    border-collapse: collapse;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    table-layout: fixed;
-  }
-
-  table tr {
-    background-color: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: .35em;
-  }
-
-  table th,
-  table td {
-    padding: .625em;
-    text-align: center;
-  }
-  @media screen and (max-width: 780px) {
-    table {
-      border: 0;
-    }
-
-    table thead {
-      border: none;
-      clip: rect(0 0 0 0);
-      height: 1px;
-      margin: -1px;
-      overflow: hidden;
-      padding: 0;
-      position: absolute;
-      width: 1px;
-    }
-
-    table tr {
-      border-bottom: 3px solid #ddd;
-      display: block;
-      margin-bottom: .625em;
-    }
-
-    table td {
-      border-bottom: 1px solid #ddd;
-      display: block;
-      font-size: .8em;
-      text-align: right;
-    }
-
-    table td::before {
-      /*
-    * aria-label has no advantage, it won't be read inside a table
-    content: attr(aria-label);
-    */
-      content: attr(data-label);
-      float: left;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-
-    table td:last-child {
-      border-bottom: 0;
-    }
-  }
 </style>
   

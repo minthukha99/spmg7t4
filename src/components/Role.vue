@@ -1,6 +1,6 @@
 <template>
-  <header>
-    <div class="roleList">
+  <div class="header">
+    <div class="header-middle-text">
       <div class="row">
         <div class="col">
           <h1>Roles</h1>
@@ -73,7 +73,7 @@
         </table>
       </div>
     </div>
-  </header>
+  </div>
 </template>
 
 
@@ -161,123 +161,21 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-header {
-  margin-top: 20px;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  position: relative;
-}
-
-.roleList {
-  width: 80%;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 20px;
-}
-
-table {
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  table-layout: fixed;
-}
-
-table tr {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  padding: .35em;
-}
-
-table th,
-table td {
-  padding: .625em;
-  text-align: center;
-  word-wrap: break-word;
-}
-
-.mouseover {
-  cursor: pointer;
-}
-
-@media screen and (max-width: 780px) {
-  table {
-    border: 0;
+  .inactive {
+    color: rgba(184, 56, 56, 0.77);
   }
 
-  table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
+  .active {
+    color: rgba(40, 190, 42, 0.77);
   }
 
-  table tr {
-    border-bottom: 3px solid #ddd;
-    display: block;
-    margin-bottom: .625em;
+  a {
+    color: blue;
+    text-decoration: underline;
   }
 
-  table td {
-    border-bottom: 1px solid #ddd;
-    display: block;
-    font-size: .8em;
-    text-align: right;
+  .special {
+    color: white;
+    text-decoration: none;
   }
-
-  table td::before {
-    /*
-      * aria-label has no advantage, it won't be read inside a table
-      content: attr(aria-label);
-      */
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  table td:last-child {
-    border-bottom: 0;
-  }
-}
-
-button {
-  background-color: #000;
-  color: white;
-  border: none;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px 2px;
-  color: white;
-  cursor: pointer;
-}
-
-.inactive {
-  color: rgba(184, 56, 56, 0.77);
-
-}
-
-.active {
-  color: rgba(40, 190, 42, 0.77);
-}
-
-a {
-  color: blue;
-  text-decoration: underline;
-}
-
-.special {
-  color: white;
-  text-decoration: none;
-}
 </style>

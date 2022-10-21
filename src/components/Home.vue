@@ -243,6 +243,7 @@
     padding: 20px;
     color: rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: 10px;
     background: #f8f8f8;
     width: 50%;
   }
