@@ -34,9 +34,9 @@
 </template>
   
 <script>
-    import axios from 'axios';
-
+import axios from 'axios';
     export default {
+        props: ['id'],
         name: 'Learning Journey Profile',
         mounted() {
             this.getCourses()
