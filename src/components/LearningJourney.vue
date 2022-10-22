@@ -1,7 +1,6 @@
 <template>
     <div class="learningJourney">
       <div class="header">
-        <!--  should v for and repeat this component for all courses taken by user  -->
         <div class="header-middle-text">
           <!-- this part is for users to add new learning journeys in addition to their existing one, -->
           <!-- submit button doesnt work yet lol -->
@@ -53,11 +52,11 @@
           <p>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
           </p>
           <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
-          <div class="card">
+          <div class="card"  v-for="eachLJ in LJlist" :key="eachLJ">
             <!-- <div class="card__image card__image--fence"></div> -->
-            <div class="card__content">
+            <div class="card__content" >
               <div class="card__title">
-                Human Resource Personnel
+                {{ eachLJ.roleName }}
               </div>
               <div class="card__text">
                 <div class="meter">
@@ -65,7 +64,11 @@
                 </div>
                 Number of courses: 13
               </div>
-              <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link></button>
+              <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
+              <!-- <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link> -->
+              <button class="special">
+                <router-link :to="`/LJComponent/${eachLJ.ljId}`">View Learning Journey</router-link>
+              </button>
             </div>
           </div>
         </div>
@@ -89,8 +92,8 @@ import axios from "axios";
 export default {
   name: 'Learning Journey',
   mounted() {
-    this.getRoles()
-
+    this.getRoles(),
+    this.getLJofUser()
   },
 
   data() {
@@ -99,7 +102,8 @@ export default {
       roleSelected: "", // store value of role user selected
       skillsNeededForRole: [], // to retrieve and display skills needed for user chosen role
       coursesNeededforSkill: [], // to retrieve and display the courses needed for the skills needed for user chosen role
-      courseSelected : [] // a list containing all the courses user selected
+      courseSelected: [], // a list containing all the courses user selected
+      LJlist :[] // to store all the user LJ to display them
     }
   },
 
@@ -178,7 +182,38 @@ export default {
           console.log(error.message)
         }) 
     },
-    
+    // http://localhost:3000/getlearningjourneyby/130002
+    getLJofUser() {
+      // retrieve all the LJ of the user
+      var userId = sessionStorage.getItem("userId")
+      const url = "http://localhost:3000/getlearningjourneyby/" + userId;
+      axios.get(url)
+        .then(response => {
+          for (var eachLJ of response.data) {
+            // call GET ROLE BY ID api to get the role name with roleid
+            var roleId = eachLJ.roleID
+            axios.get("http://localhost:3000/role/" + roleId)
+              .then(response => {
+                let roleName = response.data.roleName
+                this.LJlist.push(
+                  {
+                    ljId: eachLJ.LJID,
+                    roleId: eachLJ.roleID,
+                    roleName: roleName,
+                    staffId: eachLJ.staff_ID
+                  }
+                )
+              })
+              .catch(error => {
+                console.log(error.message)
+              })
+          }
+          console.log(this.LJlist)
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+    },
   }
 }
 </script>
@@ -189,8 +224,6 @@ export default {
   a {
     color: white;
   }
-  
-
   /* .pie {
     width: 60px;
     height: 60px;

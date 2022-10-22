@@ -100,8 +100,9 @@ const routes = [
     }
   },
   {
-    path: "/LJComponent",
+    path: "/LJComponent/:id",
     name: "Learning Journey Profile",
+    props: true,
     component: LJComponent,
     meta: {
       visible: false,
