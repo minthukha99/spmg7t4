@@ -19,12 +19,17 @@
 
                 <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
                 <br>
-                <select multiple v-model="selectedSkills">
-                    <option selected="true" disabled="disabled">Select an option</option>
-                    <option v-for="skill in skillsList" :key="skill.id" :selected="this.skillsAssigned[0]">{{skill.skillName}}</option>
-                </select>
+                <div class="selectBox">
+                    <div v-for="skill in skillsList" :key="skill.id">
+                        <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" :selected="this.skillsAssigned[0]">
+                        <label :for="skill.id">{{skill.skillName}}</label>
+                    </div>  
+                </div>
                 <br>
                 <br>
+                
+
+
                 
                 <button value="Cancel" class="special">
                     <router-link to="/courses" class="special">Cancel</router-link>
