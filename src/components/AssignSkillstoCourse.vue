@@ -2,24 +2,18 @@
     <div class="header">
         <div class="header-middle-text">
             <h1>
-                Assign Skills to <u> {{ courseSelected.courseName }}</u>
+                Assign Skills to <u>{{   course.course_Name  }}</u>
             </h1>
             <form>
-                <!-- <ul v-for="skill in role.skillsAssignedList" :key="skill.id">
-                    <li>{{ skill }} </li>
-                </ul> -->
-
-                <!-- that.courseSelected["courseId"] = response.data.Course_ID
-                that.courseSelected["courseName"] = response.data.Course_Name
-                that.courseSelected["courseDesc"] = response.data.Course_Desc
-                that.courseSelected["courseStatus"] = response.data.Course_Status
-                that.courseSelected["courseType"] = response.data.Course_Type -->
-                <p> <strong>Course Code: </strong> {{ courseSelected.courseId }} </p>
-                <p> <strong>Course Name: </strong>  {{ courseSelected.courseName }}</p>
-                <p> <strong>Course Description: </strong> {{ courseSelected.courseDesc }}</p>
-                <p> <strong>Course Status: </strong>  {{ courseSelected.courseStatus }}</p>
-                <p> <strong>Course Type: </strong> {{ courseSelected.courseType }}</p>
-                <p> <strong> Skills assigned: </strong></p>
+                <p> <strong>Course Code: </strong> {{ course.course_ID }} </p>
+                <p> <strong>Course Name: </strong>  {{ course.course_Name }}</p>
+                <p> <strong>Course Description: </strong> {{ course.course_Name }}</p>
+                <p> <strong>Course Status: </strong>  {{ course.course_Status }}</p>
+                <p> <strong>Course Type: </strong> {{ course.course_Type }}</p>
+                <p > 
+                    <strong> Skills assigned: </strong> 
+                    <ul v-for="skills in this.skillsAssigned" :key="skills"> <li>{{ skills }} </li></ul>  
+                </p>
                 <br>
                 <br>
 
@@ -27,19 +21,15 @@
                 <br>
                 <select multiple v-model="selectedSkills">
                     <option selected="true" disabled="disabled">Select an option</option>
-                    <option v-for="skill in skillsList" :key="skill.id">>{{skill.skillName}}</option>
+                    <option v-for="skill in skillsList" :key="skill.id" :selected="this.skillsAssigned[0]">{{skill.skillName}}</option>
                 </select>
                 <br>
                 <br>
-                <!-- <button type="button">
-                    <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
-                </button> -->
+                
                 <button value="Cancel" class="special">
-                    <router-link to="/Roles" class="special">Cancel</router-link>
+                    <router-link to="/courses" class="special">Cancel</router-link>
                 </button>
-                <!-- <a v-on:click="deactivateRoles(role.roleName)">Deactivate</a> -->
-                <!-- <button @click='updateRole(roleToBeUpdated); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
-                <button @click='updateCourse();  $router.push("/courses")' type="submit" value="Save" class="special">
+                <button @click='assignSelectedSkillsToCourse();  $router.push("/courses")' type="submit" value="Save" class="special">
                     Save
                 </button>
 
@@ -56,24 +46,26 @@ export default {
     name: 'AssignSkillstoRoles/:id',
     mounted() {
         this.getSkills()
-        this.getCourse()
+        this.getCourseInformation()
+        this.getSkillsAssignedToCourse()
     },
     data() {
         return {
             skillsList: [],
-            skillsAssignedList: [],
             selectedSkills: [],
+            course : [],
             courseName: "",
-            courseSelected: {}
+            courseSelected: {},
+            skillsAssigned: []
         }
     },
     methods: {
         getSkills() {
+            // show all skills for skills dropdown list for users to assign to the Course
             const url = "http://localhost:3000/skills";
             axios.get(url)
                 .then(response => {
                     var skillData = response.data
-                    // console.log("SkillData=", skillData)
                     for (var skill of skillData) {
                         this.skillsList.push(
                             {
@@ -84,68 +76,55 @@ export default {
                             }
                         );
                     }
-                    // console.log("SkillsList=", this.skillsList)
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
         },
-        // getRole() {
-        //     var that = this
-        //     const url = "http://localhost:3000/role/" + this.id;
-        //     axios.get(url)
-        //         .then(response => {
-        //             that.role = response.data
-        //             // console.log(response.data)
-        //             // console.log("roleName:" + response.data[0].roleName)
-        //             // console.log("skills:" + response.data[0].skillName)
-        //             that.role["roleName"] = response.data[0].roleName
-        //             that.role["skillsAssignedList"] = response.data[0].skillName
-        //         })
-        //         .catch(error => {
-        //             console.log(error.message)
-        //         })
-        // },
-
-        getCourse() {
-            var that = this
-            const url = "http://localhost:3000/course/" + this.id;
-            // console.log(url)
+        getCourseInformation() {
+            // get the course information
+            const url = "http://localhost:3000/courses"
             axios.get(url)
                 .then(response => {
-                    console.log('Response:' ,response)
-                    that.role = response.data
-                    that.courseSelected["courseId"] = response.data.course_ID
-                    that.courseSelected["courseName"] = response.data.course_Name
-                    that.courseSelected["courseDesc"] = response.data.course_Desc
-                    that.courseSelected["courseStatus"] = response.data.course_Status
-                    that.courseSelected["courseType"] = response.data.course_Type
-                    // console.log("roleName:" + response.data[0].roleName)
-                    // console.log("skills:" + response.data[0].skillName)
-                    // that.role["roleName"] = response.data[0].roleName
-                    // that.role["skillsAssignedList"] = response.data[0].skillName
+                    for (var x in response.data) {
+                        if (response.data[x].course_ID == this.id) {
+                            this.course = response.data[x]
+                        }
+                    }
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
-                // console.log('HERE',this.courseSelected)
-            
         },
-
-        // updateCourse()) {
-        //     let url = "http://localhost:3000/updaterole/" + this.id;
-        //     axios.put(url, {
-        //         roleName: this.id,
-        //         skillName: this.selectedSkills,
-        //     })
-        //         .then(response => {
-        //             console.log("success")
-
-        //         })
-        //         .catch(error => {
-        //             console.log(error.message)
-        //         })
-        // }
+        getSkillsAssignedToCourse() {    
+            // get the skills assigned to the course  
+            const url = "http://localhost:3000/course/" + this.id;
+            axios.get(url)
+                .then(response => {
+                    for (var x in response.data.skillName) {
+                        this.skillsAssigned.push(response.data.skillName[x].skillName)
+                    }
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
+        },
+        assignSelectedSkillsToCourse() {
+            // assign skills that user selected to the Course 
+            let url = "http://localhost:3000/assignskilltocourse";
+            for (var x in this.selectedSkills) {
+                axios.post(url, {
+                    skillName: this.selectedSkills[x],
+                    course_ID: this.id,
+                })
+                    .then(response => {
+                        console.log("Success!", this.selectedSkills[x] ,"assigned to", this.id)
+                    })
+                    .catch(error => {
+                        console.log(error.message)
+                    })
+            }   
+        }
     },
 
 }
