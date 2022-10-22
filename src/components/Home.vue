@@ -8,6 +8,10 @@
       <section class="header-middle-text container"><div class="text-center">
           <h5 class="mb-1">Read the following instructions</h5>
           <p>
+            Enter your User ID:
+          </p>
+          <input type="text" @change="saveUserId" v-model="userId">
+          <p>
             Select your <b>role</b> before venturing to the other parts of the website
           </p>
         </div>
@@ -31,15 +35,20 @@
     return {
       selectedRole: "",
       rolesList: ['HR', 'Staff', 'Manager', 'Learner'],
+      userId: ""
     };
   },
   mounted() {
     this.selectedRole = sessionStorage.getItem('selectedRole')
+    this.userId = sessionStorage.getItem('userId')
   },
   methods: {
     saveRoleInSession() {
       sessionStorage.setItem('selectedRole', this.selectedRole)
       location.reload()
+    },
+    saveUserId() {
+      sessionStorage.setItem('userId', this.userId)
     }
   },
   

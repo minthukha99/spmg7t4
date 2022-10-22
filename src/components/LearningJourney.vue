@@ -16,8 +16,7 @@
             </select>
           </div>
           <div>
-            <!-- <table v-if="roleSelected != ''"> -->
-              <table >
+            <table v-if="roleSelected != ''">
                 <thead>
                   <tr>
                     <th scope="col">Skill required</th>
@@ -44,7 +43,7 @@
 
             </table>
 
-            <button class="button special" @change="addToLearningJourney">
+            <button class="button special" @click="addToLearningJourney">
               Add to Learning Journey
             </button>
           </div>
@@ -166,18 +165,20 @@ export default {
         })
     },
     addToLearningJourney() {
-      // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
-      // axios.get(url)
-      //   .then(response => {
-      //     for (var course of response.data) {
-      //       this.coursesNeededforSkill.push(course.course_Name)
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error.message)
-      //   })
-      
-    }
+    // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
+      let url = "http://localhost:3000/learningjourney";
+      axios.post(url, {
+        roleName: this.roleSelected,
+        staff_ID: sessionStorage.getItem("userId"),
+      })
+        .then(response => {
+          console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
+        })
+        .catch(error => {
+          console.log(error.message)
+        }) 
+    },
+    
   }
 }
 </script>
