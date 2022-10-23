@@ -5,7 +5,10 @@
       <table>
         <tr>
           <td>
-            <input type="text" v-model="searchValue" placeholder="Search Course Name"/>
+            <input type="text" v-model="searchValue" placeholder="Search Course"/>
+          </td>
+          <td>
+            <input type="text" v-model="searchValue" placeholder="Search Course by Learning Journey"/>
           </td>
           <td>
             <select v-model="selectedSkill">
@@ -289,6 +292,11 @@ a {
 }
 .mouseover {
   cursor: pointer;
+}
+
+select {
+  margin: 0px;
+  width: 76%;
 }
 </style>
   
