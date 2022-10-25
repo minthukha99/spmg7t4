@@ -39,7 +39,7 @@ const GetLjbyStaffID = async (req, res) => {
     return res.status(200).json(result);
 };
 
-const deleteLj = async (req,res) => {
+const deleteLj = async (req, res) => {
     const LJID = req.params.id;
     const coursesInLJ = await db.query(
         `
@@ -53,10 +53,10 @@ const deleteLj = async (req,res) => {
         where LJID = '${LJID}'
         `
     )
-     
+
 };
 
-const addCourseToLJ = async (req,res) => {
+const addCourseToLJ = async (req, res) => {
     const data = req.body;
     var insertStr = `Insert into spm.LearningJourneyCourse(LJID,course_ID) values `
     data.course_ID.forEach(c => {
@@ -65,19 +65,19 @@ const addCourseToLJ = async (req,res) => {
     insertStr = insertStr.slice(0, -1);
     const result = await db.query(
         insertStr
-    ).catch(e=>{
+    ).catch(e => {
         return res.status(400).json({
-            status : 400,
-            result : "Fail to add course to LJ"
+            status: 400,
+            result: "Fail to add course to LJ"
         });
     });
 
     return res.status(200).json(result);
 }
 
-const updateCourseFromLJ = async (req,res) => {
+const updateCourseFromLJ = async (req, res) => {
     const data = req.body;
-    
+
     //delete all the courses
     const deleteAll = await db.query(
         `
@@ -94,13 +94,72 @@ const updateCourseFromLJ = async (req,res) => {
     insertStr = insertStr.slice(0, -1);
     const result = await db.query(
         insertStr
-    ).catch(e=>{
+    ).catch(e => {
         return res.status(400).json({
-            status : 400,
-            result : "Fail to add course to LJ"
+            status: 400,
+            result: "Fail to add course to LJ"
         });
     });
 }
 
-module.exports = { createLJ, GetLjbyStaffID, deleteLj, addCourseToLJ, updateCourseFromLJ}
+const getInfoAboutLJ = async (req, res) => {
+    const id = req.params.id;
+
+    const LJInfo = await db.query(
+        `
+        select * from spm.LearningJourney t0
+        inner join spm.LJMSRole t1
+        on t0.roleID =t1.roleID
+        where LJID = '${id}'
+        `
+    ).catch(e => {
+        return res.status(400).json({
+            status: 400,
+            result: "Error in getting LJ info"
+        });
+    });
+    const skillNeededForRole = await db.query(
+        `
+        select t3.skillName,t3.skillDetail,t3.skillDetail,t3.status from spm.LearningJourney t0
+        inner join spm.LJMSRole t1
+        on t0.roleID = t1.roleID
+        inner join spm.RoleSkill t2
+        on t1.roleID = t2.roleID
+        inner join spm.Skill t3
+        on t2.skillID = t3.skillID
+        where t0.LJID = '${id}'
+        `
+    ).catch(e => {
+        return res.status(400).json({
+            status: 400,
+            result: "Error in getting Skills needed for role"
+        });
+    });
+
+    const courseRegistered = await db.query(
+        `
+        select * from spm.LearningJourneyCourse t0
+        inner join spm.SkillCourse t1
+        on t0.course_ID = t1.course_ID
+        inner join spm.Skill t2
+        on t1.skillID = t2.skillID
+        where LJID = '${id}'
+        `
+    ).catch(e => {
+        return res.status(400).json({
+            status: 400,
+            result: "Error in getting course for LJ"
+        });
+    });
+
+    return res.status(200).json({
+        LJInfo,
+        skillNeededForRole,
+        courseRegistered
+    });
+
+
+}
+
+module.exports = { getInfoAboutLJ, createLJ, GetLjbyStaffID, deleteLj, addCourseToLJ, updateCourseFromLJ }
 

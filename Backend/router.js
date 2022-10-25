@@ -51,5 +51,6 @@ router.post("/learningjourney", LjController.createLJ)
 router.delete("/learningjourney", LjController.deleteLj)
 router.post("/learningjourneycourse",LjController.addCourseToLJ)
 router.put("/learningjourneycourse",LjController.updateCourseFromLJ)
+router.get("/learningjourneyinfo/:id",LjController.getInfoAboutLJ)
 
 module.exports = router
