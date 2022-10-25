@@ -2,6 +2,7 @@ const db = require('../db')
 const helper = require('../helper')
 const config = require('../config')
 const e = require("express");
+const { isDisturbed } = require('responselike');
 
 const createLJ = async (req, res) => {
     const LJInfo = req.body;
@@ -151,11 +152,19 @@ const getInfoAboutLJ = async (req, res) => {
             result: "Error in getting course for LJ"
         });
     });
+    const staffCourseInfo = await db.query(
+        `
+        select * from spm.registration
+        where staff_ID = (select staff_ID from spm.LearningJourney
+        where LJID = ${id})
+        `
 
+    )
     return res.status(200).json({
         LJInfo,
         skillNeededForRole,
-        courseRegistered
+        courseRegistered,
+        staffCourseInfo
     });
 
 
