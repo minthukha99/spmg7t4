@@ -138,7 +138,11 @@ const getInfoAboutLJ = async (req, res) => {
 
     const courseRegistered = await db.query(
         `
-        select * from spm.LearningJourneyCourse
+        select * from spm.LearningJourneyCourse t0
+        inner join spm.SkillCourse t1
+        on t0.course_ID = t1.course_ID
+        inner join spm.Skill t2
+        on t1.skillID = t2.skillID
         where LJID = '${id}'
         `
     ).catch(e => {
