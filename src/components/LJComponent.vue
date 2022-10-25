@@ -1,6 +1,7 @@
 <template>
     <div class="header">
         <div class="header-middle-text">
+            {{id}}
             <h1>Human Resource Personnel</h1>
             <div class="meter">
                 <span style="width: 25%"></span>
@@ -35,46 +36,44 @@
   
 <script>
 import axios from 'axios';
-    export default {
-        props: ['id'],
-        name: 'Learning Journey Profile',
-        mounted() {
-            this.getCourses()
-        },
+export default {
+    props: ['id'],
+    name: 'Learning Journey Profile',
+    mounted() {
+        this.getLearningJourneyInfo()
+    },
 
-        data() {
-            return {
-            coursesList: []
-            }
-        },
-
-        methods: {
-            getCourses() {
-            const url = "http://localhost:3000/courses";
-            axios.get(url)
-                .then(response => {
-                var coursesData = response.data
-                for (var course of coursesData) {
-                    console.log(course)
-                    this.coursesList.push(
-                    {
-                        id: course.Course_ID,
-                        courseCat: course.Course_Category,
-                        courseDesc: course.Course_Desc,
-                        courseName: course.Course_Name,
-                        courseStatus: course.Course_Status,
-                        courseType: course.Course_Type
-                    }
-                    );
-                }
-            
-                })
-                .catch(error => {
-                console.log(error.message)
-                })
-            },
+    data() {
+        return {
+        skillCourseList: [],
+        roleName: '',
         }
+    },
+
+    methods: {
+        getLearningJourneyInfo() {
+        const url = "http://localhost:3000/learningjourneyinfo/" + this.id;
+        axios.get(url)
+            .then(response => {
+            var ljInfoData = response.data
+            console.log(ljInfoData)
+            // console.log(ljInfoData.LJInfo[0].roleName) 
+            this.roleName = ljInfoData.LJInfo[0].roleName 
+
+            // console.log(ljInfoData.LJInfo.roleName)
+
+            // for (var data of ljInfoData) {
+            //     console.log(data)
+            //     console.log(ljInfoData.LJInfo.roleName)
+            // }
+        
+            })
+            .catch(error => {
+            console.log(error.message)
+            })
+        },
     }
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

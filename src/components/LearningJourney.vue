@@ -8,7 +8,7 @@
           <p>
             Select a role that you desire and add it to your current list of learning journeys to track your progress.
           </p>
-          <div @change="getSkillsForChosenRole">
+          <div @change="getSkillsForChosenRole" @click="getRoles">
             <select v-model="roleSelected">
               <option selected="true" disabled="disabled">Select a role</option>
               <option v-for="role in rolesList" :key="role.id" >{{role.roleName}}</option>
@@ -92,7 +92,7 @@ import axios from "axios";
 export default {
   name: 'Learning Journey',
   mounted() {
-    this.getRoles(),
+    // this.getRoles(),
     this.getLJofUser()
   },
 
