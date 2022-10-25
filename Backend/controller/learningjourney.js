@@ -142,6 +142,8 @@ const getInfoAboutLJ = async (req, res) => {
         select * from spm.LearningJourneyCourse t0
         inner join spm.SkillCourse t1
         on t0.course_ID = t1.course_ID
+        inner join spm.course t4
+        on t0.course_ID = t4.course_ID
         inner join spm.Skill t2
         on t1.skillID = t2.skillID
         inner join spm.registration t3
