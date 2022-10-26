@@ -8,12 +8,20 @@
           <p>
             Select a role that you desire and add it to your current list of learning journeys to track your progress.
           </p>
-          <div @change="getSkillsForChosenRole" @click="getRoles">
+        
+
+          <input type="text" v-model="roleSelected" list="rolesList" @change="getSkillsForChosenRole">
+            <datalist id="rolesList">
+              <option v-for="role in rolesList" :key="role.id">{{role.roleName}}</option>
+            </datalist>
+          
+          
+          <!-- <div @change="getSkillsForChosenRole" @click="getRoles">
             <select v-model="roleSelected">
               <option selected="true" disabled="disabled">Select a role</option>
               <option v-for="role in rolesList" :key="role.id" >{{role.roleName}}</option>
             </select>
-          </div>
+          </div> -->
           <div>
             <table v-if="roleSelected != ''">
                 <thead>
@@ -215,8 +223,34 @@ export default {
           console.log(error.message)
         })
     },
-  }
+  },
+  created(){
+
+      const url = "http://localhost:3000/roles";
+      axios.get(url)
+        .then(response => {
+          var roleData = response.data
+          // console.log("roleData=", roleData)
+          for (var role of roleData) {
+            this.rolesList.push(
+              {
+                id: role._id,
+                roleName: role.roleName,
+                skillName: role.skillName,
+                status: role.status
+              }
+            );
+          }
+          console.log(this.rolesList)
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+    },
+
+
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
