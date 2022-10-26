@@ -16,29 +16,39 @@
                     <li>{{ skills }} </li>
                 </ul>
             </p>
-            <br>
-            <br>
-
-            <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
-            <br>
-            <div class="selectBox">
-                <div v-for="skill in skillsList" :key="skill.id">
-                    <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" :selected="this.skillsAssigned[0]">
-                    <label :for="skill.id">{{skill.skillName}}</label>
-                </div>
+            <div v-if="errorMessage" class="errorMessage">
+                {{ errorMessage }}
             </div>
-            <br>
-            <br>
-            <div class="d-flex">
-                <button type="button">
-                    <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
-                </button>
-                <button value="Cancel" class="special">
-                    <router-link to="/courses" class="special">Cancel</router-link>
-                </button>
-                <button @click='assignSelectedSkillsToCourse();  $router.push("/courses")' type="submit" value="Save" class="special">
-                    Save
-                </button>
+            <div v-else>
+                <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
+                <br>
+                <div class="selectBox">
+                    <div v-for="skill in skillsList" :key="skill.id">
+                        <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" :selected="this.skillsAssigned[0]">
+                        <label :for="skill.id">{{skill.skillName}}</label>
+                    </div>
+                </div>
+                <div v-if="errorMessage" class="errorMessage">
+                    {{ errorMessage }}
+                </div>
+                <div v-else>
+                    <br>
+                </div>
+                <div>
+                    <button type="button">
+                        <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
+                    </button>
+                    <button value="Cancel" class="special">
+                        <router-link to="/courses" class="special">Cancel</router-link>
+                    </button>
+                    <button type="button" @click='assignSelectedSkillsToCourse()' class="special">
+                    <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
+                        Save
+                    </button>
+                    <!-- <button @click='assignSelectedSkillsToCourse();  $router.push("/courses")' type="button" value="Save" class="special">
+                        Save
+                    </button> -->
+                </div>
             </div>
         </form>
     </div>
@@ -63,7 +73,8 @@ export default {
             course: [],
             courseName: "",
             courseSelected: {},
-            skillsAssigned: []
+            skillsAssigned: [],
+            errorMessage: ""
         }
     },
     methods: {
@@ -116,9 +127,14 @@ export default {
         },
         assignSelectedSkillsToCourse() {
             // assign skills that user selected to the Course 
-            let url = "http://localhost:3000/assignskilltocourse";
-            for (var x in this.selectedSkills) {
-                axios.post(url, {
+            this.errorMessage = "";
+            if (this.selectedSkills.length == 0) {
+                console.log("its empty")
+                this.errorMessage += "Please assign at least one skill to the course before saving."
+            } else {
+                let url = "http://localhost:3000/assignskilltocourse";
+                for (var x in this.selectedSkills) {
+                    axios.post(url, {
                         skillName: this.selectedSkills[x],
                         course_ID: this.id,
                     })
@@ -128,10 +144,11 @@ export default {
                     .catch(error => {
                         console.log(error.message)
                     })
+                }
             }
-        }
+            console.log(this.errorMessage)
+        },
     },
-
 }
 </script>
 
@@ -141,5 +158,9 @@ export default {
 .special {
     color: white;
     text-decoration: none;
+}
+
+.errorMessage {
+    color: red
 }
 </style>
