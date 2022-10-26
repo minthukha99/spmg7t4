@@ -36,8 +36,7 @@ export default {
     },
 };
 </script>
-  
-  
+
 <style>
 .footer-bg-wrapper {
     background-color: transparent;

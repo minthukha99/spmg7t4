@@ -1,16 +1,16 @@
 <template>
-    <div class="header">
-        <div class="header-middle-text">
-            {{id}}
-            <h1>Human Resource Personnel</h1>
-            <div class="meter">
-                <span style="width: 25%"></span>
-            </div>
-            <br>
-            <div>
-                <table>
-                    <thead>
-                        <tr>
+<div class="header">
+    <div class="header-middle-text">
+        {{id}}
+        <h1>Human Resource Personnel</h1>
+        <div class="meter">
+            <span style="width: 25%"></span>
+        </div>
+        <br>
+        <div>
+            <table>
+                <thead>
+                    <tr>
                         <!-- <th scope="col">Index</th> -->
                         <th scope="col">Course Code</th>
                         <th scope="col">Course Name</th>
@@ -45,32 +45,32 @@ export default {
 
     data() {
         return {
-        skillCourseList: [],
-        roleName: '',
+            skillCourseList: [],
+            roleName: '',
         }
     },
 
     methods: {
         getLearningJourneyInfo() {
-        const url = "http://localhost:3000/learningjourneyinfo/" + this.id;
-        axios.get(url)
-            .then(response => {
-            var ljInfoData = response.data
-            console.log(ljInfoData)
-            // console.log(ljInfoData.LJInfo[0].roleName) 
-            this.roleName = ljInfoData.LJInfo[0].roleName 
+            const url = "http://localhost:3000/learningjourneyinfo/" + this.id;
+            axios.get(url)
+                .then(response => {
+                    var ljInfoData = response.data
+                    console.log(ljInfoData)
+                    // console.log(ljInfoData.LJInfo[0].roleName) 
+                    this.roleName = ljInfoData.LJInfo[0].roleName
 
-            // console.log(ljInfoData.LJInfo.roleName)
+                    // console.log(ljInfoData.LJInfo.roleName)
 
-            // for (var data of ljInfoData) {
-            //     console.log(data)
-            //     console.log(ljInfoData.LJInfo.roleName)
-            // }
-        
-            })
-            .catch(error => {
-            console.log(error.message)
-            })
+                    // for (var data of ljInfoData) {
+                    //     console.log(data)
+                    //     console.log(ljInfoData.LJInfo.roleName)
+                    // }
+
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
         },
     }
 }
