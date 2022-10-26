@@ -10,43 +10,42 @@
             <input v-model="skillDetail" placeholder="No description" onfocus="this.placeholder=''" onblur="this.placeholder='No Description'">
             <br>
             <br>
-            <label for="rolesNeeded" class="multiselect">Roles that require skill</label>
+            <!-- <label for="rolesNeeded" class="multiselect">Roles that require skill</label>
             <div class="selectBox">
                 <div v-for="role in rolesList" :key="role.id">
                     <input type="checkbox" :id="role.id" :value="role.roleName" v-model="selectedRoles">
                     <label :for="role.id">{{role.roleName}}</label>
                 </div>
-            </div>
+            </div> -->
             <div v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
             </div>
             <div v-else>
                 <br>
-                <br>
-                <label for="rolesNeeded" class="multiselect" >Roles that require skill</label>
-                <div class="selectBox">  
+                <label for="rolesNeeded" class="multiselect">Roles that require skill</label>
+                <div class="selectBox">
                     <div v-for="role in rolesList" :key="role.id">
                         <input type="checkbox" :id="role.id" :value="role.roleName" v-model="selectedRoles">
                         <label :for="role.id">{{role.roleName}}</label>
                     </div>
                 </div>
-                <div v-if="errorMessage" class= "errorMessage"> 
+                <div v-if="errorMessage" class="errorMessage">
                     {{ errorMessage }}
                 </div>
                 <div v-else>
                     <br>
                     <br>
                 </div>
-                
+
                 <button value="Cancel" class="special">
                     <router-link to="/Skills" class="special">Cancel</router-link>
-                </button> 
+                </button>
                 <!-- <button @click='addSkillButton()' type="submit" value="Save" class="special"> -->
-                <button type="button" @click='addSkillButton()'  class="special">
-                <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
-                Save
-            </button>
-
+                <button type="button" @click='addSkillButton()' class="special">
+                    <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
+                    Save
+                </button>
+            </div>
         </form>
     </div>
 </div>
