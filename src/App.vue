@@ -97,7 +97,7 @@ export default {
     border: 1px solid #ccc;
     display: inline-block;
     background: none;
-    /* width: 100%; */
+    width: 80%;
   }
 
   select {
@@ -106,7 +106,7 @@ export default {
     display: inline-block;
     border: 1px solid #ccc;
     background: none;
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
   }
 
   .selectBox{
