@@ -97,7 +97,7 @@ export default {
     border: 1px solid #ccc;
     display: inline-block;
     background: none;
-    width: 80%;
+    /* width: 80%; */
   }
 
   select {
