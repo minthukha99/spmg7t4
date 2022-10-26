@@ -4,22 +4,21 @@
     <header class="header">
       <div class="header-middle-text d-flex">
         <h1><i>Learning Journey Management System</i></h1>
-        <p>This website is only meant for internal use ⚠️ </p>
       </div>
-      <section class="header-middle-text container">
-        <div class="text-center">
-          <h2 class="mb-1">About Us</h2>
+      <section class="header-middle-text container"><div class="text-center">
+          <h5 class="mb-1">Read the following instructions</h5>
           <p>
-            We are a group of students applying Scrum and Agile methodologies while building this Learning Journey Management System, LJMS for short. This system helps to assists our target audiences (Staff, HR personnel, Manager) to better manage one's career progression in the company.
+            Enter your User ID:
+          </p>
+          <input type="text" @change="saveUserId" v-model="userId">
+          <p>
+            Select your <b>role</b> before venturing to the other parts of the website
           </p>
         </div>
-        <br>
-        <h3> Select Role:
         <select v-model="selectedRole" @change="saveRoleInSession">
           <option selected="true" disabled="disabled">Select your role</option>
           <option v-for="role in rolesList" :key="role">{{role}}</option>
         </select>
-        </h3>
       </section>
     </header>
   </div>
@@ -36,15 +35,20 @@
     return {
       selectedRole: "",
       rolesList: ['HR', 'Staff', 'Manager', 'Learner'],
+      userId: ""
     };
   },
   mounted() {
     this.selectedRole = sessionStorage.getItem('selectedRole')
+    this.userId = sessionStorage.getItem('userId')
   },
   methods: {
     saveRoleInSession() {
       sessionStorage.setItem('selectedRole', this.selectedRole)
       location.reload()
+    },
+    saveUserId() {
+      sessionStorage.setItem('userId', this.userId)
     }
   },
   
@@ -103,24 +107,6 @@
 <style scoped>
   .home-page-wrapper {
     overflow-x: hidden;
-  }
-
-  .header {
-    /* margin-top: 20px; */
-    padding: 0.5rem;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    max-height: 100vh;
-    position: relative;
-  }
-
-  .header-middle-text {
-    width: 80%;
-    flex-direction: column;
-    align-items: flex-start;
   }
 
   #nav-icon3 {

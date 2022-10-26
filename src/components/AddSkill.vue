@@ -6,12 +6,16 @@
                 <label for="skillName">Skill Name</label><br>
                 <input v-model="skillName" id="skillName" name="skillName"><br>
                 <br>
-                <label for="skillsNeeded" class="multiselect" >Roles that require skill</label>
-                <div class="selectBox">
-                    <select multiple v-model="selectedRoles">
-                        <option selected="true" disabled="disabled">Select an option (if any)</option>
-                        <option v-for="role in rolesList" :key="role.id">>{{role.roleName}}</option>       
-                    </select>
+                <label for="skillDetail">Skill Details</label><br>
+                <input v-model="skillDetail" placeholder="No description" onfocus="this.placeholder=''" onblur="this.placeholder='No Description'">
+                <br>
+                <br>
+                <label for="rolesNeeded" class="multiselect" >Roles that require skill</label>
+                <div class="selectBox">  
+                    <div v-for="role in rolesList" :key="role.id">
+                        <input type="checkbox" :id="role.id" :value="role.roleName" v-model="selectedRoles">
+                        <label :for="role.id">{{role.roleName}}</label>
+                    </div>
                 </div>
                 <div v-if="errorMessage" class= "errorMessage"> 
                     {{ errorMessage }}
@@ -25,7 +29,7 @@
                     <router-link to="/Skills" class="special">Cancel</router-link>
                 </button> 
                 <!-- <button @click='addSkillButton()' type="submit" value="Save" class="special"> -->
-                <button @click='addSkillButton()'  class="special">
+                <button type="button" @click='addSkillButton()'  class="special">
                 <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
                     Save
                 </button>  
@@ -44,10 +48,11 @@ export default {
   },
   data() {
     return {
-        rolesList: [],
-        selectedRoles: [],
-        skillName: "",
-        errorMessage: ""
+      rolesList: [],
+      selectedRoles: [],
+      skillName: "",
+      skillDetail: "",
+      errorMessage: ""
     }
   },
     methods: {
@@ -71,6 +76,7 @@ export default {
             })
             .catch(error => {
                 console.log(error.message)
+                
             })
         },
 
@@ -98,6 +104,7 @@ export default {
                 skillName: this.skillName,
                 roleName: this.selectedRoles,
                 status: true,
+                skillDetail: this.skillDetail
                 // skillDetail: ,
                 // courses: []
             })
@@ -117,67 +124,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-input[type=text],
-select {
-    width: 80%;
-    padding: 12px 12px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-input[type=submit] {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
-}
-
-.header {
-    margin-top: 20px;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    position: relative;
-  }
-
-.header-middle-text {
-    width: 75%;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    /* border: 1px dotted black; */
-}
-
-button {
-    background-color: #000;
-    /* color: white; */
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
-}
-
 .special {
     color:white; 
     text-decoration: none;
   }
 
-  .errorMessage{
-    color:red
-  }
+.errorMessage{
+  color:red
+}
 </style>

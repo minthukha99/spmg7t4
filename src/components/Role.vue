@@ -1,19 +1,19 @@
 <template>
-  <header>
-    <div class="roleList">
+  <div class="header">
+    <div class="header-middle-text">
       <div class="row">
         <div class="col">
           <h1>Roles</h1>
         </div>
         <div class="col">
-        <div class="d-flex">
-          <button type="button" style="float:right">
-            <router-link to="/AddRole" class="special">+ Add Role</router-link>
-          </button>
+          <div class="d-flex">
+            <button type="button" style="float:right">
+              <router-link to="/AddRole" class="special">+ Add Role</router-link>
+            </button>
+          </div>
         </div>
       </div>
-      </div>
-      
+
       <div>
         <table>
           <thead>
@@ -21,9 +21,9 @@
               <th scope="col">Index</th>
               <th scope="col">Name</th>
               <th scope="col">Skills</th>
-              <th scope="col">Action 1</th>
+              <th scope="col" v-if="selectedRole=='HR'">Action 1</th>
               <th scope="col" v-if="selectedRole=='HR'">Action 2</th>
-              <th scope="col" v-if="selectedRole=='HR'">Action 3</th>
+              <!-- <th scope="col" v-if="selectedRole=='HR'">Action 3</th> -->
               <th scope="col" v-if="selectedRole=='HR'">Status</th>
             </tr>
           </thead>
@@ -43,13 +43,13 @@
                 </ul>
               </td>
 
-              <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td>
+              <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
 
               <td v-if="selectedRole=='HR' ">
                 <router-link :to="`/UpdateRole/${role.roleName}`">Edit</router-link>
               </td>
 
-              <td v-if="role.status ==false && selectedRole=='HR'" >
+              <td v-if="role.status ==false && selectedRole=='HR'">
                 <a class="mouseover" v-on:click="activateRoles(role.roleName)">Activate</a>
               </td>
               <td v-else-if="role.status == true && selectedRole=='HR'">
@@ -62,7 +62,7 @@
               <td v-else-if="role.status == true && selectedRole=='HR'" class="active" data-label="Status">
                 Active
               </td>
-              
+
               <!-- <td scope="row" data-label="Action 4">
                 <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
                 <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
@@ -73,7 +73,7 @@
         </table>
       </div>
     </div>
-  </header>
+  </div>
 </template>
 
 
@@ -103,12 +103,12 @@ export default {
           var roleData = response.data
           console.log("roleData=", roleData)
           for (var role of roleData) {
-          this.rolesList.push(
+            this.rolesList.push(
               {
-              id: role._id,
-              roleName: role.roleName,
-              skillName: role.skillName,
-              status: role.status
+                id: role._id,
+                roleName: role.roleName,
+                skillName: role.skillName,
+                status: role.status
               }
             );
           }
@@ -121,33 +121,33 @@ export default {
 
     deactivateRoles(roleName) {
 
-      let url = "http://localhost:3000/deleterole/"+roleName;
+      let url = "http://localhost:3000/deleterole/" + roleName;
       axios.put(url)
-      .then(response => {
-        console.log("deactived role:", roleName)
-        // this.getRoles()
-        location.reload()
+        .then(response => {
+          console.log("deactived role:", roleName)
+          // this.getRoles()
+          location.reload()
 
-      })
-      .catch(error => {
+        })
+        .catch(error => {
           console.log(error.message)
-      })
+        })
 
     },
 
     activateRoles(roleName) {
 
-      let url = "http://localhost:3000/activaterole/"+roleName;
+      let url = "http://localhost:3000/activaterole/" + roleName;
       axios.put(url)
-      .then(response => {
-        // this.getRoles()
-        location.reload()
-        console.log("activated role:", roleName)
+        .then(response => {
+          // this.getRoles()
+          location.reload()
+          console.log("activated role:", roleName)
 
-      })
-      .catch(error => {
+        })
+        .catch(error => {
           console.log(error.message)
-      })
+        })
 
     }
 
@@ -161,122 +161,13 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-header {
-  margin-top: 20px;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  position: relative;
-}
-
-.roleList {
-  width: 80%;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 20px;
-}
-
-table {
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  table-layout: fixed;
-}
-
-table tr {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  padding: .35em;
-}
-
-table th,
-table td {
-  padding: .625em;
-  text-align: center;
-  word-wrap: break-word;
-}
-
-.mouseover{
-  cursor: pointer;
-}
-
-@media screen and (max-width: 780px) {
-  table {
-    border: 0;
+  a {
+    color: blue;
+    text-decoration: underline;
   }
 
-  table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
-
-  table tr {
-    border-bottom: 3px solid #ddd;
-    display: block;
-    margin-bottom: .625em;
-  }
-
-  table td {
-    border-bottom: 1px solid #ddd;
-    display: block;
-    font-size: .8em;
-    text-align: right;
-  }
-
-  table td::before {
-    /*
-      * aria-label has no advantage, it won't be read inside a table
-      content: attr(aria-label);
-      */
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  table td:last-child {
-    border-bottom: 0;
-  }
-}
-
-button {
-  background-color: #000;
-  color: white;
-  border: none;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px 2px;
-  color: white;
-  cursor: pointer;
-}
-
-.inactive {
-  color: rgba(184, 56, 56, 0.77);
-  
-}
-.active{
-  color: rgba(40, 190, 42, 0.77);
-}
-
-a{
-  color: blue;
-  text-decoration: underline;
-}
-
-.special {
-    color:white; 
+  .special {
+    color: white;
     text-decoration: none;
   }
 </style>

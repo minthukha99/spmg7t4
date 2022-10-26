@@ -4,6 +4,7 @@ const roleController =  require('./controller/role')
 const skillController =  require('./controller/skill')
 const coursesController =  require('./controller/contentUpdater')
 const skillCourseController = require('./controller/skillCourse')
+const LjController = require('./controller/learningjourney')
 //  Create route handler
 
 //Controller routes
@@ -37,11 +38,19 @@ router.get("/users", coursesController.getAllUser);
 router.get("/user/:id", coursesController.getUser);
 router.get("/userByEmail/:email", coursesController.getUserByEmail);
 router.get("/userByDept/:dept", coursesController.getUserByDept);
-router.get("/learningjourney/:id", coursesController.learningJourneyByID);
+//router.get("/learningjourney/:id", coursesController.learningJourneyByID);
 router.get("/lj", coursesController.insertLJToDatabase);
 
 //assign skill to course
 router.post("/assignskilltocourse", skillCourseController.assignSkillToCourse)
 router.delete("/deleteskillfromcourse", skillCourseController.deleteSkillFromCourse)
+
+//LearningJourney 
+router.get("/getlearningjourneyby/:id", LjController.GetLjbyStaffID)
+router.post("/learningjourney", LjController.createLJ)
+router.delete("/learningjourney", LjController.deleteLj)
+router.post("/learningjourneycourse",LjController.addCourseToLJ)
+router.put("/learningjourneycourse",LjController.updateCourseFromLJ)
+router.get("/learningjourneyinfo/:id",LjController.getInfoAboutLJ)
 
 module.exports = router

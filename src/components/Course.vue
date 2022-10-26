@@ -1,25 +1,20 @@
 <template>
-  <header>
-    <div class="courseList">
-      <div class="row">
-        <div class="col">
-          <h1>Courses</h1>
-          <div class="search-wrapper">
+  <div class="header">
+    <div class="header-middle-text">
+      <h1>Courses</h1>
+      <table>
+        <tr>
+          <td>
             <input type="text" v-model="searchValue" placeholder="Search Course Name"/>
-          </div>
-          <div class="selectBox">
+          </td>
+          <td>
             <select v-model="selectedSkill">
               <option selected="true"></option>
               <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
             </select>
-            <p>Currently selected: {{ selectedSkill }}</p>
-          </div>
-        </div>  
-        <div class="col">
-          <div class="d-flex">
-          </div>
-        </div>
-      </div>
+          </td>
+        </tr>
+      </table>
       <div>
         <table>
           <thead>
@@ -147,7 +142,7 @@
         </table>
       </div>
     </div>
-  </header>
+  </div>
 </template>
   
 <script>
@@ -288,144 +283,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-header {
-  margin-top: 20px;
-  height: auto;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  flex-direction: column;
-  position: relative;
-}
-
-.courseList {
-  width: 80%;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 20px;
-}
-
-table {
-  border-collapse: collapse;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  table-layout: fixed;
-}
-
-table tr {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  padding: .35em;
-}
-
-table th,
-table td {
-  padding: .625em;
-  text-align: center;
-  
-}
-
-@media screen and (max-width: 700px) {
-  table {
-    border: 0;
-  }
-
-  table thead {
-    border: none;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
-  }
-
-  table tr {
-    border-bottom: 3px solid #ddd;
-    display: block;
-    margin-bottom: .625em;
-  }
-
-  table td {
-    border-bottom: 1px solid #ddd;
-    display: block;
-    font-size: .8em;
-    text-align: right;
-  }
-
-  table td::before {
-    /*
-      * aria-label has no advantage, it won't be read inside a table
-      content: attr(aria-label);
-      */
-    content: attr(data-label);
-    float: left;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
-
-  table td:last-child {
-    border-bottom: 0;
-  }
-}
-
-button {
-  background-color: #000;
-  color: white; 
-  border: none;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px 2px;
-  cursor: pointer;
-}
-
-a{
+a {
   color: blue;
   text-decoration: underline;
 }
-
-.search-wrapper {
-  position: relative;
-  margin-bottom: 10px;
-}
-.search-wrapper input {
-  padding: 20px;
-  color: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #f8f8f8;
-  width: 80%;
-  
-}
-
-.inactive {
-  color: rgba(184, 56, 56, 0.77);
-}
-
-.active {
-  color: rgba(40, 190, 42, 0.77);
-}
-
 .mouseover {
   cursor: pointer;
 }
-
-select {
-  padding: 20px;
-  color: rgba(0, 0, 0, 0.7);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: #f8f8f8;
-  width: 50%;
-}
-
-.selectBox {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
 </style>
   

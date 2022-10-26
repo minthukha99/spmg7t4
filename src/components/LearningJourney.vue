@@ -1,31 +1,27 @@
 <template>
     <div class="learningJourney">
-      <header>
-        <!--  should v for and repeat this component for all courses taken by user  -->
-        <div class="section">
+      <div class="header">
+        <div class="header-middle-text">
           <!-- this part is for users to add new learning journeys in addition to their existing one, -->
           <!-- submit button doesnt work yet lol -->
           <h1><i>Add a Learning Journey</i></h1>
-          <h5>
+          <p>
             Select a role that you desire and add it to your current list of learning journeys to track your progress.
-          </h5>
-          <div class="selectBox" @change="getSkillsForChosenRole">
+          </p>
+          <div @change="getSkillsForChosenRole" @click="getRoles">
             <select v-model="roleSelected">
               <option selected="true" disabled="disabled">Select a role</option>
               <option v-for="role in rolesList" :key="role.id" >{{role.roleName}}</option>
             </select>
-            <br>
-            <br>
-            
-            <!-- <table v-if="roleSelected != ''"> -->
-              <table >
-              
-              <thead>
-                <tr>
-                  <th scope="col">Skill required</th>
-                  <th scope="col">Courses </th>
-                </tr>
-              </thead>
+          </div>
+          <div>
+            <table v-if="roleSelected != ''">
+                <thead>
+                  <tr>
+                    <th scope="col">Skill required</th>
+                    <th scope="col">Courses </th>
+                  </tr>
+                </thead>
 
               <tbody>
                 <tr scope="row" v-for="skill in skillsNeededForRole" :key="skill">
@@ -46,21 +42,21 @@
 
             </table>
 
-            <button class="button" @change="addToLearningJourney">
+            <button class="button special" @click="addToLearningJourney">
               Add to Learning Journey
             </button>
           </div>
         </div>
-        <div class="section">
+        <div class="header-middle-text">
           <h1><i>List of Learning Journeys Added</i></h1>
-          <h5>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
-          </h5>
+          <p>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
+          </p>
           <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
-          <div class="card">
+          <div class="card"  v-for="eachLJ in LJlist" :key="eachLJ">
             <!-- <div class="card__image card__image--fence"></div> -->
-            <div class="card__content">
+            <div class="card__content" >
               <div class="card__title">
-                Human Resource Personnel
+                {{ eachLJ.roleName }}
               </div>
               <div class="card__text">
                 <div class="meter">
@@ -68,7 +64,11 @@
                 </div>
                 Number of courses: 13
               </div>
-              <a class="button"><router-link to="/LJComponent"><b>View Learning Journey</b></router-link></a>
+              <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
+              <!-- <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link> -->
+              <button class="special">
+                <router-link :to="`/LJComponent/${eachLJ.ljId}`">View Learning Journey</router-link>
+              </button>
             </div>
           </div>
         </div>
@@ -83,7 +83,7 @@
             </button>
           </span>
         </div> -->
-      </header>
+      </div>
     </div>
 </template>
   
@@ -92,8 +92,8 @@ import axios from "axios";
 export default {
   name: 'Learning Journey',
   mounted() {
-    this.getRoles()
-
+    // this.getRoles(),
+    this.getLJofUser()
   },
 
   data() {
@@ -102,7 +102,8 @@ export default {
       roleSelected: "", // store value of role user selected
       skillsNeededForRole: [], // to retrieve and display skills needed for user chosen role
       coursesNeededforSkill: [], // to retrieve and display the courses needed for the skills needed for user chosen role
-      courseSelected : [] // a list containing all the courses user selected
+      courseSelected: [], // a list containing all the courses user selected
+      LJlist :[] // to store all the user LJ to display them
     }
   },
 
@@ -168,64 +169,61 @@ export default {
         })
     },
     addToLearningJourney() {
-      // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
-      // axios.get(url)
-      //   .then(response => {
-      //     for (var course of response.data) {
-      //       this.coursesNeededforSkill.push(course.course_Name)
-      //     }
-      //   })
-      //   .catch(error => {
-      //     console.log(error.message)
-      //   })
-      
-    }
+    // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
+      let url = "http://localhost:3000/learningjourney";
+      axios.post(url, {
+        roleName: this.roleSelected,
+        staff_ID: sessionStorage.getItem("userId"),
+      })
+        .then(response => {
+          console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
+        })
+        .catch(error => {
+          console.log(error.message)
+        }) 
+    },
+    // http://localhost:3000/getlearningjourneyby/130002
+    getLJofUser() {
+      // retrieve all the LJ of the user
+      var userId = sessionStorage.getItem("userId")
+      const url = "http://localhost:3000/getlearningjourneyby/" + userId;
+      axios.get(url)
+        .then(response => {
+          for (var eachLJ of response.data) {
+            // call GET ROLE BY ID api to get the role name with roleid
+            var roleId = eachLJ.roleID
+            axios.get("http://localhost:3000/role/" + roleId)
+              .then(response => {
+                let roleName = response.data.roleName
+                this.LJlist.push(
+                  {
+                    ljId: eachLJ.LJID,
+                    roleId: eachLJ.roleID,
+                    roleName: roleName,
+                    staffId: eachLJ.staff_ID
+                  }
+                )
+              })
+              .catch(error => {
+                console.log(error.message)
+              })
+          }
+          console.log(this.LJlist)
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+    },
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-header {
-    margin-top: 20px;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    position: relative;
-  }
-
-  .section {
-    margin-top: 5px;
-    width: 80%;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 10px;
-  }
-
-  h1, h5 {
-    margin: 0;
-  }
-
-  .button {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 5px;
-    cursor: pointer;
-  }
 
   a {
     color: white;
   }
-  
-
   /* .pie {
     width: 60px;
     height: 60px;
@@ -833,81 +831,10 @@ header {
     line-height: 1.5;
     margin-bottom: 0.5rem;
   }
-
-  select {
-    padding: 20px;
-    color: rgba(0, 0, 0, 0.7);
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    background: #f8f8f8;
-    width: 50%;
+  .special {
+    color:white; 
+    text-decoration: none;
   }
 
-  .selectBox {
-    margin-top: 10px;
-  }
-
-    table {
-      border-collapse: collapse;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      table-layout: fixed;
-    }
-  
-    table tr {
-      background-color: #f8f8f8;
-      border: 1px solid #ddd;
-      padding: .35em;
-    }
-  
-    table th,
-    table td {
-      padding: .625em;
-      text-align: center;
-    }
-        @media screen and (max-width: 780px) {
-          table {
-            border: 0;
-          }
-    
-          table thead {
-            border: none;
-            clip: rect(0 0 0 0);
-            height: 1px;
-            margin: -1px;
-            overflow: hidden;
-            padding: 0;
-            position: absolute;
-            width: 1px;
-          }
-    
-          table tr {
-            border-bottom: 3px solid #ddd;
-            display: block;
-            margin-bottom: .625em;
-          }
-    
-          table td {
-            border-bottom: 1px solid #ddd;
-            display: block;
-            font-size: .8em;
-            text-align: right;
-          }
-    
-          table td::before {
-            /*
-          * aria-label has no advantage, it won't be read inside a table
-          content: attr(aria-label);
-          */
-            content: attr(data-label);
-            float: left;
-            font-weight: bold;
-            text-transform: uppercase;
-          }
-    
-          table td:last-child {
-            border-bottom: 0;
-          }
-        }
 </style>
   

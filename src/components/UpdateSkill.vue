@@ -1,21 +1,18 @@
 <template>
     <div class="header">
         <div class="header-middle-text">
-            <h1>Update Skill</h1>
-
-            <p>{{id}}</p>
+            <h1>Update Skill: {{id}}</h1>
 
             <form>
                 <label for="skillName">Skill Name</label><br>
                 <input v-model="newSkillName" id="skillName" name="skillName"><br>
                 <br>
                 <label for="skillsNeeded" class="multiselect" >Roles that require skill</label>
-                <div class="selectBox">
-                    <select multiple v-model="selectedRoles">
-                        <option selected="true" disabled="disabled">Select an option (if any)</option>
-                        <option v-for="role in rolesList" :key="role.id">>{{role.roleName}}</option>       
-                    </select>
-                </div>
+                <br>
+                <select multiple v-model="selectedRoles">
+                    <option selected="true" disabled="disabled">Select an option (if any)</option>
+                    <option v-for="role in rolesList" :key="role.id">>{{role.roleName}}</option>       
+                </select>
                 <br>
                 <br>
                 <button value="Cancel" class="special">
@@ -102,65 +99,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-
-input[type=text],
-select {
-    width: 80%;
-    padding: 12px 12px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-input[type=submit] {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
-}
-
-.header {
-    margin-top: 20px;
-    height: auto;
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    position: relative;
-  }
-
-.header-middle-text {
-    width: 75%;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 20px;
-    /* border: 1px dotted black; */
-}
-
-button {
-    background-color: #000;
-    /* color: white; */
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
-}
-
-.special {
-    color:white; 
-    text-decoration: none;
-  }
+    .special {
+        color:white; 
+        text-decoration: none;
+    }
 </style>
