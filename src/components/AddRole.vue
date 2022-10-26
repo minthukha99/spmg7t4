@@ -10,41 +10,40 @@
                 <input v-model="roleDetail" placeholder="No description" onfocus="this.placeholder=''" onblur="this.placeholder='No Description'">
                 <br>
                 <br>
-                <label for="skillsNeeded" class="multiselect" >Skills required</label>
+                <label for="skillsNeeded" class="multiselect">Skills required</label>
                 <div class="selectBox">
                     <!-- <select multiple v-model="selectedSkills"> -->
-                        
-                        <option selected="true" disabled="disabled">Select an option</option>
-                        <div v-for="skill in skillsList" :key="skill.id">
-                            <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills">
-                            <label :for="skill.id">{{skill.skillName}}</label>
-                        </div>  
+    
+                    <option selected="true" disabled="disabled">Select an option</option>
+                    <div v-for="skill in skillsList" :key="skill.id">
+                        <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills">
+                        <label :for="skill.id">{{skill.skillName}}</label>
+                    </div>
                     <!-- </select> -->
                 </div>
-
-        <li v-for="(option, index) in options" :key="index">
-          <input type="checkbox" :id="index" :value="option.value" v-model="selected">
-          <label :for="index">{{ option.text }}</label>
-        </li>
+    
+                <li v-for="(option, index) in options" :key="index">
+                    <input type="checkbox" :id="index" :value="option.value" v-model="selected">
+                    <label :for="index">{{ option.text }}</label>
+                </li>
                 <br>
                 <br>
                 <button type="button">
-                    <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
-                </button>
+                        <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
+                    </button>
                 <button value="Cancel" class="special">
-                    <router-link to="/Roles" class="special">Cancel</router-link>
-                </button> 
+                        <router-link to="/Roles" class="special">Cancel</router-link>
+                    </button>
                 <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special">
-                    Save
-                </button>  
-                
+                        Save
+                    </button>
+    
             </form>
         </div>
     </div>
 </template>
   
 <script>
-
 import axios from "axios";
 export default {
     name: 'add roles',
@@ -53,12 +52,12 @@ export default {
     },
 
     data() {
-    return{
-        skillsList:[], //list of all skills 
-        selectedSkills: [],
-        roleName: "",
-        roleDetail: ""
-    }
+        return {
+            skillsList: [], //list of all skills 
+            selectedSkills: [],
+            roleName: "",
+            roleDetail: ""
+        }
     },
 
     methods: {
@@ -71,53 +70,46 @@ export default {
                     console.log("SkillData=", skillData)
                     for (var skill of skillData) {
 
-                        this.skillsList.push(
-                        {
+                        this.skillsList.push({
                             id: skill.id,
                             roleName: skill.roleName,
                             skillName: skill.skillName,
                             status: skill.status
-                        }       
-                        );
+                        });
 
                     }
-                console.log("SkillsList=",this.skillsList)
-            })
-            .catch(error => {
-                console.log(error.message)
-            })
+                    console.log("SkillsList=", this.skillsList)
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
         },
 
-        createRole(){
+        createRole() {
 
             let url = "http://localhost:3000/role";
             axios.post(url, {
-                roleName: this.roleName,
-                skillName: this.selectedSkills,
-                roleDetail: this.roleDetail
-            })
+                    roleName: this.roleName,
+                    skillName: this.selectedSkills,
+                    roleDetail: this.roleDetail
+                })
 
-            .then(response => {
-                console.log("new role:", this.roleName, this.selectedSkills)
-                location.reload()
-            })
-            .catch(error => {
-                console.log(error.message)
-            })
+                .then(response => {
+                    console.log("new role:", this.roleName, this.selectedSkills)
+                    location.reload()
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
 
         }
-        
-        
+
+
 
 
 
     }
 }
-
-
-
-
-  
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -147,11 +139,11 @@ input[type=submit] {
 } */
 
 .special {
-    color:white; 
+    color: white;
     text-decoration: none;
 }
 
 input:focus::placeholder {
-  color: transparent;
+    color: transparent;
 }
 </style>

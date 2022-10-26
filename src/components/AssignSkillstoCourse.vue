@@ -6,38 +6,40 @@
             </h1>
             <form>
                 <p> <strong>Course Code: </strong> {{ course.course_ID }} </p>
-                <p> <strong>Course Name: </strong>  {{ course.course_Name }}</p>
+                <p> <strong>Course Name: </strong> {{ course.course_Name }}</p>
                 <p> <strong>Course Description: </strong> {{ course.course_Name }}</p>
-                <p> <strong>Course Status: </strong>  {{ course.course_Status }}</p>
+                <p> <strong>Course Status: </strong> {{ course.course_Status }}</p>
                 <p> <strong>Course Type: </strong> {{ course.course_Type }}</p>
-                <p > 
-                    <strong> Skills assigned: </strong> 
-                    <ul v-for="skills in this.skillsAssigned" :key="skills"> <li>{{ skills }} </li></ul>  
+                <p>
+                    <strong> Skills assigned: </strong>
+                    <ul v-for="skills in this.skillsAssigned" :key="skills">
+                        <li>{{ skills }} </li>
+                    </ul>
                 </p>
                 <br>
                 <br>
-
+    
                 <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
                 <br>
                 <div class="selectBox">
                     <div v-for="skill in skillsList" :key="skill.id">
                         <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" :selected="this.skillsAssigned[0]">
                         <label :for="skill.id">{{skill.skillName}}</label>
-                    </div>  
+                    </div>
                 </div>
                 <br>
                 <br>
-                
-
-
-                
+    
+    
+    
+    
                 <button value="Cancel" class="special">
-                    <router-link to="/courses" class="special">Cancel</router-link>
-                </button>
+                        <router-link to="/courses" class="special">Cancel</router-link>
+                    </button>
                 <button @click='assignSelectedSkillsToCourse();  $router.push("/courses")' type="submit" value="Save" class="special">
-                    Save
-                </button>
-
+                        Save
+                    </button>
+    
             </form>
         </div>
     </div>
@@ -58,7 +60,7 @@ export default {
         return {
             skillsList: [],
             selectedSkills: [],
-            course : [],
+            course: [],
             courseName: "",
             courseSelected: {},
             skillsAssigned: []
@@ -72,14 +74,12 @@ export default {
                 .then(response => {
                     var skillData = response.data
                     for (var skill of skillData) {
-                        this.skillsList.push(
-                            {
-                                id: skill._id,
-                                roleName: skill.roleName,
-                                skillName: skill.skillName,
-                                status: skill.status
-                            }
-                        );
+                        this.skillsList.push({
+                            id: skill._id,
+                            roleName: skill.roleName,
+                            skillName: skill.skillName,
+                            status: skill.status
+                        });
                     }
                 })
                 .catch(error => {
@@ -101,7 +101,7 @@ export default {
                     console.log(error.message)
                 })
         },
-        getSkillsAssignedToCourse() {    
+        getSkillsAssignedToCourse() {
             // get the skills assigned to the course  
             const url = "http://localhost:3000/course/" + this.id;
             axios.get(url)
@@ -119,21 +119,20 @@ export default {
             let url = "http://localhost:3000/assignskilltocourse";
             for (var x in this.selectedSkills) {
                 axios.post(url, {
-                    skillName: this.selectedSkills[x],
-                    course_ID: this.id,
-                })
+                        skillName: this.selectedSkills[x],
+                        course_ID: this.id,
+                    })
                     .then(response => {
-                        console.log("Success!", this.selectedSkills[x] ,"assigned to", this.id)
+                        console.log("Success!", this.selectedSkills[x], "assigned to", this.id)
                     })
                     .catch(error => {
                         console.log(error.message)
                     })
-            }   
+            }
         }
     },
 
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
