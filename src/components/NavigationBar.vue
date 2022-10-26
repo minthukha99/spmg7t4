@@ -245,7 +245,7 @@ select {
     padding: 10px;
     color: rgba(0, 0, 0, 0.7);
     border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: 10px;
+    border-radius: 5px;
     background: #f8f8f8;
     width: 20%;
     margin-top: 20px
