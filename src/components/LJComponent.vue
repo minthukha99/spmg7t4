@@ -1,15 +1,16 @@
 <template>
-<div class="header">
-    <div class="header-middle-text">
-        <h1>Human Resource Personnel</h1>
-        <div class="meter">
-            <span style="width: 25%"></span>
-        </div>
-        <br>
-        <div>
-            <table>
-                <thead>
-                    <tr>
+    <div class="header">
+        <div class="header-middle-text">
+            {{id}}
+            <h1>Human Resource Personnel</h1>
+            <div class="meter">
+                <span style="width: 25%"></span>
+            </div>
+            <br>
+            <div>
+                <table>
+                    <thead>
+                        <tr>
                         <!-- <th scope="col">Index</th> -->
                         <th scope="col">Course Code</th>
                         <th scope="col">Course Name</th>
@@ -39,37 +40,37 @@ export default {
     props: ['id'],
     name: 'Learning Journey Profile',
     mounted() {
-        this.getCourses()
+        this.getLearningJourneyInfo()
     },
 
     data() {
         return {
-            coursesList: []
+        skillCourseList: [],
+        roleName: '',
         }
     },
 
     methods: {
-        getCourses() {
-            const url = "http://localhost:3000/courses";
-            axios.get(url)
-                .then(response => {
-                    var coursesData = response.data
-                    for (var course of coursesData) {
-                        console.log(course)
-                        this.coursesList.push({
-                            id: course.Course_ID,
-                            courseCat: course.Course_Category,
-                            courseDesc: course.Course_Desc,
-                            courseName: course.Course_Name,
-                            courseStatus: course.Course_Status,
-                            courseType: course.Course_Type
-                        });
-                    }
+        getLearningJourneyInfo() {
+        const url = "http://localhost:3000/learningjourneyinfo/" + this.id;
+        axios.get(url)
+            .then(response => {
+            var ljInfoData = response.data
+            console.log(ljInfoData)
+            // console.log(ljInfoData.LJInfo[0].roleName) 
+            this.roleName = ljInfoData.LJInfo[0].roleName 
 
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
+            // console.log(ljInfoData.LJInfo.roleName)
+
+            // for (var data of ljInfoData) {
+            //     console.log(data)
+            //     console.log(ljInfoData.LJInfo.roleName)
+            // }
+        
+            })
+            .catch(error => {
+            console.log(error.message)
+            })
         },
     }
 }

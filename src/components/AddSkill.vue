@@ -23,13 +23,26 @@
             <div v-else>
                 <br>
                 <br>
-            </div>
-
-            <button value="Cancel" class="special">
-                <router-link to="/Skills" class="special">Cancel</router-link>
-            </button>
-            <!-- <button @click='addSkillButton()' type="submit" value="Save" class="special"> -->
-            <button @click='addSkillButton()' class="special">
+                <label for="rolesNeeded" class="multiselect" >Roles that require skill</label>
+                <div class="selectBox">  
+                    <div v-for="role in rolesList" :key="role.id">
+                        <input type="checkbox" :id="role.id" :value="role.roleName" v-model="selectedRoles">
+                        <label :for="role.id">{{role.roleName}}</label>
+                    </div>
+                </div>
+                <div v-if="errorMessage" class= "errorMessage"> 
+                    {{ errorMessage }}
+                </div>
+                <div v-else>
+                    <br>
+                    <br>
+                </div>
+                
+                <button value="Cancel" class="special">
+                    <router-link to="/Skills" class="special">Cancel</router-link>
+                </button> 
+                <!-- <button @click='addSkillButton()' type="submit" value="Save" class="special"> -->
+                <button type="button" @click='addSkillButton()'  class="special">
                 <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
                 Save
             </button>
