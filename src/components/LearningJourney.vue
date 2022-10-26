@@ -1,6 +1,6 @@
 <template>
-    <div class="learningJourney">
-      <div class="header">
+<div class="learningJourney">
+    <div class="header">
         <div class="header-middle-text">
           <!-- this part is for users to add new learning journeys in addition to their existing one, -->
           <!-- submit button doesnt work yet lol -->
@@ -56,29 +56,29 @@
           </div>
         </div>
         <div class="header-middle-text">
-          <h1><i>List of Learning Journeys Added</i></h1>
-          <p>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
-          </p>
-          <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
-          <div class="card"  v-for="eachLJ in LJlist" :key="eachLJ">
-            <!-- <div class="card__image card__image--fence"></div> -->
-            <div class="card__content" >
-              <div class="card__title">
-                {{ eachLJ.roleName }}
-              </div>
-              <div class="card__text">
-                <div class="meter">
-                  <span style="width: 25%"></span>
+            <h1><i>List of Learning Journeys Added</i></h1>
+            <p>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
+            </p>
+            <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
+            <div class="card" v-for="eachLJ in LJlist" :key="eachLJ">
+                <!-- <div class="card__image card__image--fence"></div> -->
+                <div class="card__content">
+                    <div class="card__title">
+                        {{ eachLJ.roleName }}
+                    </div>
+                    <div class="card__text">
+                        <div class="meter">
+                            <span style="width: 25%"></span>
+                        </div>
+                        Number of courses: 13
+                    </div>
+                    <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
+                    <!-- <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link> -->
+                    <button class="special">
+                        <router-link :to="`/LJComponent/${eachLJ.ljId}`">View Learning Journey</router-link>
+                    </button>
                 </div>
-                Number of courses: 13
-              </div>
-              <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
-              <!-- <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link> -->
-              <button class="special">
-                <router-link :to="`/LJComponent/${eachLJ.ljId}`">View Learning Journey</router-link>
-              </button>
             </div>
-          </div>
         </div>
         <!-- don't delete the codes first in case y'all cannot figure out how to work with the above code -->
         <!-- <div class="section">
@@ -91,10 +91,10 @@
             </button>
           </span>
         </div> -->
-      </div>
     </div>
+</div>
 </template>
-  
+
 <script>
 import axios from "axios";
 export default {
@@ -247,19 +247,18 @@ export default {
           console.log(error.message)
         })
     },
-
-
 }
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
 
-  a {
+<style scoped>
+a {
     color: white;
-  }
-  /* .pie {
+}
+
+/* .pie {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -750,17 +749,19 @@ export default {
     transform: rotate(0.5turn);
   } */
 
-  .meter {
+.meter {
     margin-top: 10px;
     margin-bottom: 10px;
     box-sizing: content-box;
-    height: 20px; /* Can be anything */
+    height: 20px;
+    /* Can be anything */
     position: relative;
     background: #555;
     border-radius: 25px;
-    padding:2px;
-  }
-  .meter > span {
+    padding: 2px;
+}
+
+.meter>span {
     display: block;
     height: 100%;
     border-top-right-radius: 8px;
@@ -770,25 +771,24 @@ export default {
     background-color: rgb(43, 194, 83);
     position: relative;
     overflow: hidden;
-  }
-  .meter > span:after,
-  .animate > span > span {
+}
+
+.meter>span:after,
+.animate>span>span {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
-    background-image: linear-gradient(
-      -45deg,
-      rgba(255, 255, 255, 0.2) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
-      transparent 75%,
-      transparent
-    );
+    background-image: linear-gradient(-45deg,
+            rgba(255, 255, 255, 0.2) 25%,
+            transparent 25%,
+            transparent 50%,
+            rgba(255, 255, 255, 0.2) 50%,
+            rgba(255, 255, 255, 0.2) 75%,
+            transparent 75%,
+            transparent);
     z-index: 1;
     background-size: 50px 50px;
     animation: move 2s linear infinite;
@@ -797,22 +797,23 @@ export default {
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
     overflow: hidden;
-  }
+}
 
-  .animate > span:after {
+.animate>span:after {
     display: none;
-  }
+}
 
-  @keyframes move {
+@keyframes move {
     0% {
-      background-position: 0 0;
+        background-position: 0 0;
     }
-    100% {
-      background-position: 50px 50px;
-    }
-  }
 
-  .card {
+    100% {
+        background-position: 50px 50px;
+    }
+}
+
+.card {
     margin-top: 10px;
     background-color: white;
     border-radius: 0.25rem;
@@ -820,17 +821,19 @@ export default {
     display: flex;
     flex-direction: column;
     overflow: hidden;
-  }
-  /* .card:hover .card__image {
+}
+
+/* .card:hover .card__image {
     filter: contrast(100%);
   } */
-  .card__content {
+.card__content {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
     padding: 1rem;
-  }
-  /* .card__image {
+}
+
+/* .card__image {
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -854,22 +857,22 @@ export default {
   .card__image--fence {
     background-image: url(https://www.b2bsustainable.com/wp-content/uploads/2022/02/2.jpg);
   } */
-  .card__title {
+.card__title {
     color: #2c3e50;
     font-size: 1.25rem;
     font-weight: 500;
     letter-spacing: 2px;
-  }
-  .card__text {
+}
+
+.card__text {
     flex: 1 1 auto;
     font-size: 0.875rem;
     line-height: 1.5;
     margin-bottom: 0.5rem;
-  }
-  .special {
-    color:white; 
-    text-decoration: none;
-  }
+}
 
+.special {
+    color: white;
+    text-decoration: none;
+}
 </style>
-  
