@@ -1,50 +1,50 @@
 <template>
-    <div class="header">
-        <div class="header-middle-text">
-            <h1>
-                Assign Skills to <u>{{   course.course_Name  }}</u>
-            </h1>
-            <form>
-                <p> <strong>Course Code: </strong> {{ course.course_ID }} </p>
-                <p> <strong>Course Name: </strong> {{ course.course_Name }}</p>
-                <p> <strong>Course Description: </strong> {{ course.course_Name }}</p>
-                <p> <strong>Course Status: </strong> {{ course.course_Status }}</p>
-                <p> <strong>Course Type: </strong> {{ course.course_Type }}</p>
-                <p>
-                    <strong> Skills assigned: </strong>
-                    <ul v-for="skills in this.skillsAssigned" :key="skills">
-                        <li>{{ skills }} </li>
-                    </ul>
-                </p>
-                <br>
-                <br>
-    
-                <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
-                <br>
-                <div class="selectBox">
-                    <div v-for="skill in skillsList" :key="skill.id">
-                        <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" :selected="this.skillsAssigned[0]">
-                        <label :for="skill.id">{{skill.skillName}}</label>
-                    </div>
+<div class="header">
+    <div class="header-middle-text">
+        <h1>
+            Assign Skills to <u>{{ course.course_Name  }}</u>
+        </h1>
+        <form>
+            <p> <strong>Course Code: </strong> {{ course.course_ID }} </p>
+            <p> <strong>Course Name: </strong> {{ course.course_Name }}</p>
+            <p> <strong>Course Description: </strong> {{ course.course_Name }}</p>
+            <p> <strong>Course Status: </strong> {{ course.course_Status }}</p>
+            <p> <strong>Course Type: </strong> {{ course.course_Type }}</p>
+            <p>
+                <strong> Skills assigned: </strong>
+                <ul v-for="skills in this.skillsAssigned" :key="skills">
+                    <li>{{ skills }} </li>
+                </ul>
+            </p>
+            <br>
+            <br>
+
+            <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
+            <br>
+            <div class="selectBox">
+                <div v-for="skill in skillsList" :key="skill.id">
+                    <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" :selected="this.skillsAssigned[0]">
+                    <label :for="skill.id">{{skill.skillName}}</label>
                 </div>
-                <br>
-                <br>
-    
-    
-    
-    
+            </div>
+            <br>
+            <br>
+            <div class="d-flex">
+                <button type="button">
+                    <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
+                </button>
                 <button value="Cancel" class="special">
-                        <router-link to="/courses" class="special">Cancel</router-link>
-                    </button>
+                    <router-link to="/courses" class="special">Cancel</router-link>
+                </button>
                 <button @click='assignSelectedSkillsToCourse();  $router.push("/courses")' type="submit" value="Save" class="special">
-                        Save
-                    </button>
-    
-            </form>
-        </div>
+                    Save
+                </button>
+            </div>
+        </form>
     </div>
+</div>
 </template>
-  
+
 <script>
 import axios from "axios";
 export default {
@@ -136,6 +136,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 .special {
     color: white;
