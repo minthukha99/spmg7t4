@@ -29,7 +29,7 @@
                     <router-link to="/Skills" class="special">Cancel</router-link>
                 </button> 
                 <!-- <button @click='addSkillButton()' type="submit" value="Save" class="special"> -->
-                <button @click='addSkillButton()'  class="special">
+                <button type="button" @click='addSkillButton()'  class="special">
                 <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
                     Save
                 </button>  

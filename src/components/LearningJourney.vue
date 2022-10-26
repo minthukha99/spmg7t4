@@ -177,6 +177,7 @@ export default {
       })
         .then(response => {
           console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
+          location.reload()
         })
         .catch(error => {
           console.log(error.message)

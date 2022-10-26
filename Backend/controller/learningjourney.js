@@ -141,9 +141,14 @@ const getInfoAboutLJ = async (req, res) => {
         select * from spm.LearningJourneyCourse t0
         inner join spm.SkillCourse t1
         on t0.course_ID = t1.course_ID
+        inner join spm.course t4
+        on t0.course_ID = t4.course_ID
         inner join spm.Skill t2
         on t1.skillID = t2.skillID
-        where LJID = '${id}'
+        inner join spm.registration t3
+        on t3.course_ID = t0.course_ID 
+        where t0.LJID = ${id}
+        and t3.staff_ID = (select staff_ID from spm.LearningJourney where LJID = ${id})
         `
     ).catch(e => {
         return res.status(400).json({
@@ -151,11 +156,19 @@ const getInfoAboutLJ = async (req, res) => {
             result: "Error in getting course for LJ"
         });
     });
+    // const staffCourseInfo = await db.query(
+    //     `
+    //     select * from spm.registration
+    //     where staff_ID = (select staff_ID from spm.LearningJourney
+    //     where LJID = ${id})
+    //     `
 
+    // )
     return res.status(200).json({
         LJInfo,
         skillNeededForRole,
         courseRegistered
+        //staffCourseInfo
     });
 
 
