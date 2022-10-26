@@ -7,12 +7,11 @@
                 <td>
                     <input type="text" v-model="searchValue" placeholder="Search Course" />
                 </td>
-                <td>
+                <!-- <td>
                     <input type="text" v-model="searchValue" placeholder="Search Course by Learning Journey" />
-                </td>
+                </td> -->
                 <td>
                     <select v-model="selectedSkill">
-                        <option selected="true"></option>
                         <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
                     </select>
                 </td>
@@ -288,10 +287,5 @@ a {
 
 .mouseover {
     cursor: pointer;
-}
-
-select {
-    margin: 0px;
-    width: 76%;
 }
 </style>
