@@ -2,7 +2,6 @@ const db = require('../db')
 const helper = require('../helper')
 const config = require('../config')
 const e = require("express");
-const { isDisturbed } = require('responselike');
 
 const createLJ = async (req, res) => {
     const LJInfo = req.body;
