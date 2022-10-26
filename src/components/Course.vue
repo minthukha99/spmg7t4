@@ -2,21 +2,14 @@
 <div class="header">
     <div class="header-middle-text">
         <h1>Courses</h1>
-        <table>
-            <tr>
-                <td>
-                    <input type="text" v-model="searchValue" placeholder="Search Course" />
-                </td>
-                <!-- <td>
-                    <input type="text" v-model="searchValue" placeholder="Search Course by Learning Journey" />
-                </td> -->
-                <td>
-                    <select v-model="selectedSkill">
-                        <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
+        <input type="text" v-model="searchValue" placeholder="Search Course" />
+        <br><br>
+        <label for="">Select a skill</label>
+        <select v-model="selectedSkill">
+            <option value="" disabled>All</option>
+            <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
+        </select>
+        <br><br>
         <div>
             <table>
                 <thead>
@@ -213,9 +206,9 @@ export default {
             const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
             axios.get(url2)
                 .then(response => {
-                    console.log(typeof (this.selectedSkill))
+                    // console.log(typeof (this.selectedSkill))
                     var courses = response.data
-                    console.log(courses)
+                    // console.log(courses)
                     for (var course of courses) {
                         this.courseSkillList.push({
                             id: course.course_ID,
