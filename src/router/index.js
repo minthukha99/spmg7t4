@@ -11,6 +11,7 @@ import UpdateSkill from "@/components/UpdateSkill.vue";
 import UpdateRole from "@/components/UpdateRole.vue";
 import AssignSkillstoRole from "@/components/AssignSkillstoRole.vue";
 import LJComponent from "@/components/LJComponent.vue";
+import Users from "@/components/Users.vue";
 
 
 const routes = [
@@ -116,7 +117,16 @@ const routes = [
   meta: {
       visible: false,
     },
-  }
+  },
+  {
+    path: "/Users",
+    name: "Users",
+    component: Users,
+    // props: true,
+    meta: {
+      visible: true,
+    },
+  },
   
 ];
 
