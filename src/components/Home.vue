@@ -9,43 +9,23 @@
             <div class="text-center">
                 <h5 class="mb-1">Read the following instructions</h5>
                 <p>
-                    Enter your User ID:  (130002 / 130001) 
+                    Enter your User ID:
                 </p>
-                <ul>
-                    <li>
-                        150065 for Trainer
-                    </li>
-                    <li>
-                        130001 / 130002 for Admin
-                    </li>
-                    <li>
-                        140001 for Manager
-                    </li>
-                    <li>
-                        140002 for User
-                    </li>
-
-                </ul>
-                <input type="text" v-model="userId"> 
-                <br> 
-                <button type="button" @click="saveUserId" class="button special">
-                    Save
-                </button>
-                <!-- <p>
+                <input type="text" @change="saveUserId" v-model="userId">
+                <p>
                     Select your <b>role</b> before venturing to the other parts of the website
-                </p> -->
+                </p>
             </div>
-            <!-- <select v-model="selectedRole" @change="saveRoleInSession">
+            <select v-model="selectedRole" @change="saveRoleInSession">
                 <option selected="true" disabled="disabled">Select your role</option>
                 <option v-for="role in rolesList" :key="role">{{role}}</option>
-            </select> -->
+            </select>
         </section>
     </header>
 </div>
 </template>
 
 <script>
-import axios from "axios";
 // @ is an alias to /src
 // Components
 import NavigationBar from "@/components/NavigationBar.vue";
@@ -60,38 +40,16 @@ export default {
         };
     },
     mounted() {
-        // this.selectedRole = sessionStorage.getItem('selectedRole')
+        this.selectedRole = sessionStorage.getItem('selectedRole')
         this.userId = sessionStorage.getItem('userId')
     },
     methods: {
-        // saveRoleInSession() {
-        //     sessionStorage.setItem('selectedRole', this.selectedRole)
-        //     location.reload()
-        // },
+        saveRoleInSession() {
+            sessionStorage.setItem('selectedRole', this.selectedRole)
+            location.reload()
+        },
         saveUserId() {
             sessionStorage.setItem('userId', this.userId)
-            sessionStorage.setItem('selectedRole', this.selectedRole)
-            // location.reload()
-            const url = "http://localhost:3000/user/" + this.userId
-            axios.get(url)
-                .then(response => {
-                    var roleNumber = response.data.Role
-                    if (roleNumber == 1) {
-                        sessionStorage.setItem('selectedRole', "Admin")
-                    }
-                    else if (roleNumber == 2) {
-                        sessionStorage.setItem('selectedRole', "User")
-                    }
-                    else if (roleNumber == 3) {
-                        sessionStorage.setItem('selectedRole', "Manager")
-                    }
-                    else {
-                        sessionStorage.setItem('selectedRole', "Trainer")
-                    } 
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
         }
     },
 
@@ -219,7 +177,6 @@ a {
     display: flex;
 }
 
-
 #nav-icon3.open span:first-child {
     top: 15px;
     width: 0;
@@ -274,10 +231,5 @@ a {
     h1 {
         font-size: 40px;
     }
-}
-
-.special {
-    color: white;
-    text-decoration: none;
 }
 </style>
