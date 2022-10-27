@@ -85,6 +85,22 @@
         </div> -->
       </div>
     </div>
+    <div>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Index</th>
+              <th scope="col">Roles</th>
+              <th scope="col">Courses</th>
+              <th scope="col">Skills</th>
+            
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+      </div>
 </template>
   
 <script>
