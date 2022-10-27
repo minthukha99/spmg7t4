@@ -20,13 +20,9 @@
             <button value="Cancel" class="special">
                 <router-link to="/Roles" class="special">Cancel</router-link>
             </button>
-            <!-- <button @click='updateRole(roleName); $router.push("/Roles")' value="Save" class="special">
-                Save
-            </button> -->
-            <button @click='updateRole(roleName)' value="Save" class="special">
+            <button @click='updateRole(roleName); $router.push("/Roles")' value="Save" class="special">
                 Save
             </button>
-
         </form>
     </div>
 </div>
