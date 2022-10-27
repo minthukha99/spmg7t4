@@ -42,7 +42,7 @@ export default {
       fullView: true,
       dropdownClass: "dropdown-content",
       dropdownShown: false,
-      views: ["Learning Journey", "Skills", "Roles", "Courses"],
+      views: ["Learning Journey", "Skills", "Roles", "Courses","Users"],
       classNames: { open: false, "ml-auto": true },
       rolesList: ['HR', 'Staff', 'Manager','Learner'],
       roleName: "",
