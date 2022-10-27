@@ -4,6 +4,7 @@ const config = {
         user: "admin",
         password: "$nGMccUPuF^i002*vS$W",
         database: "spm"
+        
     },
     listperPage: 10,
 };
