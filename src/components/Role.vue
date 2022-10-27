@@ -28,8 +28,49 @@
                     </tr>
                 </thead>
 
-                <tbody>
-                    <tr v-for="(role,index) in rolesList" :key="role.id">
+                <tbody v-if="selectedRole =='HR'">
+                    <tr  v-for="(role,index) in rolesList" :key="role.id">
+                        <td scope="row" data-label="Index">{{ index +1}}</td>
+                        <td scope="row" data-label="Name">{{ role.roleName }}</td>                       
+                        <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
+                        <!-- show in bullet point if got data, else dash -->
+                        <td v-if="role.skillName =='' ">
+                            -
+                        </td>
+                        <td v-else>
+                            <ul scope="row" data-label="Skills" v-for="x in role.skillName" :key="x">
+                                <li> {{x}}</li>
+                            </ul>
+                        </td>
+                        <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
+                        <td>
+                            <router-link :to="`/UpdateRole/${role.id}`">Edit</router-link>
+                        </td>
+
+                        <td v-if="role.status ==false">
+                            <a class="mouseover" v-on:click="activateRoles(role.roleName)">Activate</a>
+                        </td>
+                        <td v-else-if="role.status == true">
+                            <a class="mouseover" v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
+                        </td>
+
+                        <td v-if="role.status == false" class="inactive" data-label="Status">
+                            Inactive
+                        </td>
+                        <td v-else-if="role.status == true" class="active" data-label="Status">
+                            Active
+                        </td>
+
+                        <!-- <td scope="row" data-label="Action 4">
+                <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
+                <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
+                <router-link to="/AssignSkillstoRole">Assign skills</router-link>
+              </td> -->
+                    </tr>
+                </tbody>
+
+                <tbody v-else  v-for="(role,index) in activeRoles" :key="role.id">
+                    <tr>
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Name">{{ role.roleName }}</td>
                         <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
@@ -42,32 +83,13 @@
                                 <li> {{x}}</li>
                             </ul>
                         </td>
-
                         <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
-
-                        <td v-if="selectedRole=='HR' ">
-                            <router-link :to="`/UpdateRole/${role.id}`">Edit</router-link>
-                        </td>
-
-                        <td v-if="role.status ==false && selectedRole=='HR'">
-                            <a class="mouseover" v-on:click="activateRoles(role.roleName)">Activate</a>
-                        </td>
-                        <td v-else-if="role.status == true && selectedRole=='HR'">
-                            <a class="mouseover" v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
-                        </td>
-
-                        <td v-if="role.status == false && selectedRole=='HR' " class="inactive" data-label="Status">
-                            Inactive
-                        </td>
-                        <td v-else-if="role.status == true && selectedRole=='HR'" class="active" data-label="Status">
-                            Active
-                        </td>
-
+                
                         <!-- <td scope="row" data-label="Action 4">
-                <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
-                <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
-                <router-link to="/AssignSkillstoRole">Assign skills</router-link>
-              </td> -->
+                                <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
+                                <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
+                                <router-link to="/AssignSkillstoRole">Assign skills</router-link>
+                              </td> -->
                     </tr>
                 </tbody>
             </table>
@@ -89,7 +111,8 @@ export default {
     data() {
         return {
             rolesList: [],
-            selectedRole: ""
+            selectedRole: "",
+            activeRoles : []
         }
     },
 
@@ -108,8 +131,15 @@ export default {
                             skillName: role.skillName,
                             status: role.status
                         });
+                        if (role.status == 1) {
+                            this.activeRoles.push(
+                                {
+                                    roleName: role.roleName,
+                                    skillName: role.skillName,
+                                }
+                            )   
+                        }
                     }
-                    // console.log("rolesList=", this.rolesList)
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -133,7 +163,6 @@ export default {
         },
 
         activateRoles(roleName) {
-
             let url = "http://localhost:3000/activaterole/" + roleName;
             axios.put(url)
                 .then(response => {
