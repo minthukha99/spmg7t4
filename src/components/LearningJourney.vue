@@ -317,7 +317,7 @@ export default {
           .catch(error => {
             console.log(error.message)
           })
-          console.log(this.roleList2,"ASDFDSF")
+
       },
       // getSkillsForChosenRole() {
       //   const array = [{ id: '130001' }, { id: '130002' }, { id: '140001' }]
