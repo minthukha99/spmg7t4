@@ -1,31 +1,31 @@
 <template>
-    <div class="header">
-        <div class="header-middle-text">
-            <h1>Update Skill: {{id}}</h1>
+<div class="header">
+    <div class="header-middle-text">
+        <h1>Update Skill: {{id}}</h1>
 
-            <form>
-                <label for="skillName">Skill Name</label><br>
-                <input v-model="newSkillName" id="skillName" name="skillName"><br>
-                <br>
-                <label for="skillsNeeded" class="multiselect" >Roles that require skill</label>
-                <br>
-                <select multiple v-model="selectedRoles">
-                    <option selected="true" disabled="disabled">Select an option (if any)</option>
-                    <option v-for="role in rolesList" :key="role.id">>{{role.roleName}}</option>       
-                </select>
-                <br>
-                <br>
-                <button value="Cancel" class="special">
-                    <router-link to="/Skills" class="special">Cancel</router-link>
-                </button> 
-                <button @click='updateSkill(skillName); $router.push("/Skills")' value="Save" class="special">
-                    Save
-                </button>  
-            </form>
-        </div>
+        <form>
+            <label for="skillName">Skill Name</label><br>
+            <input v-model="newSkillName" id="skillName" name="skillName"><br>
+            <br>
+            <label for="skillsNeeded" class="multiselect">Roles that require skill</label>
+            <br>
+            <select multiple v-model="selectedRoles">
+                <option selected="true" disabled="disabled">Select an option (if any)</option>
+                <option v-for="role in rolesList" :key="role.id">>{{role.roleName}}</option>
+            </select>
+            <br>
+            <br>
+            <button value="Cancel" class="special">
+                <router-link to="/Skills" class="special">Cancel</router-link>
+            </button>
+            <button @click='updateSkill(skillName); $router.push("/Skills")' value="Save" class="special">
+                Save
+            </button>
+        </form>
     </div>
+</div>
 </template>
-  
+
 <script>
 import axios from "axios";
 export default {
@@ -40,9 +40,9 @@ export default {
 
     data() {
         return {
-        rolesList: [],
-        selectedRoles: [],
-        newSkillName: '',
+            rolesList: [],
+            selectedRoles: [],
+            newSkillName: '',
         }
     },
 
@@ -50,25 +50,22 @@ export default {
         getRoles() {
             const url = "http://localhost:3000/roles";
             axios.get(url)
-            .then(response => {
-                var roleData = response.data
-                // console.log("roleData=", roleData)
-                for (var role of roleData) {
-                this.rolesList.push(
-                    {
-                    id: role._id,
-                    roleName: role.roleName,
-                    skillName: role.skillName,
-                    status: role.status
-                    
+                .then(response => {
+                    var roleData = response.data
+                    // console.log("roleData=", roleData)
+                    for (var role of roleData) {
+                        this.rolesList.push({
+                            id: role._id,
+                            roleName: role.roleName,
+                            skillName: role.skillName,
+                            status: role.status
+                        });
                     }
-                );
-                }
-                // console.log("rolesList=", this.rolesList)
-            })
-            .catch(error => {
-                console.log(error.message)
-            })
+                    // console.log("rolesList=", this.rolesList)
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
         },
 
         updateSkill() {
@@ -80,17 +77,17 @@ export default {
             console.log(this.newSkillName)
 
             axios.put(url, {
-                roleName: this.selectedRoles,
-                skillName: this.newSkillName
-            })
+                    roleName: this.selectedRoles,
+                    skillName: this.newSkillName
+                })
 
-            .then(response => {
-                console.log("hello", skillName)
-            })
+                .then(response => {
+                    console.log("hello", skillName)
+                })
 
-            .catch(error => {
-                console.log(error.message)
-            })
+                .catch(error => {
+                    console.log(error.message)
+                })
         }
 
     }
@@ -98,9 +95,10 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
-    .special {
-        color:white; 
-        text-decoration: none;
-    }
+.special {
+    color: white;
+    text-decoration: none;
+}
 </style>

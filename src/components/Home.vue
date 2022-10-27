@@ -1,57 +1,58 @@
 <template>
-  <div class="home-page-wrapper">
+<div class="home-page-wrapper">
     <!--top header-->
     <header class="header">
-      <div class="header-middle-text d-flex">
-        <h1><i>Learning Journey Management System</i></h1>
-      </div>
-      <section class="header-middle-text container"><div class="text-center">
-          <h5 class="mb-1">Read the following instructions</h5>
-          <p>
-            Enter your User ID:
-          </p>
-          <input type="text" @change="saveUserId" v-model="userId">
-          <p>
-            Select your <b>role</b> before venturing to the other parts of the website
-          </p>
+        <div class="header-middle-text d-flex">
+            <h1><i>Learning Journey Management System</i></h1>
         </div>
-        <select v-model="selectedRole" @change="saveRoleInSession">
-          <option selected="true" disabled="disabled">Select your role</option>
-          <option v-for="role in rolesList" :key="role">{{role}}</option>
-        </select>
-      </section>
+        <section class="header-middle-text container">
+            <div class="text-center">
+                <h5 class="mb-1">Read the following instructions</h5>
+                <p>
+                    Enter your User ID:
+                </p>
+                <input type="text" @change="saveUserId" v-model="userId">
+                <p>
+                    Select your <b>role</b> before venturing to the other parts of the website
+                </p>
+            </div>
+            <select v-model="selectedRole" @change="saveRoleInSession">
+                <option selected="true" disabled="disabled">Select your role</option>
+                <option v-for="role in rolesList" :key="role">{{role}}</option>
+            </select>
+        </section>
     </header>
-  </div>
+</div>
 </template>
 
 <script>
-  // @ is an alias to /src
-  // Components
-  import NavigationBar from "@/components/NavigationBar.vue";
-  
-  export default {
-  name: "Home",
-  data() {
-    return {
-      selectedRole: "",
-      rolesList: ['HR', 'Staff', 'Manager', 'Learner'],
-      userId: ""
-    };
-  },
-  mounted() {
-    this.selectedRole = sessionStorage.getItem('selectedRole')
-    this.userId = sessionStorage.getItem('userId')
-  },
-  methods: {
-    saveRoleInSession() {
-      sessionStorage.setItem('selectedRole', this.selectedRole)
-      location.reload()
+// @ is an alias to /src
+// Components
+import NavigationBar from "@/components/NavigationBar.vue";
+
+export default {
+    name: "Home",
+    data() {
+        return {
+            selectedRole: "",
+            rolesList: ['HR', 'Staff', 'Manager', 'Learner'],
+            userId: ""
+        };
     },
-    saveUserId() {
-      sessionStorage.setItem('userId', this.userId)
-    }
-  },
-  
+    mounted() {
+        this.selectedRole = sessionStorage.getItem('selectedRole')
+        this.userId = sessionStorage.getItem('userId')
+    },
+    methods: {
+        saveRoleInSession() {
+            sessionStorage.setItem('selectedRole', this.selectedRole)
+            location.reload()
+        },
+        saveUserId() {
+            sessionStorage.setItem('userId', this.userId)
+        }
+    },
+
     // components: {
     //   NavigationBar,
     // },
@@ -100,16 +101,15 @@
     //     }
     //   });
     // }, 
-  };
-
+};
 </script>
 
 <style scoped>
-  .home-page-wrapper {
+.home-page-wrapper {
     overflow-x: hidden;
-  }
+}
 
-  #nav-icon3 {
+#nav-icon3 {
     width: 45px;
     height: 10px;
     position: relative;
@@ -118,20 +118,21 @@
     transition: .5s ease-in-out;
     cursor: pointer;
     align-content: center;
-  }
+}
 
-  a {
+a {
     font-weight: bold;
-  }
-  .small {
+}
+
+.small {
     /* position:inherit; */
     /* text-align: center; */
     padding: 20px 20px 30px;
     margin-left: auto;
     display: inline;
-  }
+}
 
-  .small .dropdown-content {
+.small .dropdown-content {
     position: absolute;
     top: 60px;
     right: 0px;
@@ -139,29 +140,29 @@
     flex-direction: column;
     border-radius: 5px;
     background: #ebecee;
-    box-shadow: rgb(206, 209, 209)6px 0 rgb(0 0 0 /  10%);
+    box-shadow: rgb(206, 209, 209)6px 0 rgb(0 0 0 / 10%);
     z-index: 1;
     width: 200px;
-  }
+}
 
-  .links {
-      display: flex;
-      width: 90%;
-      justify-content: space-around;
-      align-items: center;
-      align-content: space-around;
-    }
+.links {
+    display: flex;
+    width: 90%;
+    justify-content: space-around;
+    align-items: center;
+    align-content: space-around;
+}
 
-  .home-page-wrapper .small .dropdown-content a {
+.home-page-wrapper .small .dropdown-content a {
     padding: 12px 16px;
     margin-left: 0;
     margin-right: 0;
     text-decoration: none;
     display: flex;
     text-align: left;
-  }
+}
 
-  .home-page-wrapper .small .dropdown-content {
+.home-page-wrapper .small .dropdown-content {
     position: absolute;
     top: 60px;
     right: 0;
@@ -170,19 +171,19 @@
     /* box-shadow: 0 8px 16px 0 rgb(0 0 0 / 20%); */
     z-index: 1;
     width: 200px;
-  }
+}
 
-  .home-page-wrapper .small .dropdown-content.show-content {
+.home-page-wrapper .small .dropdown-content.show-content {
     display: flex;
-  }
+}
 
-  #nav-icon3.open span:first-child {
+#nav-icon3.open span:first-child {
     top: 15px;
     width: 0;
     left: 50%;
-  }
+}
 
-  #nav-icon3 span {
+#nav-icon3 span {
     display: block;
     position: absolute;
     height: 5px;
@@ -193,41 +194,42 @@
     left: 0;
     transform: rotate(0deg);
     transition: .25s ease-in-out;
-  }
+}
 
-  #nav-icon3.open span:nth-child(2) {
+#nav-icon3.open span:nth-child(2) {
     transform: rotate(45deg);
-  }
+}
 
-  #nav-icon3 span:nth-child(2), #nav-icon3 span:nth-child(3) {
-      top: 10px;
-  }
+#nav-icon3 span:nth-child(2),
+#nav-icon3 span:nth-child(3) {
+    top: 10px;
+}
 
-  #nav-icon3.open span:nth-child(3) {
+#nav-icon3.open span:nth-child(3) {
     transform: rotate(-45deg);
-  }
+}
 
-  #nav-icon3 span:nth-child(2), #nav-icon3 span:nth-child(3) {
-      top: 10px;
-  }
+#nav-icon3 span:nth-child(2),
+#nav-icon3 span:nth-child(3) {
+    top: 10px;
+}
 
-  #nav-icon3.open span:nth-child(4) {
+#nav-icon3.open span:nth-child(4) {
     top: 18px;
     width: 0;
     left: 50%;
-  }
+}
 
-  @media screen and (max-width: 230px) {
+@media screen and (max-width: 230px) {
     #home-dropdown-small {
-      width: 150px;
+        width: 150px;
     }
 
-  }
+}
 
-  @media screen and (max-width: 1280px) {
+@media screen and (max-width: 1280px) {
     h1 {
-      font-size: 40px;
+        font-size: 40px;
     }
-  }
-
+}
 </style>

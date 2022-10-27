@@ -1,48 +1,60 @@
 <template>
-    <div class="header">
-        <div class="header-middle-text">
-            <h1>
-                Assign Skills to <u>{{   course.course_Name  }}</u>
-            </h1>
-            <form>
-                <p> <strong>Course Code: </strong> {{ course.course_ID }} </p>
-                <p> <strong>Course Name: </strong>  {{ course.course_Name }}</p>
-                <p> <strong>Course Description: </strong> {{ course.course_Name }}</p>
-                <p> <strong>Course Status: </strong>  {{ course.course_Status }}</p>
-                <p> <strong>Course Type: </strong> {{ course.course_Type }}</p>
-                <p > 
-                    <strong> Skills assigned: </strong> 
-                    <ul v-for="skills in this.skillsAssigned" :key="skills"> <li>{{ skills }} </li></ul>  
-                </p>
-                <br>
-                <br>
-
+<div class="header">
+    <div class="header-middle-text">
+        <h1>
+            Assign Skills to <u>{{ course.course_Name  }}</u>
+        </h1>
+        <form>
+            <p> <strong>Course Code: </strong> {{ course.course_ID }} </p>
+            <p> <strong>Course Name: </strong> {{ course.course_Name }}</p>
+            <p> <strong>Course Description: </strong> {{ course.course_Name }}</p>
+            <p> <strong>Course Status: </strong> {{ course.course_Status }}</p>
+            <p> <strong>Course Type: </strong> {{ course.course_Type }}</p>
+            <p>
+                <strong> Skills assigned: </strong>
+                <ul v-for="skills in this.skillsAssigned" :key="skills">
+                    <li>{{ skills }} </li>
+                </ul>
+            </p>
+            <div v-if="errorMessage" class="errorMessage">
+                {{ errorMessage }}
+            </div>
+            <div v-else>
                 <label for="skillsNeeded" class="multiselect">Skills to be assigned:</label>
                 <br>
                 <div class="selectBox">
                     <div v-for="skill in skillsList" :key="skill.id">
                         <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" :selected="this.skillsAssigned[0]">
                         <label :for="skill.id">{{skill.skillName}}</label>
-                    </div>  
+                    </div>
                 </div>
-                <br>
-                <br>
-                
-
-
-                
-                <button value="Cancel" class="special">
-                    <router-link to="/courses" class="special">Cancel</router-link>
-                </button>
-                <button @click='assignSelectedSkillsToCourse();  $router.push("/courses")' type="submit" value="Save" class="special">
-                    Save
-                </button>
-
-            </form>
-        </div>
+                <div v-if="errorMessage" class="errorMessage">
+                    {{ errorMessage }}
+                </div>
+                <div v-else>
+                    <br>
+                </div>
+                <div>
+                    <button type="button">
+                        <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
+                    </button>
+                    <button value="Cancel" class="special">
+                        <router-link to="/courses" class="special">Cancel</router-link>
+                    </button>
+                    <button type="button" @click='assignSelectedSkillsToCourse()' class="special">
+                    <!-- <button @click='createRole(); $router.push("/skills")' value="Save" class="special"> -->
+                        Save
+                    </button>
+                    <!-- <button @click='assignSelectedSkillsToCourse();  $router.push("/courses")' type="button" value="Save" class="special">
+                        Save
+                    </button> -->
+                </div>
+            </div>
+        </form>
     </div>
+</div>
 </template>
-  
+
 <script>
 import axios from "axios";
 export default {
@@ -58,10 +70,11 @@ export default {
         return {
             skillsList: [],
             selectedSkills: [],
-            course : [],
+            course: [],
             courseName: "",
             courseSelected: {},
-            skillsAssigned: []
+            skillsAssigned: [],
+            errorMessage: ""
         }
     },
     methods: {
@@ -72,14 +85,12 @@ export default {
                 .then(response => {
                     var skillData = response.data
                     for (var skill of skillData) {
-                        this.skillsList.push(
-                            {
-                                id: skill._id,
-                                roleName: skill.roleName,
-                                skillName: skill.skillName,
-                                status: skill.status
-                            }
-                        );
+                        this.skillsList.push({
+                            id: skill._id,
+                            roleName: skill.roleName,
+                            skillName: skill.skillName,
+                            status: skill.status
+                        });
                     }
                 })
                 .catch(error => {
@@ -101,7 +112,7 @@ export default {
                     console.log(error.message)
                 })
         },
-        getSkillsAssignedToCourse() {    
+        getSkillsAssignedToCourse() {
             // get the skills assigned to the course  
             const url = "http://localhost:3000/course/" + this.id;
             axios.get(url)
@@ -114,32 +125,80 @@ export default {
                     console.log(error.message)
                 })
         },
+
+        // function used for validation in assignSelectedSkillsToCourse()
+        findCommonSkills(array1, array2) {
+            
+            // Loop for array1
+            for(let i = 0; i < array1.length; i++) {
+                
+                // Loop for array2
+                for(let j = 0; j < array2.length; j++) {
+                    
+                    // Compare the element of each and
+                    // every element from both of the
+                    // arrays
+                    if(array1[i] === array2[j]) {
+                    
+                        // Return if common element found
+                        return true;
+                    }
+                }
+            }
+            
+            // Return if no common element exist
+            return false;
+        },
+
         assignSelectedSkillsToCourse() {
             // assign skills that user selected to the Course 
-            let url = "http://localhost:3000/assignskilltocourse";
-            for (var x in this.selectedSkills) {
-                axios.post(url, {
-                    skillName: this.selectedSkills[x],
-                    course_ID: this.id,
-                })
+            this.errorMessage = "";
+            console.log(this.skillsAssigned)
+            console.log(this.selectedSkills)
+            // console.log(this.)
+            if (this.selectedSkills.length == 0) {
+                console.log("its empty")
+                this.errorMessage += "Please assign at least one skill to the course before saving."
+            // } else if (this.skillsList.includes(this.selectedSkills)) {
+            // } else if (this.skillsAssigned.includes(this.selectedSkills) != true) {
+            } else if (this.findCommonSkills(this.skillsAssigned, this.selectedSkills)) {
+                console.log("skill already part of course")
+                // location.reload()
+                this.errorMessage += "Skill(s) selected has already been assigned to course. Please try again."
+            } else {
+                let url = "http://localhost:3000/assignskilltocourse";
+                for (var x in this.selectedSkills) {
+                    console.log(this.selectedSkills)
+                    axios.post(url, {
+                        skillName: this.selectedSkills[x],
+                        course_ID: this.id,
+                    })
                     .then(response => {
-                        console.log("Success!", this.selectedSkills[x] ,"assigned to", this.id)
+                        console.log("Success!", this.selectedSkills[x], " has been assigned to course ", this.id)
+                        this.errorMessage += "Success!" + this.selectedSkills[x] + " has been assigned to course " + this.id
                     })
                     .catch(error => {
                         console.log(error.message)
                     })
-            }   
-        }
+                }
+            }
+            console.log(this.errorMessage)
+        },
+
+        
     },
-
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
+
 <style scoped>
 .special {
     color: white;
     text-decoration: none;
+}
+
+.errorMessage {
+    color: red
 }
 </style>
