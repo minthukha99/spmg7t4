@@ -20,7 +20,10 @@
             <button value="Cancel" class="special">
                 <router-link to="/Roles" class="special">Cancel</router-link>
             </button>
-            <button @click='updateRole(roleName); $router.push("/Roles")' value="Save" class="special">
+            <!-- <button @click='updateRole(roleName); $router.push("/Roles")' value="Save" class="special">
+                Save
+            </button> -->
+            <button @click='updateRole(roleName)' value="Save" class="special">
                 Save
             </button>
 
@@ -79,6 +82,7 @@ export default {
             console.log(url)
 
             console.log(this.newRoleName)
+            console.log(this.selectedSkills)
             axios.put(url, {
                     roleName: this.newRoleName,
                     skillName: this.selectedSkills

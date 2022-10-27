@@ -46,7 +46,7 @@
                         <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
 
                         <td v-if="selectedRole=='HR' ">
-                            <router-link :to="`/UpdateRole/${role.roleName}`">Edit</router-link>
+                            <router-link :to="`/UpdateRole/${role.id}`">Edit</router-link>
                         </td>
 
                         <td v-if="role.status ==false && selectedRole=='HR'">
@@ -103,7 +103,7 @@ export default {
                     console.log("roleData=", roleData)
                     for (var role of roleData) {
                         this.rolesList.push({
-                            id: role._id,
+                            id: role.roleID,
                             roleName: role.roleName,
                             skillName: role.skillName,
                             status: role.status
