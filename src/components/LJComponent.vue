@@ -52,16 +52,16 @@ export default {
 
     methods: {
         getLearningJourneyInfo() {
+            
             const url = "http://localhost:3000/learningjourneyinfo/" + this.id;
             axios.get(url)
                 .then(response => {
                     var ljInfoData = response.data
                     console.log(ljInfoData)
+                    
                     // console.log(ljInfoData.LJInfo[0].roleName) 
                     this.roleName = ljInfoData.LJInfo[0].roleName
-
                     // console.log(ljInfoData.LJInfo.roleName)
-
                     // for (var data of ljInfoData) {
                     //     console.log(data)
                     //     console.log(ljInfoData.LJInfo.roleName)
