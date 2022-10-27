@@ -50,22 +50,25 @@ export default {
         getRoles() {
             const url = "http://localhost:3000/roles";
             axios.get(url)
-                .then(response => {
-                    var roleData = response.data
-                    // console.log("roleData=", roleData)
-                    for (var role of roleData) {
-                        this.rolesList.push({
-                            id: role._id,
-                            roleName: role.roleName,
-                            skillName: role.skillName,
-                            status: role.status
-                        });
+            .then(response => {
+                var roleData = response.data
+                // console.log("roleData=", roleData)
+                for (var role of roleData) {
+                this.rolesList.push(
+                    {
+                    id: role._id,
+                    roleName: role.roleName,
+                    skillName: role.skillName,
+                    status: role.status
+                    
                     }
-                    // console.log("rolesList=", this.rolesList)
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
+                );
+                }
+                // console.log("rolesList=", this.rolesList)
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
         },
 
         updateSkill() {

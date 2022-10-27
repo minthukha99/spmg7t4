@@ -43,7 +43,6 @@ export default {
             skillsList: [],
             selectedSkills: [],
             newRoleName: '',
-
         }
     },
 
@@ -56,15 +55,12 @@ export default {
                     var skillData = response.data
                     // console.log("SkillData=", skillData)
                     for (var skill of skillData) {
-                        this.skillsList.push(
-                            {
-                                id: skill._id,
-                                roleName: skill.roleName,
-                                skillName: skill.skillName,
-                                status: skill.status
-        
-                            }
-                        );
+                        this.skillsList.push({
+                            id: skill._id,
+                            roleName: skill.roleName,
+                            skillName: skill.skillName,
+                            status: skill.status
+                        });
                     }
 
                     // console.log("SkillsList=", this.skillsList)
@@ -97,11 +93,10 @@ export default {
                     console.log(error.message)
                 })
 
-        }  
+        },
 
     }
 }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
