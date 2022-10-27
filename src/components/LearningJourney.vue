@@ -59,7 +59,7 @@
             <p>Learning journeys consist of courses that help you cover the most ground in the shortest amount of time for the position that you desire. Consider them your personal game plan for to upskill yourself.
             </p>
             <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
-            <div class="card" v-for="eachLJ in LJlist" :key="eachLJ">
+            <div class="card" v-for="(eachLJ,index) in roleList2" :key="eachLJ" >
                 <!-- <div class="card__image card__image--fence"></div> -->
                 <div class="card__content">
                     <div class="card__title">
@@ -72,9 +72,10 @@
                         Number of courses: 13
                     </div>
                     <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
+                    <!-- LJlist -->
                     <!-- <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link> -->
                     <button class="special">
-                        <router-link :to="`/LJComponent/${eachLJ.ljId}`">View Learning Journey</router-link>
+                        <router-link :to="`/LJComponent/${ LJlist[index].ljId }`">View Learning Journey</router-link>
                     </button>
                 </div>
             </div>
@@ -110,7 +111,9 @@ export default {
             skillsNeededForRole: [], // to retrieve and display skills needed for user chosen role
             coursesNeededforSkill: [], // to retrieve and display the courses needed for the skills needed for user chosen role
             courseSelected: null, // a list containing all the courses user selected
-            LJlist: [] // to store all the user LJ to display them
+          LJlist: [], // to store all the user LJ to display them
+          roleList: [],
+            roleList2: []
         }
     },
 
@@ -243,7 +246,79 @@ export default {
           })
           // console.log(this.skillsNeededForRole)
       },
-
+      getLJofUser() {
+        // retrieve all the LJ of the user
+        var userId = sessionStorage.getItem("userId")
+        const url = "http://localhost:3000/getlearningjourneyby/" + userId;
+        axios.get(url)
+          .then(response => {
+            for (var eachLJ of response.data) {
+              this.LJlist.push({
+                ljId: eachLJ.LJID,
+                roleId: eachLJ.roleID,
+                roleName : [],
+                staffId: eachLJ.staff_ID
+              })
+              this.roleList.push({
+                roleId: eachLJ.roleID
+              })
+              //         })
+              //         .catch(error => {
+              //             console.log(error.message)
+              //         })
+            }
+            // console.log(this.LJlist)
+            const array = this.roleList
+            // console.log(array)
+            let users = []
+            let promises = []
+            for (var i = 0; i < array.length; i++) {
+              promises.push(
+                axios
+                  .get('http://localhost:3000/role/' + array[i].roleId)
+                  .then(response => {
+                    // do something with response
+                    this.roleList2.push({
+                      roleName :response.data.roleName,
+                      roleId : response.data.roleID,
+                    });
+                  })
+              )
+            }
+            Promise.all(promises).then(() => console.log(this.roleList2 ))
+            // for (var y in this.LJlist) {
+            //   // console.log(this.LJlist[x])
+            //   var thisRoleId = this.LJlist[y].roleId
+            //   console.log(y)
+            //   const url = "http://localhost:3000/role/" + thisRoleId;
+            //   // axios.get(url)
+            //   //   .then(response => {
+            //   //     // console.log(response.data.roleID)
+            //   //     console.log(y)
+            //   //     console.log(this.LJlist[y])
+            //   //     // this.LJlist.roleName.push(response.data.roleName)
+            //   //     // console.log(url)
+            //   //     // console.log(this.LJlist[x])
+            //   //     // console.log(response.data.roleName)
+            //   //     // var myObj2 = response.data.roleName
+            //   //     // console.log(response.data.roleName)
+            //   //     // this.LJlist[x].roleName = response.data.roleName
+            //   //     // console.log(this.LJlist)
+            //   //   })
+            //   //   .catch(error => {
+            //   //     console.log(error.message)
+            //   //   }) 
+              
+            //   // this.LJlist[x].roleName = 
+              
+            // }
+            // axios.get("http://localhost:3000/role/" + roleId)
+          })
+          .catch(error => {
+            console.log(error.message)
+          })
+          console.log(this.roleList2,"ASDFDSF")
+      },
       // getSkillsForChosenRole() {
       //   const array = [{ id: '130001' }, { id: '130002' }, { id: '140001' }]
       //   let users = [];
@@ -280,10 +355,10 @@ export default {
             axios.post(url, {
                     roleName: this.roleSelected,
                     staff_ID: sessionStorage.getItem("userId"),
-                    courseRegistered: ["a", "b", "c"]
+                    // courseRegistered: ["a", "b", "c"]
                 })
                 .then(response => {
-                  console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"), ["a", "b", "c"] )
+                  console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
                     
                 })
                 .catch(error => {
@@ -291,35 +366,7 @@ export default {
                 })
         },
         // http://localhost:3000/getlearningjourneyby/130002
-        getLJofUser() {
-            // retrieve all the LJ of the user
-            var userId = sessionStorage.getItem("userId")
-            const url = "http://localhost:3000/getlearningjourneyby/" + userId;
-            axios.get(url)
-                .then(response => {
-                    for (var eachLJ of response.data) {
-                        // call GET ROLE BY ID api to get the role name with roleid
-                        var roleId = eachLJ.roleID
-                        axios.get("http://localhost:3000/role/" + roleId)
-                            .then(response => {
-                                let roleName = response.data.roleName
-                                this.LJlist.push({
-                                    ljId: eachLJ.LJID,
-                                    roleId: eachLJ.roleID,
-                                    roleName: roleName,
-                                    staffId: eachLJ.staff_ID
-                                })
-                            })
-                            .catch(error => {
-                                console.log(error.message)
-                            })
-                    }
-                    // console.log(this.LJlist)
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
-        },
+        
     },
     created() {
       const url = "http://localhost:3000/availableroles";
