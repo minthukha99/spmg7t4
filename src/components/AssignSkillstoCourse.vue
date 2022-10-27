@@ -125,21 +125,57 @@ export default {
                     console.log(error.message)
                 })
         },
+
+        // function used for validation in assignSelectedSkillsToCourse()
+        findCommonSkills(array1, array2) {
+            
+            // Loop for array1
+            for(let i = 0; i < array1.length; i++) {
+                
+                // Loop for array2
+                for(let j = 0; j < array2.length; j++) {
+                    
+                    // Compare the element of each and
+                    // every element from both of the
+                    // arrays
+                    if(array1[i] === array2[j]) {
+                    
+                        // Return if common element found
+                        return true;
+                    }
+                }
+            }
+            
+            // Return if no common element exist
+            return false;
+        },
+
         assignSelectedSkillsToCourse() {
             // assign skills that user selected to the Course 
             this.errorMessage = "";
+            console.log(this.skillsAssigned)
+            console.log(this.selectedSkills)
+            // console.log(this.)
             if (this.selectedSkills.length == 0) {
                 console.log("its empty")
                 this.errorMessage += "Please assign at least one skill to the course before saving."
+            // } else if (this.skillsList.includes(this.selectedSkills)) {
+            // } else if (this.skillsAssigned.includes(this.selectedSkills) != true) {
+            } else if (this.findCommonSkills(this.skillsAssigned, this.selectedSkills)) {
+                console.log("skill already part of course")
+                // location.reload()
+                this.errorMessage += "Skill(s) selected has already been assigned to course. Please try again."
             } else {
                 let url = "http://localhost:3000/assignskilltocourse";
                 for (var x in this.selectedSkills) {
+                    console.log(this.selectedSkills)
                     axios.post(url, {
                         skillName: this.selectedSkills[x],
                         course_ID: this.id,
                     })
                     .then(response => {
-                        console.log("Success!", this.selectedSkills[x], "assigned to", this.id)
+                        console.log("Success!", this.selectedSkills[x], " has been assigned to course ", this.id)
+                        this.errorMessage += "Success!" + this.selectedSkills[x] + " has been assigned to course " + this.id
                     })
                     .catch(error => {
                         console.log(error.message)
@@ -148,6 +184,8 @@ export default {
             }
             console.log(this.errorMessage)
         },
+
+        
     },
 }
 </script>
