@@ -6,7 +6,7 @@
         <br><br>
         <label for="">Select a skill</label>
         <select v-model="selectedSkill">
-            <option value="" disabled>All</option>
+            <option value="">All</option>
             <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
         </select>
         <br><br>
@@ -173,6 +173,7 @@ export default {
                     // this.getRoles()
                     location.reload()
 
+
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -239,7 +240,7 @@ export default {
             .then(response => {
                 var coursesData = response.data
                 this.errorMessage = "";
-                    if (this.coursesList.length == 0) {
+                    if (this.coursesData == 0) {
                          console.log("its empty")
                          this.errorMessage += "No courses available currently!"
                    } else {
