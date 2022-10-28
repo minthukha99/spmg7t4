@@ -115,7 +115,7 @@ const getSkill = async (req, res) => {
         on t1.roleID = t2.roleID
         inner join spm.Skill t3
         on t1.skillID = t3.skillID
-        where (t3.skillID = '${identifier}' or t3.skillName = '${identifier}')
+        where t3.skillName = '${identifier}'
         and t2.status = 1`
     )
     const roleData = helper.emptyOrRows(roles);
@@ -176,7 +176,7 @@ const deleteSkill = async (req, res) => {
     const result = await db.query(
         `UPDATE spm.Skill
         SET status = 0
-        WHERE skillID = '${identifier}' or skillName = '${identifier}'
+        WHERE skillName = '${identifier}'
         `
     ).catch(e =>{
         return res.status(400).json({
@@ -194,7 +194,7 @@ const activateSkill = async (req, res) => {
     const result = await db.query(
         `UPDATE spm.Skill
         SET status = 1
-        WHERE skillID = '${identifier}' or skillName = '${identifier}'
+        WHERE skillName = '${identifier}'
         `
     ).catch(e =>{
         return res.status(400).json({
