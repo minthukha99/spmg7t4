@@ -103,8 +103,7 @@ export default {
 </script>
   
 <style scoped>
-
-    .header {
+.header {
         height:auto;
         display: flex;
         align-items: center;
@@ -130,6 +129,16 @@ export default {
         justify-content: center;
         /* flex-wrap: wrap;
         flex-direction: row; */
+        
+        position: fixed;  
+        /* left: 0; */
+        top: 0; 
+        width: 180vw;
+        z-index: 100;
+        height: 80px;
+        background-color:#f8f8f8
+
+
     }
 
     a {
@@ -265,6 +274,5 @@ export default {
       width: 20%;
       margin-top: 20px
     }
-
-  </style>
+</style>
   
