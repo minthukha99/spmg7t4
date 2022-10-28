@@ -18,13 +18,13 @@
                         <th scope="col">Index</th>
                         <th scope="col">Name</th>
                         <th scope="col">Affected Roles</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Action 1</th>
-                        <th scope="col">Action 2</th>
+                        <th scope="col" v-if="selectedRole=='HR'">Status</th>
+                        <th scope="col" v-if="selectedRole=='HR'">Action 1</th>
+                        <th scope="col" v-if="selectedRole=='HR'">Action 2</th>
 
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-if="selectedRole=='HR'">
                     <tr v-for="(skill,index) in skillsList" :key="skill.id">
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Name">{{ skill.skillName }}</td>
@@ -56,9 +56,35 @@
 
                         <td v-else data-label="Action 2">
                             <a class="mouseover" v-on:click="deactivateSkills(skill.skillName)">Deactivate</a>
-                        </td>
+                        </td>  
                     </tr>
                 </tbody>
+
+
+                <tbody v-else  v-for="(skill,index) in activeSkills" :key="skill.id">
+                    <tr>
+                        <td scope="row" data-label="Index">{{ index +1}}</td>
+                        <td scope="row" data-label="Name">{{ skill.skillName }}</td>
+                        <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
+                        <!-- show in bullet point if got data, else dash -->
+                        <td v-if="skill.roleName =='' ">
+                            -
+                        </td>
+                        <td v-else>
+                            <ul scope="row" data-label="Roles" v-for="x in skill.roleName" :key="x">
+                                <li> {{x}}</li>
+                            </ul>
+                        </td>
+                        <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
+                
+                        <!-- <td scope="row" data-label="Action 4">
+                                <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
+                                <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
+                                <router-link to="/AssignSkillstoRole">Assign skills</router-link>
+                              </td> -->
+                    </tr>
+                </tbody>
+
             </table>
         </div>
     </div>
@@ -76,13 +102,16 @@ export default {
 
     data() {
         return {
-            skillsList: []
+            skillsList: [],
+            activeSkills: [],
+            selectedRole: ""
         }
     },
 
     methods: {
 
         getSkills() {
+            this.selectedRole = sessionStorage.getItem('selectedRole') // get role saved in session storage
             const url = "http://localhost:3000/skills";
             axios.get(url)
                 .then(response => {
@@ -100,11 +129,21 @@ export default {
                             status: skill.status
                             //v: skill._v
                         });
+                        if(skill.status == 1) {
+                            this.activeSkills.push(
+                                {
+                                    id: skill._id,      
+                                    roleName: skill.roleName,
+                                    skillName: skill.skillName
+                                    
+                                }
+                            )   
+                        }
                         // console.log(this.skillsList.roleName + "AA")
                         // if (this.skillsList.roleName == []) {
                         //   console.log("DD")
                         // }
-                    }
+                  }
                     console.log("SkillsList=", this.skillsList)
                 })
                 .catch(error => {

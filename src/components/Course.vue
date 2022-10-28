@@ -155,6 +155,12 @@ export default {
             skillsList: [],
             selectedSkill: '',
             courseSkillList: [],
+<<<<<<< Updated upstream
+=======
+            errormessage: [],
+            selectedRole: "",
+            activeCourses: []
+>>>>>>> Stashed changes
         }
     },
 
@@ -228,12 +234,14 @@ export default {
     },
 
     created() {
+        this.selectedRole = sessionStorage.getItem('selectedRole') // get role saved in session storage
         const url = "http://localhost:3000/courses";
         axios.get(url)
             .then(response => {
                 var coursesData = response.data
                 for (var course of coursesData) {
                     // console.log(course)
+<<<<<<< Updated upstream
                     this.coursesList.push({
                         id: course.course_ID,
                         courseCat: course.course_Category,
@@ -243,6 +251,38 @@ export default {
                         courseType: course.course_Type
                     });
                 }
+=======
+                        this.coursesList.push({
+                            id: course.course_ID,
+                            courseCat: course.course_Category,
+                            courseDesc: course.course_Desc,
+                            courseName: course.course_Name,
+                            courseStatus: course.course_Status,
+                            courseType: course.course_Type
+                        });
+
+
+                        if (course.status == "Active") {
+                            this.activeRoles.push(
+                                {
+                                  id: course.course_ID,
+                                  courseCat: course.course_Category,
+                                  courseDesc: course.course_Desc,
+                                  courseName: course.course_Name,
+                                  courseStatus: course.course_Status,
+                                  courseType: course.course_Type
+                                }
+                            )   
+                        }
+
+
+
+
+
+                    // <CAlert v-if="course.courseStatus == 'Retired'"> No courses available </CAlert>
+                } 
+            }
+>>>>>>> Stashed changes
             })
             .catch(error => {
                 console.log(error.message)

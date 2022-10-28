@@ -108,6 +108,18 @@ export default {
                             skillName: role.skillName,
                             status: role.status
                         });
+<<<<<<< Updated upstream
+=======
+                        if (role.status == 1) {
+                            this.activeRoles.push(
+                                {
+                                    id: role.roleID,
+                                    roleName: role.roleName,
+                                    skillName: role.skillName,
+                                }
+                            )   
+                        }
+>>>>>>> Stashed changes
                     }
                     // console.log("rolesList=", this.rolesList)
                 })
