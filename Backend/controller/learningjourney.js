@@ -17,6 +17,19 @@ const createLJ = async (req, res) => {
             result: "Fail to create LJ"
         });
     });
+    var insertStr = `Insert into spm.LearningJourneyCourse(LJID,course_ID) values `
+    data.course_ID.forEach(c => {
+        insertStr += `('${result.insertId}','${c}'),`
+    });
+    insertStr = insertStr.slice(0, -1);
+    const insertResult = await db.query(
+        insertStr
+    ).catch(e => {
+        return res.status(400).json({
+            status: 400,
+            result: "Fail to add course to LJ"
+        });
+    });
 
     return res.status(200).json({
         status: 200,
@@ -173,6 +186,5 @@ const getInfoAboutLJ = async (req, res) => {
 
 
 }
-
 module.exports = { getInfoAboutLJ, createLJ, GetLjbyStaffID, deleteLj, addCourseToLJ, updateCourseFromLJ }
 

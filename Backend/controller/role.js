@@ -131,7 +131,7 @@ const getRole = async (req, res) => {
     const offset = helper.getOffset(page, config.listperPage);
     const role = await db.query(
         `SELECT * FROM spm.LJMSRole
-        WHERE (roleID = '${identifier}' OR roleName = '${identifier}')`
+        WHERE roleID = (select roleId from spm.LJMSRole where roleName = '${identifier}')`
     ).catch(error =>{
         return res.status(400).json({
             status : 400,
@@ -144,7 +144,7 @@ const getRole = async (req, res) => {
         on t1.skillID = t2.skillID
         inner join spm.LJMSRole t3
         on t1.roleID = t3.roleID
-        where (t3.roleID = '${identifier}' or t3.roleName = '${identifier}')
+        where t3.roleName = '${identifier}'
         and t2.status = 1
         `
     );
@@ -167,7 +167,7 @@ const updateRole = async (req, res) => {
         `UPDATE spm.LJMSRole
         SET roleName = '${role.roleName}',
         roleDetail = '${role.roleDetail}'
-        WHERE (roleID = '${identifier}' or roleName = '${identifier}')
+        WHERE roleID =  ${identifier}
         `
     ).catch(e =>{
         return res.status(400).json({
@@ -179,7 +179,7 @@ const updateRole = async (req, res) => {
     const removeRoleSkill = await db.query(
         `
         delete from spm.RoleSkill
-        where RoleID = (select roleID from spm.LJMSRole where roleName = '${role.roleName}')
+        where roleID = (select roleID from spm.LJMSRole where roleName = '${role.roleName}')
         `
     ).catch(e =>{
         return res.status(400).json({
@@ -218,7 +218,7 @@ const deleteRole = async (req, res) => {
     const result = await db.query(
         `UPDATE spm.LJMSRole
         SET status = 0
-        WHERE roleID = '${identifier}' or roleName = '${identifier}'
+        WHERE roleName = '${identifier}'
         `
     ).catch(e =>{
         return res.status(400).json({
@@ -236,7 +236,7 @@ const activateRole = async (req, res) => {
     const result = await db.query(
         `UPDATE spm.LJMSRole
         SET status = 1
-        WHERE roleID = '${identifier}' or roleName = '${identifier}'
+        WHERE roleName = '${identifier}'
         `
     ).catch(e =>{
         return res.status(400).json({
