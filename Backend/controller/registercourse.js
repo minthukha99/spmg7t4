@@ -10,13 +10,7 @@ const registerCourse = async (req,res) =>{
 
     const result = await db.query(
         `
-        insert into spm.registration values(
-            '${data.course_ID}',
-            ${data.staff_ID},
-            'waitlist',
-            ''
-        )
-
+        update spm.registration set 
         `
 
     ).catch(e=>{

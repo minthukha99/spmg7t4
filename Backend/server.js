@@ -20,10 +20,7 @@ app.get('/', (req, res) => {
 app.use('/', router);
 
 const start = async () => {
-  try {
-    await mongoose.connect(
-      "mongodb+srv://spmg7t4:vewg10lvgiipAXWn@cluster0.upxbtmt.mongodb.net/?retryWrites=true&w=majority"
-    );
+  try { 
     app.listen(3000, () => console.log("Server started on port 3000"));
   } catch (error) {
     console.error(error);

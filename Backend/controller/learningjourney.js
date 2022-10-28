@@ -2,6 +2,7 @@ const db = require('../db')
 const helper = require('../helper')
 const config = require('../config')
 const e = require("express");
+const { json } = require('express');
 
 const createLJ = async (req, res) => {
     const LJInfo = req.body;
@@ -18,7 +19,7 @@ const createLJ = async (req, res) => {
         });
     });
     var insertStr = `Insert into spm.LearningJourneyCourse(LJID,course_ID) values `
-    data.course_ID.forEach(c => {
+    LJInfo.course_ID.forEach(c => {
         insertStr += `('${result.insertId}','${c}'),`
     });
     insertStr = insertStr.slice(0, -1);
@@ -30,10 +31,45 @@ const createLJ = async (req, res) => {
             result: "Fail to add course to LJ"
         });
     });
+    var insertRegistration = `insert into spm.registration (course_ID, staff_ID, Reg_Status, Completion_Status)
+    values `;
+    var alreadyRegister = await db.query(
+        `
+        select course_ID from spm.registration
+        where staff_ID = '${LJInfo.staff_ID}'
+        and Reg_Status != 'Rejected'
+        `
+    );
+    alreadyRegister = alreadyRegister.map(function (obj) {
+        return obj.course_ID;
+      });
+    var newCourse = false
+    LJInfo.course_ID.forEach(c =>{
+        if(!alreadyRegister.includes(c)){
+            newCourse = true
+            console.log(alreadyRegister.includes(c));
+            insertRegistration += `('${c}','${LJInfo.staff_ID}','Waitlist',''),`
+        }
+    });
+    insertRegistration = insertRegistration.slice(0, -1);
+    if(!newCourse){
+        return res.status(200).json({
+            status: 200,
+            result: "All select already registered"
+        });
+    }
+    const registrationResult = await db.query(
+        insertRegistration
+    ).catch(e=>{
+        return res.status(400),json({
+            status:400,
+            result: "Error registering course"
+        });
+    });
 
     return res.status(200).json({
         status: 200,
-        result: result
+        result: registrationResult
     });
 };
 const GetLjbyStaffID = async (req, res) => {
