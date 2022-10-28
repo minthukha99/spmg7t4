@@ -257,7 +257,7 @@ export default {
                           courseName: course.course_Name,
                           courseStatus: course.course_Status,
                           courseType: course.course_Type
-                    });
+                        });
                     
                         if (course.status == "Active") {
                           this.activeRoles.push(
@@ -268,19 +268,19 @@ export default {
                               courseName: course.course_Name,
                               courseStatus: course.course_Status,
                               courseType: course.course_Type
-                            });
-                          
+                            }
+                          ); 
                         }
-                    }
+
+                        
+                   }    }
 
                     // <CAlert v-if="course.courseStatus == 'Retired'"> No courses available </CAlert>
-                } 
-            }
-
-            })
-            .catch(error => {
-                console.log(error.message)
-            })
+                }) 
+                .catch(error => {
+                    console.log(error.message)
+                })
+            
 
         const url1 = "http://localhost:3000/skills";
         axios.get(url1)

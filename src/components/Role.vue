@@ -131,7 +131,7 @@ export default {
                             skillName: role.skillName,
                             status: role.status
                         });
-\
+
                         if (role.status == 1) {
                             this.activeRoles.push(
                                 {
