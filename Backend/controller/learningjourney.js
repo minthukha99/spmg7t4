@@ -186,6 +186,5 @@ const getInfoAboutLJ = async (req, res) => {
 
 
 }
-
 module.exports = { getInfoAboutLJ, createLJ, GetLjbyStaffID, deleteLj, addCourseToLJ, updateCourseFromLJ }
 

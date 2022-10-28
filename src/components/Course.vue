@@ -6,7 +6,7 @@
         <br><br>
         <label for="">Select a skill</label>
         <select v-model="selectedSkill">
-            <option value="" disabled>All</option>
+            <option value="">All</option>
             <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
         </select>
         <br><br>
@@ -32,6 +32,9 @@
                         <td scope="row" v-if="course.courseStatus == 'Retired'" data-label="Status" class="inactive">
                             {{ course.courseStatus }}
                         </td>
+                        <div v-if="errorMessage" class="errorMessage">
+                            {{ errorMessage }}
+                        </div>
 
                         <td scope="row" v-else-if="course.courseStatus == 'Pending'" data-label="Status">
                             {{ course.courseStatus }}
@@ -155,6 +158,7 @@ export default {
             skillsList: [],
             selectedSkill: '',
             courseSkillList: [],
+            errormessage: [],
         }
     },
 
@@ -168,6 +172,7 @@ export default {
                     console.log("deactived course:", courseID)
                     // this.getRoles()
                     location.reload()
+
 
                 })
                 .catch(error => {
@@ -209,6 +214,8 @@ export default {
                     // console.log(typeof (this.selectedSkill))
                     var courses = response.data
                     // console.log(courses)
+
+
                     for (var course of courses) {
                         this.courseSkillList.push({
                             id: course.course_ID,
@@ -232,17 +239,25 @@ export default {
         axios.get(url)
             .then(response => {
                 var coursesData = response.data
-                for (var course of coursesData) {
+                this.errorMessage = "";
+                    if (this.coursesData == 0) {
+                         console.log("its empty")
+                         this.errorMessage += "No courses available currently!"
+                   } else {
+                      for (var course of coursesData) {
                     // console.log(course)
-                    this.coursesList.push({
-                        id: course.course_ID,
-                        courseCat: course.course_Category,
-                        courseDesc: course.course_Desc,
-                        courseName: course.course_Name,
-                        courseStatus: course.course_Status,
-                        courseType: course.course_Type
-                    });
-                }
+                        this.coursesList.push({
+                            id: course.course_ID,
+                            courseCat: course.course_Category,
+                            courseDesc: course.course_Desc,
+                            courseName: course.course_Name,
+                            courseStatus: course.course_Status,
+                            courseType: course.course_Type
+                        });
+
+                    // <CAlert v-if="course.courseStatus == 'Retired'"> No courses available </CAlert>
+                } 
+            }
             })
             .catch(error => {
                 console.log(error.message)
