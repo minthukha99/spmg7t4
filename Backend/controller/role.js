@@ -131,7 +131,7 @@ const getRole = async (req, res) => {
     const offset = helper.getOffset(page, config.listperPage);
     const role = await db.query(
         `SELECT * FROM spm.LJMSRole
-        WHERE roleID = (select roldId from spm.LJMSRole where roleName = '${identifier}')`
+        WHERE roleID = (select roleId from spm.LJMSRole where roleName = '${identifier}')`
     ).catch(error =>{
         return res.status(400).json({
             status : 400,
