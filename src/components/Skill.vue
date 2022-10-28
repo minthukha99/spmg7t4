@@ -200,4 +200,7 @@ a {
     color: white;
     text-decoration: none;
 }
+.mouseover {
+    cursor: pointer;
+}
 </style>
