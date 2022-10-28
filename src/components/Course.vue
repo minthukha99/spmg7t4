@@ -29,12 +29,13 @@
                         <td scope="row" data-label="Code">{{ course.id }}</td>
                         <td scope="row" data-label="Name">{{ course.courseName }}</td>
 
-                        <td scope="row" v-if="course.courseStatus == 'Retired'" data-label="Status" class="inactive">
-                            {{ course.courseStatus }}
-                        </td>
                         <div v-if="errorMessage" class="errorMessage">
                             {{ errorMessage }}
                         </div>
+                        <td scope="row" v-if="course.courseStatus == 'Retired'" data-label="Status" class="inactive">
+                            {{ course.courseStatus }}
+                        </td>
+
 
                         <td scope="row" v-else-if="course.courseStatus == 'Pending'" data-label="Status">
                             {{ course.courseStatus }}
@@ -260,7 +261,7 @@ export default {
                         });
                     
                         if (course.status == "Active") {
-                          this.activeRoles.push(
+                          this.activeCourses.push(
                             {
                               id: course.course_ID,
                               courseCat: course.course_Category,
