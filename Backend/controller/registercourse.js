@@ -5,21 +5,22 @@ const e = require("express");
 
 
 
-const registerCourse = async (req,res) =>{
-    const data = req.body
+const updateRegistration = async (req,res) =>{
+    const id = req.params.id
 
     const result = await db.query(
         `
-        update spm.registration set 
+        update spm.registration set Reg_Status = 'Registered'
+        where Reg_ID = ${id}
         `
 
     ).catch(e=>{
         return res.status(400).json({
             status : 400,
-            result : "Error Adding Record"
+            result : "Error Registering course"
         });
     });
     return res.status(200).json(result)
 }
 
-module.exports = {coursesCompletedByTeam};
+module.exports = {updateRegistration};

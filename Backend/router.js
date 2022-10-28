@@ -6,6 +6,7 @@ const coursesController =  require('./controller/contentUpdater')
 const skillCourseController = require('./controller/skillCourse')
 const LjController = require('./controller/learningjourney')
 const managerController = require('./controller/manager')
+const registerController = require('./controller/registercourse')
 //  Create route handler
 
 //Controller routes
@@ -57,4 +58,7 @@ router.get("/learningjourneyinfo/:id",LjController.getInfoAboutLJ)
 
 //manager
 router.get("/coursecompletedbystaff",managerController.coursesCompletedByTeam)
+
+//registration
+router.put("/registerecourse/:id",registerController.updateRegistration)
 module.exports = router
