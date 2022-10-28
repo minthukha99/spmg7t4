@@ -42,6 +42,13 @@ const createRole = async (req, res) => {
     const role = req.body;
     const skills = role.skillName
     var roleDetail = "No description"
+    if(skills.length == 0){
+        return res.status(400).json({
+            status:400,
+            result:"A role must have at least one skill!"
+        });
+    };
+
     if(role.roleDetail){
         roleDetail = role.roleDetail;
     }
@@ -62,6 +69,7 @@ const createRole = async (req, res) => {
     });
     whereConditon = whereConditon.slice(0, -1);
     whereConditon += `)`
+
     const skill = await db.query(
         `
         select * from spm.Skill
@@ -131,7 +139,7 @@ const getRole = async (req, res) => {
     const offset = helper.getOffset(page, config.listperPage);
     const role = await db.query(
         `SELECT * FROM spm.LJMSRole
-        WHERE roleID = (select roleId from spm.LJMSRole where roleName = '${identifier}')`
+        WHERE roleID = ${identifier}`
     ).catch(error =>{
         return res.status(400).json({
             status : 400,
@@ -179,7 +187,7 @@ const updateRole = async (req, res) => {
     const removeRoleSkill = await db.query(
         `
         delete from spm.RoleSkill
-        where roleID = (select roleID from spm.LJMSRole where roleName = '${role.roleName}')
+        where roleID = ${identifier}
         `
     ).catch(e =>{
         return res.status(400).json({
@@ -195,7 +203,7 @@ const updateRole = async (req, res) => {
     var sqlStr = `INSERT INTO spm.RoleSkill (skillID,roleID) VALUES`;
     allSkills.forEach(skill => {
         if(role.skillName.includes(skill.skillName)){
-            sqlStr += `(${skill.skillID},(select roleID from spm.LJMSRole where roleName = '${role.roleName}')),`
+            sqlStr += `(${skill.skillID},${identifier}),`
         }
     });
     //console.log(removeRoleSkill);
@@ -218,7 +226,7 @@ const deleteRole = async (req, res) => {
     const result = await db.query(
         `UPDATE spm.LJMSRole
         SET status = 0
-        WHERE roleName = '${identifier}'
+        WHERE roleID = ${identifier}
         `
     ).catch(e =>{
         return res.status(400).json({
@@ -236,7 +244,7 @@ const activateRole = async (req, res) => {
     const result = await db.query(
         `UPDATE spm.LJMSRole
         SET status = 1
-        WHERE roleName = '${identifier}'
+        WHERE roleID = ${identifier}
         `
     ).catch(e =>{
         return res.status(400).json({
