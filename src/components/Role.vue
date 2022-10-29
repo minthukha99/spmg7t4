@@ -48,10 +48,10 @@
                         </td>
 
                         <td v-if="role.status ==false">
-                            <a class="mouseover" v-on:click="activateRoles(role.roleName)">Activate</a>
+                            <a class="mouseover" v-on:click="activateRoles(role.id)">Activate</a>
                         </td>
                         <td v-else-if="role.status == true">
-                            <a class="mouseover" v-on:click="deactivateRoles(role.roleName)">Deactivate</a>
+                            <a class="mouseover" v-on:click="deactivateRoles(role.id)">Deactivate</a>
                         </td>
 
                         <td v-if="role.status == false" class="inactive" data-label="Status">
@@ -148,15 +148,13 @@ export default {
                 })
         },
 
-        deactivateRoles(roleName) {
-
-            let url = "http://localhost:3000/deleterole/" + roleName;
+        deactivateRoles(roleId) {
+            let url = "http://localhost:3000/deleterole/" + roleId;
             axios.put(url)
                 .then(response => {
-                    console.log("deactived role:", roleName)
+                    console.log("deactived role:", roleId)
                     // this.getRoles()
                     location.reload()
-
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -164,13 +162,13 @@ export default {
 
         },
 
-        activateRoles(roleName) {
-            let url = "http://localhost:3000/activaterole/" + roleName;
+        activateRoles(roleId) {
+            let url = "http://localhost:3000/activaterole/" + roleId;
             axios.put(url)
                 .then(response => {
                     // this.getRoles()
                     location.reload()
-                    console.log("activated role:", roleName)
+                    console.log("activated role:", roleId)
 
                 })
                 .catch(error => {
@@ -195,5 +193,9 @@ a {
 .special {
     color: white;
     text-decoration: none;
+}
+
+.mouseover {
+    cursor: pointer;
 }
 </style>

@@ -1,11 +1,15 @@
 <template>
 <div class="header">
     <div class="header-middle-text">
-        <h1>Update Role: {{id}}</h1>
+        <h1>Update Role: {{ roleDetails.roleName}}</h1>
 
         <form>
             <label for="roleName">Name of the Role</label><br>
             <input v-model="newRoleName" id="roleName" name="roleName"><br>
+            <br>
+
+            <label for="roleName">Role Details</label><br>
+            <input v-model="newRoleDetails" id="roleDetails" name="roleDetails"><br>
             <br>
             <label for="skillsNeeded" class="multiselect">Skills required</label>
             <br>
@@ -34,20 +38,40 @@ export default {
     name: 'UpdateRole/:id',
     mounted() {
         this.getSkills()
+        this.getRoleDetails()
     },
 
     props: ['id'],
 
     data() {
         return {
+            roleDetails: [],
             skillsList: [],
             selectedSkills: [],
             newRoleName: '',
+            newRoleDetails : '',
         }
     },
 
     methods: {
-
+        getRoleDetails() {
+            const url = "http://localhost:3000/role/" + this.id
+            axios.get(url)
+                .then(response => {
+                    var roleData = response.data
+                    this.roleDetails = {
+                        roleDetail: roleData.roleDetail,
+                        roleName: roleData.roleName,
+                        skillData: roleData.skillData, //not used
+                        status: roleData.status   //not used
+                    };
+                    // console.log(this.roleDetails)
+                    })
+                    // console.log("SkillsList=", this.skillsList)
+                .catch(error => {
+                    console.log(error.message)
+                })
+        },
         getSkills() {
             const url = "http://localhost:3000/skills";
             axios.get(url)
@@ -71,30 +95,25 @@ export default {
         },
 
         updateRole() {
-
-            console.log(roleName)
-
+            // console.log(roleName)
             let url = "http://localhost:3000/updaterole/" + this.id;
-            
-            console.log(url)
-
-            console.log(this.newRoleName)
+            // console.log(url)
+            // console.log(this.newRoleName)
             console.log(this.selectedSkills)
+
             axios.put(url, {
-                    roleName: this.newRoleName,
+                roleName: this.newRoleName,
+                roleDetail: this.newRoleDetails,
                     skillName: this.selectedSkills
                 })
-
                 .then(response => {
-                    console.log("hello", roleName)
-                    // location.reload()
+                    console.log("Role:", this.newRoleName, "updated", "with details", this.newRoleDetails, this.selectedSkills)
+                    location.reload()
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
-
         },
-
     }
 }
 </script>
