@@ -31,13 +31,13 @@
                     </thead>
 
                     <tbody>
-                        <tr scope="row" v-for="skill in skillsNeededForRole" :key="skill">
+                        <tr scope="row" v-for="skill in skillsNeededForRole" :key="skill" >
                             <td scope="col">
                                 {{skill.skillName}}
                             </td>
                             <td>
-                                <select v-model="courseSelected">
-                                    <option v-for="eachCourse in skill.course" :key="eachCourse" value=eachCourse>
+                                <select id="pets" >
+                                    <option v-for="eachCourse in skill.course" :key="eachCourse" >
                                         {{ eachCourse }}
                                     </option>
                                 </select>
@@ -67,9 +67,10 @@
                     </div>
                     <div class="card__text">
                         <div class="meter">
-                            <span style="width: 25%"></span>
+                            <span :style="{ width: coursesCounts[index].percentageCourseCompleted + '%' }"></span>
                         </div>
-                        Number of courses: 13
+                        Number of courses: {{ coursesCounts[index].courseCount }}
+  
                     </div>
                     <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
                     <!-- LJlist -->
@@ -114,7 +115,8 @@ export default {
           courseSelected: null, // a list containing all the courses user selected
           LJlist: [], // to store all the user LJ to display them
           roleList: [],
-          roleList2: []
+          roleList2: [],
+          coursesCounts :[] // store the number of courses of each LJ 
         }
   },
   created() {
@@ -147,10 +149,10 @@ export default {
              this.roleSelectedId = eachRole.id 
           }
          }
-        console.log(this.roleSelectedId)
+        // console.log(this.roleSelectedId)
 
         const url = "http://localhost:3000/role/" + this.roleSelectedId;
-        console.log(url)
+        // console.log(url)
         axios.get(url)
           .then(response => {
             var skillarray = response.data.skillData
@@ -165,7 +167,7 @@ export default {
             }
             for (var x in this.skillsNeededForRole) {
               var thisSkillName = this.skillsNeededForRole[x].skillName
-              console.log(thisSkillName, "<<<<")
+              // console.log(thisSkillName, "<<<<")
               const url = "http://localhost:3000/coursebyskill/" + thisSkillName;
               axios.get(url)
                 .then(response => {
@@ -176,7 +178,7 @@ export default {
                     // this.skillsNeededForRole[x].push({
                     //   url : url
                     // })
-                    console.log(myObj,"HERE")
+                    // console.log(myObj,"HERE")
                   }
                 })
                 .catch(error => {
@@ -187,7 +189,7 @@ export default {
           .catch(error => {
             console.log(error.message)
           })
-          console.log(this.skillsNeededForRole)
+          // console.log(this.skillsNeededForRole)
       },
 
       getLJofUser() {
@@ -201,19 +203,60 @@ export default {
                 ljId: eachLJ.LJID,
                 roleId: eachLJ.roleID,
                 roleName : [],
-                staffId: eachLJ.staff_ID
+                staffId: eachLJ.staff_ID,
+                courseCount : 0
               })
               this.roleList.push({
                 roleId: eachLJ.roleID
               })
-              //         })
-              //         .catch(error => {
-              //             console.log(error.message)
-              //         })
             }
-            // console.log(this.LJlist)
+
+            // to get courseCount of each LJ, to display in "Number of Courses"
+            // for (var eachLJ of this.LJlist) {
+
+            //   var url = "http://localhost:3000/learningjourneyinfo/" + eachLJ.ljId
+            //   axios
+            //     .get(url)
+            //     .then(response => {
+            //       eachLJ.courseCount = response.data.courseRegistered.length
+            //       console.log(eachLJ)
+            //     })
+            //     .catch(error => {
+            //       console.log(error.message)
+            //     })
+            // }
+            const array2 = this.LJlist
+            let promises2 = []
+            for (var i = 0; i < array2.length; i++) {
+              promises2.push(
+                axios
+                  .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
+                  .then(response => {
+                    // console.log(response.data.courseRegistered)
+                    //to get number of courses completed by user
+                    var coursesCompleted = 0 
+                    for (var eachCourse of response.data.courseRegistered) {
+                      if (eachCourse.Completion_Status) {
+                        coursesCompleted += 1
+                      }
+                    }
+                    var percentageCourseCompleted = 0
+                    if (response.data.courseRegistered.length != 0) {
+                      percentageCourseCompleted = Math.round((coursesCompleted / response.data.courseRegistered.length) * 100)
+                    }
+                    this.coursesCounts.push({
+                      courseCount: response.data.courseRegistered.length,
+                      percentageCourseCompleted: percentageCourseCompleted
+                    })
+                    console.log(this.coursesCounts)
+                  })
+                  .catch(error => {
+                    console.log(error.message)
+                  })
+              )
+            }
+
             const array = this.roleList
-            // console.log(array)
             let promises = []
             for (var i = 0; i < array.length; i++) {
               promises.push(
@@ -230,7 +273,7 @@ export default {
                   })
               )
             }
-            Promise.all(promises).then(() => console.log( ))
+            Promise.all(promises).then(() => console.log())
           })
           .catch(error => {
             console.log(error.message)
@@ -240,19 +283,30 @@ export default {
     
         addToLearningJourney() {
             // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
-            let url = "http://localhost:3000/learningjourney";
-            axios.post(url, {
-                    roleName: this.roleSelected,
-                    staff_ID: sessionStorage.getItem("userId"),
-                    // courseRegistered: ["a", "b", "c"]
-                })
-                .then(response => {
-                  console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
+          var selected = [];
+          
+            // for (var option of document.getElementById('pets').options) {
+            //     console.log(option.selected)
+            //     // if (option.selected) {
+            //     //   selected.push(option.value);
+            //     // }
+            //   }
+            // console.log(selected);
+          
+          console.log(this.courseSelected)
+          //   let url = "http://localhost:3000/learningjourney";
+          //   axios.post(url, {
+          //           roleName: this.roleSelected,
+          //           staff_ID: sessionStorage.getItem("userId"),
+          //           course_ID: ["COR001", "COR002", "COR004"]
+          //       })
+          //       .then(response => {
+          //         console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
                     
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
+          //       })
+          //       .catch(error => {
+          //           console.log(error.message)
+          //       })
         },
   },
 }
