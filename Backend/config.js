@@ -10,8 +10,8 @@ const config = {
         //or this
 
         host: "localhost",
-        port: 8889,
-        // port: 3306,
+        // port: 8889,
+        port: 3306,
         user: "root",
         password: "root",
 
