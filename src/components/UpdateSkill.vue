@@ -5,7 +5,7 @@
 
         <form>
             <label for="skillName">Skill Name</label><br>
-            <input v-model="newSkillName" id="skillName" name="skillName"><br>
+            <input v-model="newSkillName" class="skillName" name="skillName"><br>
             <br>
             <label for="skillsNeeded" class="multiselect">Roles that require skill</label>
             <br>
@@ -15,10 +15,10 @@
             </select>
             <br>
             <br>
-            <button value="Cancel" class="special">
+            <button value="Cancel" class="cancelButton">
                 <router-link to="/Skills" class="special">Cancel</router-link>
             </button>
-            <button @click='updateSkill(skillName); $router.push("/Skills")' value="Save" class="special">
+            <button @click='updateSkill(skillName); $router.push("/Skills")' name="Save" class="special saveButton">
                 Save
             </button>
         </form>
@@ -30,7 +30,7 @@
 import axios from "axios";
 export default {
 
-    name: 'UpdateSkill/:id',
+    name: 'UpdateSkill',
 
     mounted() {
         this.getRoles()
@@ -72,12 +72,12 @@ export default {
         },
 
         updateSkill() {
-            console.log(skillName)
+            // console.log(skillName)
 
             let url = "http://localhost:3000/updateskill/" + this.id;
-            console.log(url)
-
-            console.log(this.newSkillName)
+            // console.log(url)
+            // console.log(typeof(this.id))
+            // console.log(this.newSkillName)
 
             axios.put(url, {
                     roleName: this.selectedRoles,
