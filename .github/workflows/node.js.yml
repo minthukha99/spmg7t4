@@ -20,9 +20,11 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     env:
-      DB_DATABASE: test_db
-      DB_USER: root
-      DB_PASSWORD: root
+      DB_DATABASE: spm
+      DB_HOST: spmg7t4.cm5iarqpvubq.ap-southeast-1.rds.amazonaws.com
+      DB_USER: admin
+      DB_PASSWORD: $nGMccUPuF^i002*vS$W
+
     steps:
       - name: Set up MySQL
         run: |
