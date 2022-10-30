@@ -14,18 +14,20 @@
                         <!-- <th scope="col">Index</th> -->
                         <th scope="col">Course Code</th>
                         <th scope="col">Course Name</th>
-                        <th scope="col">Action 1</th>
+                        <th scope="col">Registration Status</th>
 
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(course) in coursesList" :key="course.id">
+                    <tr v-for="ljData in ljInfolist" :key="ljData.regID">
                         <!-- <td scope="row" data-label="Index">{{ index +1}}</td> -->
-                        <td scope="row" data-label="Course Code">{{ course.id }}</td>
-                        <td scope="row" data-label="Course Name">{{ course.courseName }}</td>
-                        <td scope="row" data-label="Action 1">
+                        <td scope="row" data-label="Course Code">{{ ljData.courseCode }}</td>
+                        <td scope="row" data-label="Course Name">{{ ljData.courseName }}</td>
+                        <td scope="row" data-label="Registration Status">{{ ljData.regStatus }}</td>
+                        
+                        <!-- <td scope="row" data-label="Action 1">
                             <a href="#">Remove</a>
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
@@ -45,7 +47,8 @@ export default {
 
     data() {
         return {
-            skillCourseList: [],
+            // skillCourseList: [],
+            ljInfolist: [],
             roleName: '',
         }
     },
@@ -58,14 +61,15 @@ export default {
                 .then(response => {
                     var ljInfoData = response.data
                     console.log(ljInfoData)
-                    
-                    // console.log(ljInfoData.LJInfo[0].roleName) 
-                    this.roleName = ljInfoData.LJInfo[0].roleName
-                    // console.log(ljInfoData.LJInfo.roleName)
-                    // for (var data of ljInfoData) {
-                    //     console.log(data)
-                    //     console.log(ljInfoData.LJInfo.roleName)
-                    // }
+                    for (var ljData of ljInfoData.courseRegistered) {
+                        this.ljInfolist.push({
+                            skillName: ljData.skillName,
+                            courseCode: ljData.course_ID,
+                            courseName: ljData.course_Name,
+                            regID: ljData.Reg_ID,
+                            regStatus: ljData.Reg_Status,
+                        });
+                    }
 
                 })
                 .catch(error => {
