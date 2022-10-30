@@ -12,12 +12,11 @@ on:
 jobs:
   build:
 
-    # runs-on: [ "ubuntu-latest", "windows-latest", "macos-latest" ]
     runs-on: [ "ubuntu-latest"]
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     # env:
@@ -46,6 +45,5 @@ jobs:
         run: npm install
 
       - name: Run test
-        run: npm run test:unit &
-      # env:
+        run: npm run test:unit
 
