@@ -12,11 +12,22 @@
             <input v-model="newRoleDetails" id="roleDetails" name="roleDetails"><br>
             <br>
             <label for="skillsNeeded" class="multiselect">Skills required</label>
+            <div class="selectBox">
+                <!-- <select multiple v-model="selectedSkills"> -->
+                <option selected="true" disabled="disabled">Select new skills (required)</option>
+                <div v-for="skill in skillsList" :key="skill.id">
+                    <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills">
+                    <label :for="skill.id">{{skill.skillName}}</label>
+                </div>
+                <!-- </select> -->
+            </div>
+
+            <!-- <label for="skillsNeeded" class="multiselect">Skills required</label>
             <br>
             <select multiple v-model="selectedSkills">
                 <option selected="true" disabled="disabled">Select an option</option>
                 <option v-for="skill in skillsList" :key="skill.id">{{skill.skillName}}</option>
-            </select>
+            </select> -->
             <br>
             <button type="button">
                 <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
