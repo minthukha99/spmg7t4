@@ -57,7 +57,7 @@ router.get("/learningjourneyinfo/:id",LjController.getInfoAboutLJ)
 
 
 //manager
-router.get("/coursecompletedbystaff",managerController.coursesCompletedByTeam)
+router.get("/coursecompletedbystaff/:id",managerController.coursesCompletedByTeam)
 
 //registration
 router.put("/registerecourse/:id",registerController.updateRegistration)
