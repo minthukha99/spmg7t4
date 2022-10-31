@@ -2,6 +2,9 @@
 <div class="header">
     <div class="header-middle-text">
         <h1>Courses</h1>
+        <!-- <div>
+            {{selectedRole2}}
+        </div> -->
         <input type="text" v-model="searchValue" placeholder="Search Course" />
         <br><br>
         <label for="">Select a skill</label>
@@ -18,9 +21,10 @@
                         <th scope="col">Code</th>
                         <th scope="col">Name</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Action 1</th>
-                        <th scope="col">Action 2</th>
-
+                    
+                        <th v-if="selectedRole != 'Learner'" scope="col">Action 1</th>
+                        <th v-if="selectedRole != 'Learner'" scope="col">Action 2</th>
+                    
                     </tr>
                 </thead>
                 <tbody v-if="this.selectedSkill!='' && this.searchValue == ''">
@@ -119,19 +123,22 @@
                             {{ course.courseStatus }}
                         </td>
 
-                        <td v-if="course.courseStatus == 'Active'" data-label="Action 2">
+                        <td v-if="course.courseStatus == 'Active' && selectedRole != 'Learner'" data-label="Action 2">
                             <a class="mouseover" v-on:click="deactivateCourses(course.id)">Deactivate</a>
                         </td>
 
-                        <td v-else-if="course.courseStatus == 'Retired'" data-label="Action 2">
+                        <td v-else-if="course.courseStatus == 'Retired' && selectedRole != 'Learner'" data-label="Action 2">
                             <a class="mouseover" v-on:click="activateCourses(course.id)">Activate</a>
                         </td>
 
-                        <td v-else>
-                            -
+                        <td v-else-if="selectedRole != 'Learner'">
+                        
                         </td>
+                        <!-- <td v-else>
+                            -
+                        </td> -->
 
-                        <td>
+                        <td v-if= "selectedRole != 'Learner'">
                             <a>
                                 <router-link :to="`/AssignSkillstoCourse/${course.id}`">Assign Skills</router-link>
                             </a>
@@ -146,6 +153,7 @@
 
 <script>
 import axios from "axios";
+
 export default {
     name: 'Courses',
     mounted() {
@@ -234,7 +242,8 @@ export default {
                     console.log(error.message)
                 })
             return this.courseSkillList
-        }
+        },
+
     },
 
     created() {
