@@ -49,6 +49,7 @@
 </template>
 
 <script>
+
 export default {
   name: "NavigationBar",
   data() {
@@ -113,6 +114,7 @@ export default {
     routes() {
       return this.$router.options.routes;
     },
+
 
   },
 };
