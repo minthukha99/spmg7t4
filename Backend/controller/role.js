@@ -152,7 +152,7 @@ const getRole = async (req, res) => {
         on t1.skillID = t2.skillID
         inner join spm.LJMSRole t3
         on t1.roleID = t3.roleID
-        where t3.roleName = '${identifier}'
+        where t3.roleID = '${identifier}'
         and t2.status = 1
         `
     );

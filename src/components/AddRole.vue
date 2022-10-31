@@ -46,7 +46,7 @@
 <script>
 import axios from "axios";
 export default {
-    name: 'add roles',
+    name: 'AddRoles',
     mounted() {
         this.getSkills()
     },

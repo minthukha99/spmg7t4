@@ -29,7 +29,7 @@
                             </td>
                             <td>
                                 <!-- <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link> -->
-                                <router-link :to="`/AssignSkillstoRole/`">View Learning Journey</router-link>
+                                <router-link :to="`/Users/`">View Learning Journey</router-link>
                             </td>
                             <!-- <td scope="row" data-label="Index">{{ index + 1 }}</td>
                                 <td scope="row" data-label="Name">{{ role.roleName }}</td> -->
