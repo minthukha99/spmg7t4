@@ -78,7 +78,7 @@
                 </table>
             </div>
             <div>
-                <table v-if="selectedRole == 'HR'">
+                <table v-if="selectedRole == 'Admin'">
                     <thead>
                         <tr>
                             <th scope="col">Index</th>
@@ -152,8 +152,8 @@ export default {
     methods: {
         getCurrentRole() {
             this.selectedRole = sessionStorage.getItem('selectedRole') // get role saved in session storage   
-            if (this.selectedRole == "HR") {
-                this.getAllUsers() // display all users if role is HR
+            if (this.selectedRole == "Admin") {
+                this.getAllUsers() // display all users if role is Admin
             }
             else if (this.selectedRole == "Manager") {
                 this.getUsersUnderManager()
@@ -165,6 +165,7 @@ export default {
             const url = "http://localhost:3000/users"
             axios.get(url)
                 .then(response => {
+                    
                     for (var eachUser of response.data) {
                         this.usersList.push({
                             staffId: eachUser.Staff_ID,
