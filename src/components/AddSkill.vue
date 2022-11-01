@@ -91,7 +91,7 @@ export default {
         },
 
         addSkillButton() {
-            console.log(this.skillName)
+            // console.log(this.skillName)
             this.errorMessage = ""
             if (this.skillName == "") {
 
@@ -105,6 +105,11 @@ export default {
                 })
                 // this.$router.push({ path: '/home' });
                 // $router.go(-2)
+            // if at least 1 role is needed for the skill
+            // if (this.selectedRoles == "") {
+            //     console.log("Empty roles selected")
+            //     this.errorMessage += "Role  is required!"
+            // }
             }
         },
 
