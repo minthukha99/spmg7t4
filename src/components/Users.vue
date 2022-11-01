@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="header-middle-text">
-            <h1>Users</h1>
+            <h1>Users in <u>{{ department }} </u> department</h1>
             <div>
                 <table v-if="selectedRole == 'Manager'">
                     <thead>
@@ -25,7 +25,7 @@
                                 {{ key }}
                             </td>
                             <td>
-                                {{ staff.name }}
+                                {{ staff.name }} 
                                 <!-- {{ user.staffFName }} {{ user.staffLName }} -->
                             </td>
                             <td>
@@ -145,7 +145,8 @@ export default {
             // rolesList: [],
             // selectedRole: "",
             // activeRoles: []
-            myList : []
+            myList: [],
+            department: "" // to show the department of users when user role is manager
         }
     },
 
@@ -176,7 +177,7 @@ export default {
                             role: eachUser.Role,
                         })
                     }
-                    console.log(this.usersList)
+                    // console.log(this.usersList)
 
                 })
                 .catch(error => {
@@ -187,36 +188,37 @@ export default {
             // for a given manager id, get the users under him by getting users with same department
             var userId = sessionStorage.getItem('userId')
             const url = "http://localhost:3000/coursecompletedbystaff/" + userId
-            
             axios.get(url)
                 .then(response => {
-                    // console.log(response)
+                    // console.log(response.data[0].dept)
+                    this.department = response.data[0].dept
                     for (var eachCourseCompleted of response.data) {
                         this.coursesDoneByUser.push({
                             staffId: eachCourseCompleted.staff_ID,
                             courseId: eachCourseCompleted.course_ID,
                             completedStatus: eachCourseCompleted.Completion_Status,
-                            name: eachCourseCompleted.staff_FName + " "+ eachCourseCompleted.staff_LName
+                            name: eachCourseCompleted.staff_FName + " " + eachCourseCompleted.staff_LName,
+                            
                             //    "staff_FName": "Mary",
                             // "staff_LName": "Teo",
                         })
                     }
-                    console.log(this.coursesDoneByUser)
+                    // console.log(this.coursesDoneByUser)
                     for (var eachCourseDone of this.coursesDoneByUser) {
                         var ifUserInArray = this.coursesCompletedArray[eachCourseDone.staffId] //check if staffId is in array
                         if (ifUserInArray != undefined && eachCourseDone.completedStatus=="Completed") {
                             // means the staffId is already in the array and staff completed the course, need to edit the info in the array
                             var listExtracted = this.coursesCompletedArray[eachCourseDone.staffId].course
                             listExtracted.push(eachCourseDone.courseId)
-                            console.log(listExtracted)
-                            this.coursesCompletedArray[eachCourseDone.staffId] = { name: eachCourseDone.name,course: listExtracted }
+                            // console.log(listExtracted)
+                            this.coursesCompletedArray[eachCourseDone.staffId] = { name: eachCourseDone.name, course: listExtracted }
                         }
                         else if (eachCourseDone.completedStatus == "Completed"){
                             // staffId not in array and staff completed the course , need to add the info
-                            this.coursesCompletedArray[eachCourseDone.staffId] = { name: eachCourseDone.name ,course: [eachCourseDone.courseId]}
+                            this.coursesCompletedArray[eachCourseDone.staffId] = { name: eachCourseDone.name, course: [eachCourseDone.courseId]}
                         }
                     }
-                    console.log(this.coursesCompletedArray)
+                    // console.log(this.coursesCompletedArray)
 
                     // for (var eachCourseDone of this.coursesDoneByUser) {
                     //     console.log(eachCourseDone)

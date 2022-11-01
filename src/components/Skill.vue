@@ -18,13 +18,13 @@
                         <th scope="col">Index</th>
                         <th scope="col">Name</th>
                         <th scope="col">Affected Roles</th>
-                        <th scope="col" v-if="selectedRole=='HR'">Status</th>
-                        <th scope="col" v-if="selectedRole=='HR'">Action 1</th>
-                        <th scope="col" v-if="selectedRole=='HR'">Action 2</th>
+                        <th scope="col" v-if="selectedRole=='Admin'">Status</th>
+                        <th scope="col" v-if="selectedRole =='Admin'">Action 1</th>
+                        <th scope="col" v-if="selectedRole =='Admin'">Action 2</th>
 
                     </tr>
                 </thead>
-                <tbody v-if="selectedRole=='HR'">
+                <tbody v-if="selectedRole =='Admin'">
                     <tr v-for="(skill,index) in skillsList" :key="skill.id">
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Name">{{ skill.skillName }}</td>
