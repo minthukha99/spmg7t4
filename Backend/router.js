@@ -50,7 +50,7 @@ router.delete("/deleteskillfromcourse", skillCourseController.deleteSkillFromCou
 //LearningJourney 
 router.get("/getlearningjourneyby/:id", LjController.GetLjbyStaffID)
 router.post("/learningjourney", LjController.createLJ)
-router.delete("/learningjourney", LjController.deleteLj)
+router.delete("/learningjourney/:id", LjController.deleteLj)
 router.post("/learningjourneycourse",LjController.addCourseToLJ)
 router.put("/learningjourneycourse",LjController.updateCourseFromLJ)
 router.get("/learningjourneyinfo/:id",LjController.getInfoAboutLJ)

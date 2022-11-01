@@ -21,7 +21,8 @@
 
           </template>
 
-            <select v-model="selectedRole" @change="saveRoleInSession">              <option selected="true" disabled="disabled">Select your role</option>
+            <select v-model="selectedRole" @change="saveRoleInSession">              
+              <option selected="true" disabled="disabled">Select your role</option>
               <option v-for="role in rolesList" :key="role">{{role}}</option>
             </select>
       </nav>

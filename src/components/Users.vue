@@ -10,7 +10,7 @@
                             <th scope="col">Staff ID</th>
                             <th scope="col">Name</th>
                             <th scope="col">Courses Completed</th>
-                            <!-- <th scope="col" >Action 2</th> -->
+                            <th scope="col" >Action 1</th>
                             <!-- <th scope="col" v-if="selectedRole=='HR'">Action 3</th> -->
     
                         </tr>
@@ -34,9 +34,9 @@
                                 </ul>
                                 
                             </td>
-                            <!-- <td> -->
-                                <!-- <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link> -->    
-                            <!-- </td> -->
+                            <td> 
+                                <router-link :to="`/ViewUserLearningJourney/${key}`">View Learning Journey </router-link>    
+                            </td>
                             <!-- <td scope="row" data-label="Index">{{ index + 1 }}</td>
                                 <td scope="row" data-label="Name">{{ role.roleName }}</td> -->
                             <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
