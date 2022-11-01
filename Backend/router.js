@@ -33,6 +33,7 @@ router.put("/activateskill/:id", skillController.activateSkill);
 //courses, users
 router.get("/courses", coursesController.getAllCourse);
 router.get("/course/:id", coursesController.getCourse);
+router.get("/activecourse/", coursesController.getActiveCourse);
 router.get("/coursebyskill/:skillName", coursesController.getCoursesBySkill);
 router.put("/deactivecourse/:id", coursesController.deactiateCourse);
 router.put("/activatecourse/:id", coursesController.activateCourse);

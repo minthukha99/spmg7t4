@@ -16,7 +16,18 @@ const getAllCourse = async (req, res) => {
     });
     return res.status(200).json(course);
 };
-
+const getActiveCourse = async (req, res) => {
+    const course = await db.query(
+        `SELECT * FROM spm.course
+        where course_Status = 'Active'`
+    ).catch(e=>{
+        return res.status(400).json({
+            status :400,
+            result: "Error getting courses"
+        })
+    });
+    return res.status(200).json(course);
+};
 const getCoursesBySkill = async (req, res) => {
     const page = 1;
     const offset = helper.getOffset(page, config.listperPage);
@@ -240,6 +251,6 @@ const insertLJToDatabase = async (req, res) => {
 }
 
 
-module.exports = { insertLJToDatabase, getUserByDept, getCoursesBySkill, activateCourse, deactiateCourse, getAllCourse, getCourse, getAllUser, getUser, getUserByEmail }
+module.exports = { getActiveCourse,insertLJToDatabase, getUserByDept, getCoursesBySkill, activateCourse, deactiateCourse, getAllCourse, getCourse, getAllUser, getUser, getUserByEmail }
 
 
