@@ -12,6 +12,7 @@ import UpdateRole from "@/components/UpdateRole.vue";
 import AssignSkillstoRole from "@/components/AssignSkillstoRole.vue";
 import LJComponent from "@/components/LJComponent.vue";
 import Users from "@/components/Users.vue";
+import ViewUserLearningJourney from "@/components/ViewUserLearningJourney.vue";
 
 
 const routes = [
@@ -128,6 +129,15 @@ const routes = [
     },
   },
   
+  {
+  path: "/ViewUserLearningJourney/:id",
+  name: "View User LJ",
+  component: ViewUserLearningJourney,
+  props: true,
+  meta: {
+      visible: false,
+    },
+  },
 ];
 
 // testing
