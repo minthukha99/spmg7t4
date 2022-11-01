@@ -256,7 +256,6 @@ export default {
                       coursesCompletedPercentage: percentageCourseCompleted,
                       coursesDone: coursesCompleted
                     })
-                    // console.log(this.coursesCounts)
                   })
                   .catch(error => {
                     console.log(error.message)
@@ -281,7 +280,7 @@ export default {
                   })
               )
             }
-            Promise.all(promises).then(() => console.log())
+            Promise.all(promises).then(() => console.log(this.roleList2))
           })
           .catch(error => {
             console.log(error.message)
@@ -291,6 +290,8 @@ export default {
       addCoursetoLJ() {
         this.selectedCourses.push(this.min123)
         console.log(this.selectedCourses)
+        //needto validate if role already added as LJ
+
         // <td id="pets">
         //   <select id="pets" >
         //     <option > Select an option </option>

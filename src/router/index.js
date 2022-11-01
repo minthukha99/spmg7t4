@@ -125,7 +125,7 @@ const routes = [
     component: Users,
     // props: true,
     meta: {
-      visible: true,
+      visible: false,
     },
   },
   
