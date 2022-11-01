@@ -6,7 +6,7 @@ const e = require("express");
 
 
 const coursesCompletedByTeam = async (req,res) =>{
-    const managerID = req.body.staff_ID
+    const managerID = req.params.id
 
     const result = await db.query(
         `
