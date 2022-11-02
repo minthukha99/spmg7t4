@@ -2,26 +2,35 @@
   <header class="header">
       <nav class="nav links text-white" v-if="fullView">
           <!--added in a class called topnav (removed)-->
-          <template :key="route.path" v-for="(route) in routes">
+          <template :key="route.path" v-for="(route) in routes" >
               <!-- <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()"> -->
+                  <div  v-if="selectedRole != null"> 
+                    <router-link v-if="route.meta.visible && (selectedRole != '' )" :to="route.path.toLowerCase()">
+                      {{ route.name}}
+                    </router-link>
+                  </div>
                 
-                <div v-if="selectedRole == 'Learner'">
+                <!-- <div v-if="selectedRole == 'Admin'">
                     <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
                     {{ route.name}}
                   </router-link>
               </div>
               <div v-else>
-                <div v-if="route.name != 'Users'">
+                <div v-if="route.name != 'User'">
                   <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
-                   
                    {{ route.name}}
                  </router-link>
                 </div>
-              </div>
+              </div> -->
 
           </template>
+          <router-link :to="`/Users`" v-if="selectedRole == 'Admin' | selectedRole == 'Manager'">
+            Users
+          </router-link>
 
-            <select v-model="selectedRole" @change="saveRoleInSession">              <option selected="true" disabled="disabled">Select your role</option>
+
+            <select v-model="selectedRole" @change="saveRoleInSession" v-if="selectedRole == 'Admin'">              
+              <option selected="true" disabled="disabled">Select your role</option>
               <option v-for="role in rolesList" :key="role">{{role}}</option>
             </select>
       </nav>
@@ -39,7 +48,7 @@
           <!-- Router link to paths -->
           <template :key="route.path" v-for="(route) in routes">
             <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
-        
+              {{ route.name }}
             </router-link>
           </template>
       </div>
@@ -59,7 +68,7 @@ export default {
       dropdownShown: false,
       views: ["Learning Journey", "Skills", "Roles", "Courses","Users"],
       classNames: { open: false, "ml-auto": true },
-      rolesList: ['HR', 'Staff', 'Manager','Learner'],
+      rolesList: ['Admin', 'User', 'Manager', 'Trainer'],
       roleName: "",
       selectedRole: ""
     };
@@ -67,6 +76,7 @@ export default {
   mounted(){
     // get value of selected role from session storage
     this.selectedRole = sessionStorage.getItem('selectedRole')
+    console.log(this.selectedRole == null)
   },
   methods: {
     showButton() {
@@ -140,7 +150,7 @@ export default {
         align-items: flex-start;
     }
 
-    .nav {
+    .abc {
         /* margin: 0; */
         display: flex;
         align-items: center;

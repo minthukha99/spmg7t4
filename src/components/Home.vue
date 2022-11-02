@@ -12,14 +12,30 @@
                     Enter your User ID:
                 </p>
                 <input type="text" @change="saveUserId" v-model="userId">
-                <p>
+                <!-- <p>
                     Select your <b>role</b> before venturing to the other parts of the website
+                </p> -->
+                <p v-if="!errorMessage">
+                    Role: <strong>{{ this.selectedRole }}</strong>
+                </p>
+                <p v-else class="errorMessage">
+                    {{ errorMessage }}
+                </p>
+                <p>
+                    150065 for Trainer
+                    <br>
+                    150008 for Manager
+                    <br>
+                    140002 for User
+                    <br>
+                    130002 for Admin
                 </p>
             </div>
-            <select v-model="selectedRole" @change="saveRoleInSession">
+
+            <!-- <select v-model="selectedRole" @change="saveRoleInSession">
                 <option selected="true" disabled="disabled">Select your role</option>
                 <option v-for="role in rolesList" :key="role">{{role}}</option>
-            </select>
+            </select> -->
         </section>
     </header>
 </div>
@@ -29,14 +45,15 @@
 // @ is an alias to /src
 // Components
 import NavigationBar from "@/components/NavigationBar.vue";
-
+import axios from "axios";
 export default {
     name: "Home",
     data() {
         return {
             selectedRole: "",
-            rolesList: ['HR', 'Staff', 'Manager', 'Learner'],
-            userId: ""
+            rolesList: ['Admin', 'User', 'Manager', 'Trainer'],
+            userId: "",
+            errorMessage: ""
         };
     },
     mounted() {
@@ -49,7 +66,39 @@ export default {
             location.reload()
         },
         saveUserId() {
+
             sessionStorage.setItem('userId', this.userId)
+            sessionStorage.setItem("selectedRole","" )
+            this.errorMessage = ""
+            const url = "http://localhost:3000/user/" + this.userId;
+            axios.get(url)
+                .then(response => {
+                    console.log(response.data.Role)
+                    if (response.data.Role == 1) {
+                        this.selectedRole = "Admin"
+                        
+                    }
+                    else if (response.data.Role == 2) {
+                        this.selectedRole = "User"
+                        
+                    }
+                    else if (response.data.Role == 3) {
+                        this.selectedRole = "Manager"
+                        
+                    }
+                    else {
+                        this.selectedRole = "Trainer"
+                    }
+                    sessionStorage.setItem('selectedRole', this.selectedRole)
+                    location.reload()
+                   
+                    
+                })
+                .catch(error => {
+                    console.log("CAnnot be found")
+                    this.errorMessage += "No such user!"
+                    
+                })
         }
     },
 
@@ -105,6 +154,9 @@ export default {
 </script>
 
 <style scoped>
+.errorMessage {
+    color: red
+}
 .home-page-wrapper {
     overflow-x: hidden;
 }

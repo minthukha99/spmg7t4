@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const roleController =  require('./controller/role')
 const skillController =  require('./controller/skill')
-const coursesController =  require('./controller/contentUpdater')
+const coursesController =  require('./controller/ExternalData')
 const skillCourseController = require('./controller/skillCourse')
 const LjController = require('./controller/learningjourney')
 const managerController = require('./controller/manager')
@@ -33,6 +33,7 @@ router.put("/activateskill/:id", skillController.activateSkill);
 //courses, users
 router.get("/courses", coursesController.getAllCourse);
 router.get("/course/:id", coursesController.getCourse);
+router.get("/activecourse/", coursesController.getActiveCourse);
 router.get("/coursebyskill/:skillName", coursesController.getCoursesBySkill);
 router.put("/deactivecourse/:id", coursesController.deactiateCourse);
 router.put("/activatecourse/:id", coursesController.activateCourse);
@@ -50,14 +51,14 @@ router.delete("/deleteskillfromcourse", skillCourseController.deleteSkillFromCou
 //LearningJourney 
 router.get("/getlearningjourneyby/:id", LjController.GetLjbyStaffID)
 router.post("/learningjourney", LjController.createLJ)
-router.delete("/learningjourney", LjController.deleteLj)
+router.delete("/learningjourney/:id", LjController.deleteLj)
 router.post("/learningjourneycourse",LjController.addCourseToLJ)
 router.put("/learningjourneycourse",LjController.updateCourseFromLJ)
 router.get("/learningjourneyinfo/:id",LjController.getInfoAboutLJ)
 
 
 //manager
-router.get("/coursecompletedbystaff",managerController.coursesCompletedByTeam)
+router.get("/coursecompletedbystaff/:id",managerController.coursesCompletedByTeam)
 
 //registration
 router.put("/registerecourse/:id",registerController.updateRegistration)
