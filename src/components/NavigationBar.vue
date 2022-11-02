@@ -4,11 +4,11 @@
           <!--added in a class called topnav (removed)-->
           <template :key="route.path" v-for="(route) in routes" >
               <!-- <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()"> -->
-                  
-                    <router-link v-if="route.meta.visible && selectedRole != '' " :to="route.path.toLowerCase()">
+                  <div  v-if="selectedRole != null"> 
+                    <router-link v-if="route.meta.visible && (selectedRole != '' )" :to="route.path.toLowerCase()">
                       {{ route.name}}
                     </router-link>
-                  
+                  </div>
                 
                 <!-- <div v-if="selectedRole == 'Admin'">
                     <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
@@ -75,6 +75,7 @@ export default {
   mounted(){
     // get value of selected role from session storage
     this.selectedRole = sessionStorage.getItem('selectedRole')
+    console.log(this.selectedRole == null)
   },
   methods: {
     showButton() {
