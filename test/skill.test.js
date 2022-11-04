@@ -26,52 +26,20 @@ describe("Get all available Skill", function(){
         .expect(200,done)
     })
 });
-// describe("Create a role without skills", function(){
-//     it("Fail to create a role without skills", function(done){
-//         request(app).post("/role")
-//         .send(
-//             {
-//                 "roleName" : "Role From Testing",
-//                 "roleDetail" : "Testing added Role",
-//                 "skillName" : []
-//             }
-//         )
-//         .expect(400)
-//         .expect(
-//             {
-//                 "status": 400,
-//                 "result": "A role must have at least one skill!"
-//             }
-//         ,done)
 
-//     })
-// });
-// describe("Create a role", function(){
-//     it("Create a role with Valid data", function(done){
-//         request(app).post("/role")
-//         .send(
-//             {
-//                 "roleName" : "Role From Testing",
-//                 "roleDetail" : "Testing added Role",
-//                 "skillName" : ["SkillTEstttt"]
-//             }
-//         )
-//         .expect(200,done)
-//     })
-// });
-// describe("Create a role with the same name", function(){
-//     it("Create a role with Valid data", function(done){
-//         request(app).post("/role")
-//         .send(
-//             {
-//                 "roleName" : "Role From Testing",
-//                 "roleDetail" : "Testing added Role",
-//                 "skillName" : ["SkillTEstttt"]
-//             }
-//         )
-//         .expect(400,done)
-//     })
-// });
+describe("Create a role", function(){
+    it("Create a role with Valid data", function(done){
+        request(app).post("/skill")
+        .send(
+            {
+                "skillName" : "Unit test skill",
+                "skillDetail" : ""
+            }
+        )
+        .expect(200,done)
+    })
+});
+
 describe("Deactive a skill with skillID 1", function(){
     it("Set the skill status to inactive", function(done){
         request(app).put("/deleteskill/skill5")

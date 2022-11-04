@@ -36,10 +36,10 @@
                                 {{skill.skillName}}
                             </td>
                             <td id = "pets">
-                                <select id="pets" v-model="min123" @click="addCoursetoLJ()">
+                                <select id="pets" v-model="skill.selected">
                                     <option > Select an option </option>
-                                    <option v-for="eachCourse in skill.course" :key="eachCourse" v-bind="eachCourse">
-                                        {{ eachCourse }}
+                                    <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
+                                        {{ eachCourse.course_Name }}
                                     </option>
                                 </select>
                             </td>
@@ -50,7 +50,7 @@
 
                 </table>
 
-                <button class="button special" >
+                <button class="button special" @click="addCoursetoLJ" >
                     Add to Learning Journey (courseRegistered broken)
                 </button>
             </div>
@@ -169,34 +169,41 @@ export default {
                 skillDetail: skill.skillDetail,
                 skillId: skill.skillID,
                 skillName: skill.skillName,
-                course: []
+                course: [],
+                selected : ""
               });
             }
-            for (var x in this.skillsNeededForRole) {
-              var thisSkillName = this.skillsNeededForRole[x].skillName
+            this.skillsNeededForRole.forEach(skill=>{
+              var thisSkillName = skill.skillName
               // console.log(thisSkillName, "<<<<")
               const url = "http://localhost:3000/coursebyskill/" + thisSkillName;
               axios.get(url)
                 .then(response => {
-                  // console.log(response.data, "<<<<<")
-                  for (var x in response.data) {
-                    var myObj = this.skillsNeededForRole[x]
-                    myObj.course.push(response.data[x].course_Name)
-                    // this.skillsNeededForRole[x].push({
-                    //   url : url
-                    // })
-                    // console.log(myObj,"HERE")
-                  }
+                  console.log(response.data, "<<<<<")
+                  skill.course = response.data
+                  // for (var y in response.data) {
+                  //   var tempCourse = response.data[y]
+                  //   this.skillsNeededForRole[x].course.push(tempCourse.course_Name)
+                    
+                    
+                  //   //console.log(tempCourse.course_Name)
+                  //   //myObj.course.push(tempCourse.course_Name)
+                  //   // this.skillsNeededForRole[x].push({
+                  //   //   url : url
+                  //   // })
+                  //   // console.log(myObj,"HERE")
+                  // }
                 })
                 .catch(error => {
                   console.log(error.message)
                 })
-            }
+            })
+            console.log(this.skillsNeededForRole)
           })
           .catch(error => {
             console.log(error.message)
           })
-          // console.log(this.skillsNeededForRole)
+          console.log(this.skillsNeededForRole)
       },
 
       getLJofUser() {
@@ -288,8 +295,8 @@ export default {
 
       },
       addCoursetoLJ() {
-        this.selectedCourses.push(this.min123)
-        console.log(this.selectedCourses)
+        console.log(this.skillsNeededForRole)
+        //console.log(this.selectedCourses)
         //needto validate if role already added as LJ
 
         // <td id="pets">
