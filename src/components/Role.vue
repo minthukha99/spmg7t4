@@ -21,14 +21,13 @@
                         <th scope="col">Index</th>
                         <th scope="col">Name</th>
                         <th scope="col">Skills</th>
-                        <th scope="col" v-if="selectedRole=='HR'">Action 1</th>
-                        <th scope="col" v-if="selectedRole=='HR'">Action 2</th>
-                        <!-- <th scope="col" v-if="selectedRole=='HR'">Action 3</th> -->
-                        <th scope="col" v-if="selectedRole=='HR'">Status</th>
+                        <th scope="col" v-if="selectedRole =='Admin'">Action 1</th>
+                        <th scope="col" v-if="selectedRole =='Admin'">Action 2</th>
+                        <th scope="col" v-if="selectedRole =='Admin'">Status</th>
                     </tr>
                 </thead>
 
-                <tbody v-if="selectedRole =='HR'">
+                <tbody v-if="selectedRole =='Admin'">
                     <tr  v-for="(role,index) in rolesList" :key="role.id">
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Name">{{ role.roleName }}</td>                       
@@ -174,11 +173,8 @@ export default {
                 .catch(error => {
                     console.log(error.message)
                 })
-
         }
-
     }
-
 }
 </script>
 

@@ -7,12 +7,20 @@
             <label for="skillName">Skill Name</label><br>
             <input v-model="newSkillName" class="skillName" name="skillName"><br>
             <br>
-            <label for="skillsNeeded" class="multiselect">Roles that require skill</label>
+            <label for="rolesNeeded" class="multiselect">Roles that require skill</label>
+                <div class="selectBox">
+                    <option selected="true" disabled="disabled">Select new roles (required)</option>
+                    <div v-for="role in rolesList" :key="role.id">
+                        <input type="checkbox" :id="role.id" :value="role.roleName" v-model="selectedRoles">
+                        <label :for="role.id">{{role.roleName}}</label>
+                    </div>
+                </div>
+            <!-- <label for="skillsNeeded" class="multiselect">Roles that require skill</label>
             <br>
             <select multiple v-model="selectedRoles">
                 <option selected="true" disabled="disabled">Select an option (if any)</option>
                 <option v-for="role in rolesList" :key="role.id">>{{role.roleName}}</option>
-            </select>
+            </select>  -->
             <br>
             <br>
             <button value="Cancel" class="cancelButton">

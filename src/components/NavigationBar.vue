@@ -2,16 +2,39 @@
   <header class="header">
       <nav class="nav links text-white" v-if="fullView">
           <!--added in a class called topnav (removed)-->
-          <template :key="route.path" v-for="(route) in routes">
-              <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
-              {{ route.name }}
-              </router-link>
+          <template :key="route.path" v-for="(route) in routes" >
+              <!-- <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()"> -->
+                  <div  v-if="selectedRole != null"> 
+                    <router-link v-if="route.meta.visible && (selectedRole != '' )" :to="route.path.toLowerCase()">
+                      {{ route.name}}
+                    </router-link>
+                  </div>
+                
+                <!-- <div v-if="selectedRole == 'Admin'">
+                    <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
+                    {{ route.name}}
+                  </router-link>
+              </div>
+              <div v-else>
+                <div v-if="route.name != 'User'">
+                  <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
+                   {{ route.name}}
+                 </router-link>
+                </div>
+              </div> -->
+
           </template>
-            <select v-model="selectedRole" @change="saveRoleInSession">
+          <router-link :to="`/Users`" v-if="selectedRole == 'Admin' | selectedRole == 'Manager'">
+            Users
+          </router-link>
+
+
+            <select v-model="selectedRole" @change="saveRoleInSession" v-if="selectedRole == 'Admin'">              
               <option selected="true" disabled="disabled">Select your role</option>
               <option v-for="role in rolesList" :key="role">{{role}}</option>
             </select>
       </nav>
+
 
       <nav class="nav small" v-else>
       <div id="nav-icon3" :class="classNames" @click="showButton">
@@ -24,9 +47,9 @@
       <div id="home-dropdown-small" :class="dropdownClass" @click="showButton">
           <!-- Router link to paths -->
           <template :key="route.path" v-for="(route) in routes">
-              <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
-                  {{ route.name }}
-              </router-link>
+            <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
+              {{ route.name }}
+            </router-link>
           </template>
       </div>
       </nav>
@@ -44,7 +67,7 @@ export default {
       dropdownShown: false,
       views: ["Learning Journey", "Skills", "Roles", "Courses","Users"],
       classNames: { open: false, "ml-auto": true },
-      rolesList: ['HR', 'Staff', 'Manager','Learner'],
+      rolesList: ['Admin', 'User', 'Manager', 'Trainer'],
       roleName: "",
       selectedRole: ""
     };
@@ -52,6 +75,7 @@ export default {
   mounted(){
     // get value of selected role from session storage
     this.selectedRole = sessionStorage.getItem('selectedRole')
+    console.log(this.selectedRole == null)
   },
   methods: {
     showButton() {
@@ -69,6 +93,8 @@ export default {
       sessionStorage.setItem('selectedRole', this.selectedRole)
       location.reload()
     }
+
+
   },
   created() {
     if (window.innerWidth < 760) {
@@ -97,6 +123,7 @@ export default {
     routes() {
       return this.$router.options.routes;
     },
+
   },
 };
 
@@ -121,7 +148,7 @@ export default {
         align-items: flex-start;
     }
 
-    .nav {
+    .abc {
         /* margin: 0; */
         display: flex;
         align-items: center;
