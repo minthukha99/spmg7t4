@@ -7,7 +7,7 @@
             </div>
             <div class="col">
                 <div class="d-flex">
-                    <button type="button" style="float:right">
+                    <button type="button" style="float:right" v-if="selectedRole =='Admin'">
                         <router-link to="/AddRole" class="special">+ Add Role</router-link>
                     </button>
                 </div>
