@@ -47,26 +47,6 @@ describe("Get all available Role", function(){
         .expect(200,done)
     })
 });
-// describe("Create a role without skills", function(){
-//     it("Fail to create a role without skills", function(done){
-//         request(app).post("/role")
-//         .send(
-//             {
-//                 "roleName" : "Role From Testing",
-//                 "roleDetail" : "Testing added Role",
-//                 "skillName" : []
-//             }
-//         )
-//         .expect(400)
-//         .expect(
-//             {
-//                 "status": 400,
-//                 "result": "A role must have at least one skill!"
-//             }
-//         ,done)
-
-//     })
-// });
 // describe("Create a role", function(){
 //     it("Create a role with Valid data", function(done){
 //         request(app).post("/role")
@@ -78,19 +58,6 @@ describe("Get all available Role", function(){
 //             }
 //         )
 //         .expect(200,done)
-//     })
-// });
-// describe("Create a role with the same name", function(){
-//     it("Create a role with Valid data", function(done){
-//         request(app).post("/role")
-//         .send(
-//             {
-//                 "roleName" : "Role From Testing",
-//                 "roleDetail" : "Testing added Role",
-//                 "skillName" : ["SkillTEstttt"]
-//             }
-//         )
-//         .expect(400,done)
 //     })
 // });
 describe("Deactive a role with RoleID 1", function(){

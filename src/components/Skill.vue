@@ -6,7 +6,7 @@
         </div>
         <div class="col">
             <div class="d-flex">
-                <button type="button" style="float:right">
+                <button type="button" style="float:right" v-if="selectedRole =='Admin'">
                     <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
                 </button>
             </div>

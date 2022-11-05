@@ -115,8 +115,8 @@
             <div>
 
                 <div class="buttons">
-                    <button class="special" @click="prevPage">Previous</button>
-                    <button class="special" @click="nextPage">Next</button>
+                    <button class="special prevButton" @click="prevPage">Previous</button>
+                    <button class="special nextButton" @click="nextPage">Next</button>
                 </div>
             </div>
         </div>
