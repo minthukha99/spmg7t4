@@ -17,13 +17,13 @@
                         <th scope="col">Index</th>
                         <th scope="col">Code</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Action 1</th>
-                        <th scope="col">Action 2</th>
+                        <th scope="col" v-if="selectedRole =='Admin'">Status</th>
+                        <th scope="col" v-if="selectedRole =='Admin'">Action 1</th>
+                        <th scope="col" v-if="selectedRole =='Admin'">Action 2</th>
 
                     </tr>
                 </thead>
-                <tbody v-if="this.selectedSkill!='' && this.searchValue == ''">
+                <tbody v-if="this.selectedSkill!='' && this.searchValue == '' && selectedRole == 'Admin'">
                     <tr v-for="(course, index) in filteredSkillCourses" :key="course.courseName">
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Code">{{ course.id }}</td>
@@ -64,7 +64,7 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody v-else-if="this.searchValue!='' && this.selectedSkill==''">
+                <tbody v-else-if="this.searchValue!='' && this.selectedSkill=='' && selectedRole == 'Admin' ">
                     <tr v-for="(course, index) in filteredCourses" :key="course.courseName">
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Code">{{ course.id }}</td>
@@ -101,7 +101,8 @@
                         </td>
                     </tr>
                 </tbody>
-                <tbody v-else>
+
+                <tbody v-else-if="this.searchValue=='' && this.selectedSkill=='' && selectedRole == 'Admin'">
                     <tr v-for="(course, index) in coursesList" :key="course.courseName">
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Code">{{ course.id }}</td>
@@ -138,6 +139,30 @@
                         </td>
                     </tr>
                 </tbody>
+
+                <tbody v-else-if="this.selectedSkill!='' && this.searchValue == '' ">
+                    <tr v-for="(course, index) in filteredActiveSkillCourses" :key="course.courseName">
+                        <td scope="row" data-label="Index">{{ index +1}}</td>
+                        <td scope="row" data-label="Code">{{ course.id }}</td>
+                        <td scope="row" data-label="Name">{{ course.courseName }}</td>
+                    </tr>
+                </tbody>
+
+                <tbody v-else-if="this.selectedSkill=='' && this.searchValue != '' ">
+                    <tr v-for="(course, index) in filteredActiveCourses" :key="course.courseName">
+                        <td scope="row" data-label="Index">{{ index +1}}</td>
+                        <td scope="row" data-label="Code">{{ course.id }}</td>
+                        <td scope="row" data-label="Name">{{ course.courseName }}</td>
+                    </tr>
+                </tbody>
+
+                <tbody v-else>
+                    <tr v-for="(course, index) in activeCourses" :key="course.courseName">
+                        <td scope="row" data-label="Index">{{ index +1}}</td>
+                        <td scope="row" data-label="Code">{{ course.id }}</td>
+                        <td scope="row" data-label="Name">{{ course.courseName }}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
@@ -161,7 +186,8 @@ export default {
             courseSkillList: [],
             errormessage: [],
             selectedRole: "",
-            activeCourses: []
+            activeCourses: [],
+            activeCoursesSkillList: []
         }
     },
 
@@ -210,7 +236,20 @@ export default {
             }
         },
 
+
+        filteredActiveCourses() {
+            // console.log(this.coursesList)
+            if (this.searchValue != " ") {
+                return this.activeCourses.filter(course =>
+                    course.courseName.toLowerCase().includes(this.searchValue.toLowerCase())
+                );
+            }
+
+
+        },
+
         filteredSkillCourses() {
+            this.courseSkillList = []
             const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
             axios.get(url2)
                 .then(response => {
@@ -229,13 +268,48 @@ export default {
                             courseType: course.course_Type
                         });
                     }
+
+                    
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
             return this.courseSkillList
+        },
+
+        filteredActiveSkillCourses() {
+            this.activeCoursesSkillList = []
+            const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
+            axios.get(url2)
+                .then(response => {
+                    // console.log(typeof (this.selectedSkill))
+                    var courses = response.data
+                    console.log(courses)
+
+
+                    for (var course of courses) {
+                        if (course.course_Status == "Active"){
+                            this.activeCoursesSkillList.push({
+                                id: course.course_ID,
+                                courseCat: course.course_Category,
+                                courseDesc: course.course_Desc,
+                                courseName: course.course_Name,
+                                courseStatus: course.course_Status,
+                                courseType: course.course_Type
+                            });
+                        }
+                    }
+
+                    
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
+            return this.activeCoursesSkillList
         }
     },
+
+    
 
     created() {
         this.selectedRole = sessionStorage.getItem('selectedRole') // get role saved in session storage
@@ -260,7 +334,7 @@ export default {
                           courseType: course.course_Type
                         });
                     
-                        if (course.status == "Active") {
+                        if (course.course_Status == "Active") {
                           this.activeCourses.push(
                             {
                               id: course.course_ID,
@@ -272,9 +346,9 @@ export default {
                             }
                           ); 
                         }
-
                         
-                   }    }
+                   }console.log(this.activeCourses)    
+                }
 
                     // <CAlert v-if="course.courseStatus == 'Retired'"> No courses available </CAlert>
                 }) 
