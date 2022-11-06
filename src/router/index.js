@@ -9,7 +9,6 @@ import AddSkill from "@/components/AddSkill.vue";
 import AddRole from "@/components/AddRole.vue";
 import UpdateSkill from "@/components/UpdateSkill.vue";
 import UpdateRole from "@/components/UpdateRole.vue";
-import AssignSkillstoRole from "@/components/AssignSkillstoRole.vue";
 import LJComponent from "@/components/LJComponent.vue";
 import Users from "@/components/Users.vue";
 import ViewUserLearningJourney from "@/components/ViewUserLearningJourney.vue";
@@ -107,15 +106,6 @@ const routes = [
     props: true,
     component: LJComponent,
     meta: {
-      visible: false,
-    },
-  },
-  {
-  path: "/AssignSkillstoRole/:id",
-  name: "user",
-  component: AssignSkillstoRole,
-  props: true,
-  meta: {
       visible: false,
     },
   },
