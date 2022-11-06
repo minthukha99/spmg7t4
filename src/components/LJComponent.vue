@@ -1,8 +1,7 @@
 <template>
 <div class="header">
     <div class="header-middle-text">
-        {{id}}
-        <h1>Human Resource Personnel</h1>
+        <h1>{{ roleName }}</h1>
         <div class="meter">
             <span style="width: 25%"></span>
         </div>
@@ -11,23 +10,21 @@
             <table>
                 <thead>
                     <tr>
-                        <!-- <th scope="col">Index</th> -->
                         <th scope="col">Skill Name</th>
                         <th scope="col">Course Code</th>
                         <th scope="col">Course Name</th>
                         <th scope="col">Registration Status</th>
+                        <th scope="col">Completion Status</th>
                         <th scope="col">Action 1</th>
-                        
-
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="ljData in ljInfolist" :key="ljData.regID">
-                        <!-- <td scope="row" data-label="Index">{{ index +1}}</td> -->
                         <td scope="row" data-label="Skill Name">{{ ljData.skillName }}</td>
                         <td scope="row" data-label="Course Code">{{ ljData.courseCode }}</td>
                         <td scope="row" data-label="Course Name">{{ ljData.courseName }}</td>
                         <td scope="row" data-label="Registration Status">{{ ljData.regStatus }}</td>
+                        <td scope="row" data-label="Completion Status">{{ ljData.completeStatus }}</td>
                         <td v-if="ljData.regStatus == 'Waitlist'" data-label="Action 1">
                             <a class="mouseover" v-on:click="registerCourse(ljData.regID)">Register</a>
                         </td>
@@ -64,30 +61,34 @@ export default {
 
     methods: {
         getLearningJourneyInfo() {
-            
             const url = "http://localhost:3000/learningjourneyinfo/" + this.id;
             axios.get(url)
                 .then(response => {
                     var ljInfoData = response.data
-                    console.log(ljInfoData)
+                    this.roleName = ljInfoData.LJInfo[0].roleName
                     for (var ljData of ljInfoData.courseRegistered) {
+                        console.log(ljData)
+                        // put - if course completion is ""
+                        var comptStatus = "-"
+                        if (ljData.Completion_Status == "Completed") {
+                            comptStatus = "Completed"
+                        }
+                        
                         this.ljInfolist.push({
                             skillName: ljData.skillName,
                             courseCode: ljData.course_ID,
                             courseName: ljData.course_Name,
                             regID: ljData.Reg_ID,
                             regStatus: ljData.Reg_Status,
+                            completeStatus: comptStatus,
                         });
                     }
-
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
         },
-
         registerCourse(regID) {
-
             let url = "http://localhost:3000/registerecourse/" + regID;
             axios.put(url)
                 .then(response => {

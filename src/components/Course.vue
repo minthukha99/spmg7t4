@@ -20,10 +20,7 @@
                         <th scope="col">Index</th>
                         <th scope="col">Code</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Status</th>
-                    
-                        <th v-if="selectedRole != 'Learner'" scope="col">Action 1</th>
-                        <th v-if="selectedRole != 'Learner'" scope="col">Action 2</th>
+
                     
                         <th scope="col" v-if="selectedRole =='Admin'">Status</th>
                         <th scope="col" v-if="selectedRole =='Admin'">Action 1</th>

@@ -273,7 +273,6 @@ export default {
         })
           .then(response => {
             console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"), "with courses: ", courseChosenList)
-
           })
           .catch(error => {
             console.log(error.message)
