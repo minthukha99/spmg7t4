@@ -1,6 +1,5 @@
-import { shallowMount, RouterLinkStub, flushPromises } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Users from '@/components/Users.vue'
-import axios from 'axios' 
 
 describe('Users.vue', () => {
   // testing next and previous button
