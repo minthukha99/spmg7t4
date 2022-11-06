@@ -35,8 +35,8 @@
                             <td scope="col">
                                 {{skill.skillName}}
                             </td>
-                            <td id = "pets">
-                                <select id="pets" v-model="skill.selected">
+                            <td>
+                                <select v-model="skill.selected">
                                     <option > Select an option </option>
                                     <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
                                         {{ eachCourse.course_Name }}
@@ -51,7 +51,7 @@
                 </table>
 
                 <button class="button special" @click="addCoursetoLJ" >
-                    Add to Learning Journey (courseRegistered broken)
+                    Add to Learning Journey
                 </button>
             </div>
         </div>
@@ -139,7 +139,6 @@ export default {
             skillName: role.skillName,
           });
         }
-        // console.log(this.rolesList)
       })
       .catch(error => {
         console.log(error.message)
@@ -156,10 +155,8 @@ export default {
              this.roleSelectedId = eachRole.id 
           }
          }
-        // console.log(this.roleSelectedId)
 
         const url = "http://localhost:3000/role/" + this.roleSelectedId;
-        // console.log(url)
         axios.get(url)
           .then(response => {
             var skillarray = response.data.skillData
@@ -175,37 +172,20 @@ export default {
             }
             this.skillsNeededForRole.forEach(skill=>{
               var thisSkillName = skill.skillName
-              // console.log(thisSkillName, "<<<<")
               const url = "http://localhost:3000/coursebyskill/" + thisSkillName;
               axios.get(url)
                 .then(response => {
-                  console.log(response.data, "<<<<<")
                   skill.course = response.data
-                  // for (var y in response.data) {
-                  //   var tempCourse = response.data[y]
-                  //   this.skillsNeededForRole[x].course.push(tempCourse.course_Name)
-                    
-                    
-                  //   //console.log(tempCourse.course_Name)
-                  //   //myObj.course.push(tempCourse.course_Name)
-                  //   // this.skillsNeededForRole[x].push({
-                  //   //   url : url
-                  //   // })
-                  //   // console.log(myObj,"HERE")
-                  // }
                 })
                 .catch(error => {
                   console.log(error.message)
                 })
             })
-            console.log(this.skillsNeededForRole)
           })
           .catch(error => {
             console.log(error.message)
           })
-          console.log(this.skillsNeededForRole)
       },
-
       getLJofUser() {
         // retrieve all the LJ of the user
         var userId = sessionStorage.getItem("userId")
@@ -224,21 +204,6 @@ export default {
                 roleId: eachLJ.roleID
               })
             }
-
-            // to get courseCount of each LJ, to display in "Number of Courses"
-            // for (var eachLJ of this.LJlist) {
-
-            //   var url = "http://localhost:3000/learningjourneyinfo/" + eachLJ.ljId
-            //   axios
-            //     .get(url)
-            //     .then(response => {
-            //       eachLJ.courseCount = response.data.courseRegistered.length
-            //       console.log(eachLJ)
-            //     })
-            //     .catch(error => {
-            //       console.log(error.message)
-            //     })
-            // }
             const array2 = this.LJlist
             let promises2 = []
             for (var i = 0; i < array2.length; i++) {
@@ -246,7 +211,6 @@ export default {
                 axios
                   .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
                   .then(response => {
-                    // console.log(response.data.courseRegistered)
                     //to get number of courses completed by user
                     var coursesCompleted = 0 
                     for (var eachCourse of response.data.courseRegistered) {
@@ -287,7 +251,7 @@ export default {
                   })
               )
             }
-            Promise.all(promises).then(() => console.log(this.roleList2))
+            Promise.all(promises).then(() => console.log())
           })
           .catch(error => {
             console.log(error.message)
@@ -295,50 +259,51 @@ export default {
 
       },
       addCoursetoLJ() {
-        console.log(this.skillsNeededForRole)
-        //console.log(this.selectedCourses)
-        //needto validate if role already added as LJ
+        let url = "http://localhost:3000/learningjourney";
 
-        // <td id="pets">
-        //   <select id="pets" >
-        //     <option > Select an option </option>
-        //     <option v-for="eachCourse in skill.course" :key="eachCourse" @click="addCoursetoLJ()">
-        //     {{ eachCourse }}
-        //   </option>
-        // </select>
-        //                     </td >
+        // from skillsneedforrole array, get the courses chosen by user and add to a list
+        var courseChosenList= []
+        for (var eachSkillChosen of this.skillsNeededForRole ) {
+          courseChosenList.push(eachSkillChosen.selected)
+        }
+        axios.post(url, {
+          roleName: this.roleSelected,
+          staff_ID: sessionStorage.getItem("userId"),
+          course_ID: courseChosenList
+        })
+          .then(response => {
+            console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"), "with courses: ", courseChosenList)
 
-        // console.log()
-        //     for (var option of document.getElementById('pets').select) {
-        //         console.log(option)
-        //         // if (option.selected) {
-        //         //   selected.push(option.value);
-        //         // }
-        //       }
-        //     console.log(selected);
+          })
+          .catch(error => {
+            console.log(error.message)
+          })
+
+
+        // {
+        //   "roleName" : "Role 150065",
+        //     "staff_ID" : "130002",
+        //       "course_ID": ["SAL004", "COR002", "FIN001"]
+        // }
       },
-      addToLearningJourney() {
-          // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
-        var selected = [];
-        
-        console.log(this.courseSelected)
-          let url = "http://localhost:3000/learningjourney";
-          axios.post(url, {
-                  roleName: this.roleSelected,
-                  staff_ID: sessionStorage.getItem("userId"),
-                  course_ID: ["COR001", "COR002", "COR004"]
-              })
-              .then(response => {
-                console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
+      // addToLearningJourney() {
+      //     // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
+      //   var selected = [];
+      //     let url = "http://localhost:3000/learningjourney";
+      //     axios.post(url, {
+      //             roleName: this.roleSelected,
+      //             staff_ID: sessionStorage.getItem("userId"),
+      //             course_ID: ["COR001", "COR002", "COR004"]
+      //         })
+      //         .then(response => {
+      //           console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
                   
-              })
-              .catch(error => {
-                  console.log(error.message)
-              })
-      },
-      deleteLJ(id) {
-        console.log(id)
-        //http://localhost:3000/learningjourney/17
+      //         })
+      //         .catch(error => {
+      //             console.log(error.message)
+      //         })
+      // },
+      deleteLJ(id) {  
         axios
           .delete('http://localhost:3000/learningjourney/' + id)
           .then(response => {
@@ -348,9 +313,6 @@ export default {
           .catch(error => {
             console.log(error.message)
           })
-
-
-
       }
   },
 }
