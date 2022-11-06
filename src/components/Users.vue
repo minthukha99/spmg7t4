@@ -1,60 +1,60 @@
 <template>
-    <div class="header">
-        <div class="header-middle-text">
-            <h1>Users in <u>{{ department }} </u> department</h1>
-            <div>
-                <table v-if="selectedRole == 'Manager'">
-                    <thead>
-                        <tr>
-                            <th scope="col">Index</th>
-                            <th scope="col">Staff ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Courses Completed</th>
-                            <th scope="col" >Action 1</th>
-                            <!-- <th scope="col" v-if="selectedRole=='HR'">Action 3</th> -->
-    
-                        </tr>
-                    </thead>
-    
-                    <tbody>
-                        <tr v-for="(staff,key,index) in coursesCompletedArray" :key="staff">
-                            <td>
-                                {{ index+1 }} 
-                            </td>
-                            <td>
-                                {{ key }}
-                            </td>
-                            <td>
-                                {{ staff.name }} 
-                                <!-- {{ user.staffFName }} {{ user.staffLName }} -->
-                            </td>
-                            <td>
-                                <ul v-for ="eachCourse in staff.course" :key="eachCourse">
-                                    <li> {{ eachCourse }} </li>
-                                </ul>
-                                
-                            </td>
-                            <td> 
-                                <router-link :to="`/ViewUserLearningJourney/${key}`">View Learning Journey </router-link>    
-                            </td>
-                            <!-- <td scope="row" data-label="Index">{{ index + 1 }}</td>
+<div class="header">
+    <div class="header-middle-text">
+        <h1>Users in <u>{{ department }} </u> department</h1>
+        <div>
+            <table v-if="selectedRole == 'Manager'">
+                <thead>
+                    <tr>
+                        <th scope="col">Index</th>
+                        <th scope="col">Staff ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Courses Completed</th>
+                        <th scope="col">Action 1</th>
+                        <!-- <th scope="col" v-if="selectedRole=='HR'">Action 3</th> -->
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="(staff,key,index) in coursesCompletedArray" :key="staff">
+                        <td>
+                            {{ index+1 }}
+                        </td>
+                        <td>
+                            {{ key }}
+                        </td>
+                        <td>
+                            {{ staff.name }}
+                            <!-- {{ user.staffFName }} {{ user.staffLName }} -->
+                        </td>
+                        <td>
+                            <ul v-for="eachCourse in staff.course" :key="eachCourse">
+                                <li> {{ eachCourse }} </li>
+                            </ul>
+
+                        </td>
+                        <td>
+                            <router-link :to="`/ViewUserLearningJourney/${key}`">View Learning Journey </router-link>
+                        </td>
+                        <!-- <td scope="row" data-label="Index">{{ index + 1 }}</td>
                                 <td scope="row" data-label="Name">{{ role.roleName }}</td> -->
-                            <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
-                            <!-- show in bullet point if got data, else dash -->
-                            <!-- <td v-if="role.skillName == ''">
+                        <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
+                        <!-- show in bullet point if got data, else dash -->
+                        <!-- <td v-if="role.skillName == ''">
                                     -
                                 </td> -->
-                            <!-- <td v-else>
+                        <!-- <td v-else>
                                     <ul scope="row" data-label="Skills" v-for="x in role.skillName" :key="x">
                                         <li> {{ x }}</li>
                                     </ul>
                                 </td> -->
-                            <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
-                            <!-- <td>
+                        <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
+                        <!-- <td>
                                     <router-link :to="`/UpdateRole/${role.id}`">Edit</router-link>
                                 </td> -->
-    
-                            <!-- <td v-if="role.status == false">
+
+                        <!-- <td v-if="role.status == false">
                                     <a class="mouseover" v-on:click="activateRoles(role.roleName)">Activate</a>
                                 </td>
                                 <td v-else-if="role.status == true">
@@ -67,60 +67,60 @@
                                 <td v-else-if="role.status == true" class="active" data-label="Status">
                                     Active
                                 </td> -->
-    
-                            <!-- <td scope="row" data-label="Action 4">
+
+                        <!-- <td scope="row" data-label="Action 4">
                     <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
                     <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
                     <router-link to="/AssignSkillstoRole">Assign skills</router-link>
                   </td> -->
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div>
-                <table v-if="selectedRole == 'Admin'">
-                    <thead>
-                        <tr>
-                            <th scope="col">Index</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Department</th>
-                            <th scope="col">Action 1</th>
-                            <!-- <th scope="col" >Action 2</th> -->
-                            <!-- <th scope="col" v-if="selectedRole=='HR'">Action 3</th> -->
-            
-                        </tr>
-                    </thead>
-            
-                    <tbody>
-                        <tr v-for="(user,index) in sortedList" :key="user">
-                            <td>
-                                {{ index+1 }}
-                            </td>
-                            <td>
-                                {{ user.staffFName }} {{ user.staffLName }}
-                            </td>
-                            <td>
-                                {{ user.department }}
-                            </td>
-                            <td>
-                                <!-- <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link> -->
-                                <router-link :to="`/Users/`">View Learning Journey</router-link>
-                            </td>
-                           
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <table v-if="selectedRole == 'Admin'">
+                <thead>
+                    <tr>
+                        <th scope="col">Index</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Action 1</th>
+                        <!-- <th scope="col" >Action 2</th> -->
+                        <!-- <th scope="col" v-if="selectedRole=='HR'">Action 3</th> -->
 
-                <div class="buttons">
-                    <button class="special prevButton" @click="prevPage">Previous</button>
-                    <button class="special nextButton" @click="nextPage">Next</button>
-                </div>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="(user,index) in sortedList" :key="user" data-test="sortList">
+                        <td>
+                            {{ index+1 }}
+                        </td>
+                        <td>
+                            {{ user.staffFName }} {{ user.staffLName }}
+                        </td>
+                        <td>
+                            {{ user.department }}
+                        </td>
+                        <td>
+                            <!-- <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link> -->
+                            <router-link :to="`/Users/`">View Learning Journey</router-link>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+
+            <div class="buttons">
+                <button class="special prevButton" @click="prevPage">Previous</button>
+                <button class="special nextButton" @click="nextPage">Next</button>
             </div>
         </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -155,8 +155,7 @@ export default {
             this.selectedRole = sessionStorage.getItem('selectedRole') // get role saved in session storage   
             if (this.selectedRole == "Admin") {
                 this.getAllUsers() // display all users if role is Admin
-            }
-            else if (this.selectedRole == "Manager") {
+            } else if (this.selectedRole == "Manager") {
                 this.getUsersUnderManager()
 
             }
@@ -166,7 +165,7 @@ export default {
             const url = "http://localhost:3000/users"
             axios.get(url)
                 .then(response => {
-                    
+
                     for (var eachUser of response.data) {
                         this.usersList.push({
                             staffId: eachUser.Staff_ID,
@@ -198,7 +197,7 @@ export default {
                             courseId: eachCourseCompleted.course_ID,
                             completedStatus: eachCourseCompleted.Completion_Status,
                             name: eachCourseCompleted.staff_FName + " " + eachCourseCompleted.staff_LName,
-                            
+
                             //    "staff_FName": "Mary",
                             // "staff_LName": "Teo",
                         })
@@ -206,16 +205,21 @@ export default {
                     // console.log(this.coursesDoneByUser)
                     for (var eachCourseDone of this.coursesDoneByUser) {
                         var ifUserInArray = this.coursesCompletedArray[eachCourseDone.staffId] //check if staffId is in array
-                        if (ifUserInArray != undefined && eachCourseDone.completedStatus=="Completed") {
+                        if (ifUserInArray != undefined && eachCourseDone.completedStatus == "Completed") {
                             // means the staffId is already in the array and staff completed the course, need to edit the info in the array
                             var listExtracted = this.coursesCompletedArray[eachCourseDone.staffId].course
                             listExtracted.push(eachCourseDone.courseId)
                             // console.log(listExtracted)
-                            this.coursesCompletedArray[eachCourseDone.staffId] = { name: eachCourseDone.name, course: listExtracted }
-                        }
-                        else if (eachCourseDone.completedStatus == "Completed"){
+                            this.coursesCompletedArray[eachCourseDone.staffId] = {
+                                name: eachCourseDone.name,
+                                course: listExtracted
+                            }
+                        } else if (eachCourseDone.completedStatus == "Completed") {
                             // staffId not in array and staff completed the course , need to add the info
-                            this.coursesCompletedArray[eachCourseDone.staffId] = { name: eachCourseDone.name, course: [eachCourseDone.courseId]}
+                            this.coursesCompletedArray[eachCourseDone.staffId] = {
+                                name: eachCourseDone.name,
+                                course: [eachCourseDone.courseId]
+                            }
                         }
                     }
                     // console.log(this.coursesCompletedArray)
@@ -234,11 +238,11 @@ export default {
                 })
         },
 
-        nextPage: function() {
+        nextPage: function () {
             if ((this.currentPage * this.pageSize) < this.usersList.length) this.currentPage++;
         },
 
-        prevPage: function() {
+        prevPage: function () {
             if (this.currentPage > 1) this.currentPage--;
         }
         //     getRoles() {
@@ -304,7 +308,7 @@ export default {
     },
 
     computed: {
-        sortedList: function() {
+        sortedList: function () {
             return this.usersList.filter((row, index) => {
                 let start = (this.currentPage - 1) * this.pageSize;
                 let end = this.currentPage * this.pageSize;
