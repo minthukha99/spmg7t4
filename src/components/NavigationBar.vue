@@ -75,7 +75,7 @@ export default {
     mounted() {
         // get value of selected role from session storage
         this.selectedRole = sessionStorage.getItem('selectedRole')
-        console.log(this.selectedRole == null)
+        //console.log(this.selectedRole == null)
     },
     methods: {
         showButton() {
