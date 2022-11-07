@@ -22,14 +22,14 @@
             <input v-model="newRoleName" id="roleName" name="roleName"><br>
             <br>
             <label for="roleName">New Role Details</label><br>
-            <input v-model="newRoleDetails" id="roleDetails" name="roleDetails"><br>
+            <input v-model="newRoleDetails" id="roleDetails" name="roleDetails" data-test="roleName"><br>
             <br>
             <label for="skillsNeeded" class="multiselect">Skills required</label>
             <div class="selectBox">
                 <!-- <select multiple v-model="selectedSkills"> -->
                 <option selected="true" disabled="disabled">Select new skills (required)</option>
                 <div v-for="skill in skillsList" :key="skill.id">
-                    <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills">
+                    <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" data-test="selectedSkill">
                     <label :for="skill.id">{{skill.skillName}}</label>
                 </div>
                 <!-- </select> -->
@@ -60,7 +60,7 @@
                 <button value="Cancel" class="special" type="button">
                     <router-link to="/Roles" class="special">Cancel</router-link>
                 </button>
-                <button type= "button" @click='updateRoleButton()' value="Save" class="special">
+                <button type= "button" @click='updateRoleButton()' value="Save" class="special updateRoleButton">
                     Save
                 </button>
             
@@ -72,7 +72,7 @@
 <script>
 import axios from "axios";
 export default {
-    name: 'UpdateRole/:id',
+    name: 'UpdateRole',
     mounted() {
         this.getSkills()
         this.getRoleDetails()

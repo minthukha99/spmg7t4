@@ -60,7 +60,9 @@
 import axios from "axios";
 export default {
     props: ['id'],
-    name: 'AssignSkillstoRoles/:id',
+
+    name: 'AssignSkillstoCourses/:id',
+
     mounted() {
         this.getSkills()
         this.getCourseInformation()

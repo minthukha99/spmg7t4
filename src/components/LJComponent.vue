@@ -1,9 +1,12 @@
 <template>
 <div class="header">
     <div class="header-middle-text">
-        <h1>{{ roleName }}</h1>
+        <h1>Role: <u>{{ roleName }}</u></h1>
+        <h4>Total Courses Required: {{ totalCourses}}</h4>
+        <h4>Total Courses Completed: {{ coursesCompleted}} </h4>
+        
         <div class="meter">
-            <span style="width: 25%"></span>
+            <span :style="{ width: coursesCompletedPercentage + '%' }"></span>
         </div>
         <br>
         <div>
@@ -16,6 +19,7 @@
                         <th scope="col">Registration Status</th>
                         <th scope="col">Completion Status</th>
                         <th scope="col">Action 1</th>
+                        <th scope="col">Action 2</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,9 +35,9 @@
                         <td v-else>
                             <span>-</span>
                         </td>
-                        <!-- <td scope="row" data-label="Action 1">
-                            <a href="#">Remove</a>
-                        </td> -->
+                        <td scope="row" >
+                            <a class="mouseover" v-on:click="editLJCourse(ljData.regID)">Change Course</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -56,6 +60,9 @@ export default {
             // skillCourseList: [],
             ljInfolist: [],
             roleName: '',
+            totalCourses: 0, // store total courses needed to clear for the role
+            coursesCompleted: 0,// store courses completed 
+            coursesCompletedPercentage: 0 //store percentage from above 2 data
         }
     },
 
@@ -64,25 +71,39 @@ export default {
             const url = "http://localhost:3000/learningjourneyinfo/" + this.id;
             axios.get(url)
                 .then(response => {
+                    // to get all the skills required for the role, so that page only show the courses for those skills
+                    // without this, skills not required for this role will also show
+                    var skillsRequired = []
+                    for (var eachSkill of response.data.skillNeededForRole) {
+                        skillsRequired.push(eachSkill.skillName)
+                    }
+
                     var ljInfoData = response.data
                     this.roleName = ljInfoData.LJInfo[0].roleName
                     for (var ljData of ljInfoData.courseRegistered) {
-                        console.log(ljData)
-                        // put - if course completion is ""
-                        var comptStatus = "-"
-                        if (ljData.Completion_Status == "Completed") {
-                            comptStatus = "Completed"
-                        }
                         
-                        this.ljInfolist.push({
-                            skillName: ljData.skillName,
-                            courseCode: ljData.course_ID,
-                            courseName: ljData.course_Name,
-                            regID: ljData.Reg_ID,
-                            regStatus: ljData.Reg_Status,
-                            completeStatus: comptStatus,
-                        });
+                        if (skillsRequired.includes(ljData.skillName)) {
+                            // show "-" if course completion is ""(course not completed, so registered/rejected/ waitlist)
+                            var comptStatus = "-"
+                            this.totalCourses += 1 
+                            if (ljData.Completion_Status == "Completed") {
+                                comptStatus = "Completed"
+                                this.coursesCompleted +=1 //if course completed, increase count 
+                            }
+                            this.ljInfolist.push({
+                                skillName: ljData.skillName,
+                                courseCode: ljData.course_ID,
+                                courseName: ljData.course_Name,
+                                regID: ljData.Reg_ID,
+                                regStatus: ljData.Reg_Status,
+                                completeStatus: comptStatus,
+                            });   
+                        }
                     }
+                    console.log(this.totalCourses)
+                    console.log(this.coursesCompleted)
+                    this.coursesCompletedPercentage = this.coursesCompleted/this.totalCourses
+
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -102,6 +123,10 @@ export default {
                 })
 
         },
+        editLJCourse(id) {
+            console.log(id)
+            
+        }
 
     }
 }
