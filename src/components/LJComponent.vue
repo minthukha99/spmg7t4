@@ -1,7 +1,7 @@
 <template>
 <div class="header">
     <div class="header-middle-text">
-        <h1>{{ roleName }}</h1>
+        <h1>Role: <u>{{ roleName }}</u></h1>
         <div class="meter">
             <span style="width: 25%"></span>
         </div>
@@ -16,6 +16,7 @@
                         <th scope="col">Registration Status</th>
                         <th scope="col">Completion Status</th>
                         <th scope="col">Action 1</th>
+                        <th scope="col">Action 2</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,9 +32,9 @@
                         <td v-else>
                             <span>-</span>
                         </td>
-                        <!-- <td scope="row" data-label="Action 1">
-                            <a href="#">Remove</a>
-                        </td> -->
+                        <td scope="row" >
+                            <a class="mouseover" v-on:click="editLJCourse(ljData.regID)">Change Course</a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -102,6 +103,10 @@ export default {
                 })
 
         },
+        editLJCourse(id) {
+            console.log(id)
+            
+        }
 
     }
 }

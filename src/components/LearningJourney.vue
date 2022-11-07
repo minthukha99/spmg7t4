@@ -211,19 +211,41 @@ export default {
                 axios
                   .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
                   .then(response => {
-                    //to get number of courses completed by user
-                    var coursesCompleted = 0 
+
+                    // to get all the skills required for the role, so that page only show the courses for those skills. 
+                    // without this, skills not required for this role will also go into the count
+                    var skillsRequired = []
+                    for (var eachSkill of response.data.skillNeededForRole) {
+                      skillsRequired.push(eachSkill.skillName)
+                    }
+                    //to get total number of courses to be completed and courses completed by user
+                    var coursesToTake = 0 //store total courses to be completed
+                    var coursesCompleted = 0 //store total courses completed
                     for (var eachCourse of response.data.courseRegistered) {
-                      if (eachCourse.Completion_Status) {
+                      if ( skillsRequired.includes(eachCourse.skillName)) { //if skill learned in course is also skill required for role
+                        coursesToTake += 1
+                      }
+                      if (eachCourse.Completion_Status == "Completed" && skillsRequired.includes(eachCourse.skillName)) {
                         coursesCompleted += 1
                       }
                     }
+                  
+                    //to get number of courses completed by user
+                    // var coursesCompleted = 0 
+                    // for (var eachCourse of response.data.courseRegistered) {
+                    
+                    //   if (eachCourse.Completion_Status == "" && skillsRequired.includes(eachCourse.skillName)) {
+                    //     coursesCompleted += 1
+                    //     console.log(coursesCompleted)
+                    //   }
+                    // }
                     var percentageCourseCompleted = 0
-                    if (response.data.courseRegistered.length != 0) {
-                      percentageCourseCompleted = Math.round((coursesCompleted / response.data.courseRegistered.length) * 100)
-                    }
+                    percentageCourseCompleted = Math.round((coursesCompleted / coursesToTake) * 100)
+                    // if (response.data.courseRegistered.length != 0) {
+                    //   percentageCourseCompleted = Math.round((coursesCompleted / response.data.courseRegistered.length) * 100)
+                    // }
                     this.coursesCounts.push({
-                      courseCount: response.data.courseRegistered.length,
+                      courseCount: coursesToTake,
                       coursesCompletedPercentage: percentageCourseCompleted,
                       coursesDone: coursesCompleted
                     })
@@ -273,6 +295,7 @@ export default {
         })
           .then(response => {
             console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"), "with courses: ", courseChosenList)
+            location.reload()
           })
           .catch(error => {
             console.log(error.message)
@@ -296,7 +319,7 @@ export default {
       //         })
       //         .then(response => {
       //           console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
-                  
+                   
       //         })
       //         .catch(error => {
       //             console.log(error.message)
