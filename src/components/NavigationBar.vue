@@ -27,7 +27,8 @@
         <router-link :to="`/Users`" v-if="selectedRole == 'Admin' | selectedRole == 'Manager'">
             Users
         </router-link>
-        <select v-model="selectedRole" @change="saveRoleInSession" v-if="selectedRole == 'Admin'">
+        <!-- <select v-model="selectedRole" @change="saveRoleInSession" v-if="selectedRole == 'Admin'"> -->
+            <select v-model="selectedRole" @change="saveRoleInSession">
             <option selected="true" disabled="disabled">Select your role</option>
             <option v-for="role in rolesList" :key="role">{{role}}</option>
         </select>
