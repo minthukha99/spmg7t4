@@ -9,13 +9,10 @@
             Skills assigned:
             <ul v-for="(skill,index) in roleDetails[2]" :key="skill">
                 <li>
-                    
-                        {{ skill.skillName }}
-                    
-                        <a v-if="roleDetails[2].length  > 1">
-                            <a class="mouseover" v-on:click="deleteSkillAssignedToRole(index) ">Delete</a>
-                        </a>
-                    
+                    {{ skill.skillName }}
+                    <a v-if="roleDetails[2].length  > 1">
+                        <a class="mouseover" v-on:click="deleteSkillAssignedToRole(index) ">Delete</a>
+                    </a>
                 </li> 
             </ul>
         </h3>
@@ -226,7 +223,6 @@ export default {
                 .catch(error => {
                     console.log(error.message)
                 })
-
         }
     }
 }
