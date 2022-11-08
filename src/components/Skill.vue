@@ -116,18 +116,12 @@ export default {
             axios.get(url)
                 .then(response => {
                     var skillData = response.data
-                    console.log("SkillData=", skillData)
                     for (var skill of skillData) {
-                        // if (skill.roleName == "") {
-                        //   console.log("Adsfsdf")
-                        //   skill.roleName = " "
-                        // }
                         this.skillsList.push({
                             id: skill._id,
                             roleName: skill.roleName,
                             skillName: skill.skillName,
                             status: skill.status
-                            //v: skill._v
                         });
                         if(skill.status == 1) {
                             this.activeSkills.push(
@@ -138,13 +132,8 @@ export default {
                                     
                                 }
                             )   
-                        }
-                        // console.log(this.skillsList.roleName + "AA")
-                        // if (this.skillsList.roleName == []) {
-                        //   console.log("DD")
-                        // }
+                        } 
                   }
-                    console.log("SkillsList=", this.skillsList)
                 })
                 .catch(error => {
                     console.log(error.message)

@@ -69,7 +69,6 @@ export default {
             roleList: [],
             roleList2: [],
             coursesCounts: [], // store the number of courses of each LJ 
-            min123: "",
           selectedCourses: [],
             staffInfo: [] // store user information
         }

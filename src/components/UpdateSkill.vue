@@ -7,26 +7,17 @@
             <label for="skillName">Skill Name</label><br>
             <input v-model="newSkillName" class="skillName" name="skillName"><br>
             <br>
-            <label for="rolesNeeded" class="multiselect">Roles that require skill</label>
-                <div class="selectBox">
-                    <option selected="true" disabled="disabled">Select new roles (required)</option>
-                    <div v-for="role in rolesList" :key="role.id">
-                        <input type="checkbox" :id="role.id" :value="role.roleName" v-model="selectedRoles">
-                        <label :for="role.id">{{role.roleName}}</label>
-                    </div>
-                </div>
-            <!-- <label for="skillsNeeded" class="multiselect">Roles that require skill</label>
-            <br>
-            <select multiple v-model="selectedRoles">
-                <option selected="true" disabled="disabled">Select an option (if any)</option>
-                <option v-for="role in rolesList" :key="role.id">>{{role.roleName}}</option>
-            </select>  -->
-            <br>
+            <label for="skillDetail">Skill Detail</label><br>
+            <input v-model="newSkillDetail" name="skillDetail"><br>
+            <br> 
+            <ul v-for="error in errorMessage" :key="error" class="errorMessage"> 
+                <li> {{ error }} </li>
+            </ul>
             <br>
             <button value="Cancel" class="cancelButton">
                 <router-link to="/Skills" class="special">Cancel</router-link>
             </button>
-            <button @click='updateSkill(skillName); $router.push("/Skills")' name="Save" class="special saveButton">
+            <button type="button" @click='updateSkill(skillName)' name="Save" class="special saveButton">
                 Save
             </button>
         </form>
@@ -41,75 +32,84 @@ export default {
     name: 'UpdateSkill',
 
     mounted() {
-        this.getRoles()
+        this.getAllSkills()
     },
 
     props: ['id'],
 
     data() {
         return {
-            rolesList: [],
-            selectedRoles: [],
             newSkillName: '',
+            newSkillDetail: '',
+            errorMessage: [],
+            skillsList: []
         }
     },
 
     methods: {
-        getRoles() {
-            const url = "http://localhost:3000/roles";
+        getAllSkills() {
+            const url = "http://localhost:3000/skills";
             axios.get(url)
-            .then(response => {
-                var roleData = response.data
-                // console.log("roleData=", roleData)
-                for (var role of roleData) {
-                this.rolesList.push(
-                    {
-                    id: role._id,
-                    roleName: role.roleName,
-                    skillName: role.skillName,
-                    status: role.status
-                    
-                    }
-                );
-                }
-                // console.log("rolesList=", this.rolesList)
-            })
-            .catch(error => {
-                console.log(error.message)
-            })
-        },
-
-        updateSkill() {
-            // console.log(skillName)
-
-            let url = "http://localhost:3000/updateskill/" + this.id;
-            // console.log(url)
-            // console.log(typeof(this.id))
-            // console.log(this.newSkillName)
-
-            axios.put(url, {
-                    roleName: this.selectedRoles,
-                    skillName: this.newSkillName
-                })
-
                 .then(response => {
-                    console.log("hello", skillName)
+                    var skillData = response.data
+                    for (var skill of skillData) {
+                        this.skillsList.push(
+                            skill.skillName,
+                        );
+                    }
                 })
-
                 .catch(error => {
                     console.log(error.message)
                 })
+            
+        },
+        updateSkill() {
+            this.errorMessage = []
+
+            //if new skills name is empty
+            if (this.newSkillName == "") {
+                this.errorMessage.push("Skill name is required!")
+            }
+
+            // if skill name is a duplicate
+            console.log(this.skillsList)
+            if (this.skillsList.includes(this.newSkillName)) {
+                this.errorMessage.push("Skill name is already used!")
+            }
+
+            //process form if no error 
+            if (this.errorMessage.length == 0) {
+                console.log("updateRole")
+                let url = "http://localhost:3000/updateskill/" + this.id;
+                axios.put(url, {
+                    skillName: this.newSkillName,
+                    skillDetail: this.newSkillDetail
+                    })
+
+                    .then(response => {
+                        console.log("success ")
+                        location.reload()
+                    })
+
+                    .catch(error => {
+                        console.log(error.message)
+                    })
+                this.$router.replace({
+                    path: '/Skills'
+                })
+            }
         }
 
     }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-
 <style scoped>
 .special {
     color: white;
     text-decoration: none;
+}
+.errorMessage {
+    color: red
 }
 </style>
