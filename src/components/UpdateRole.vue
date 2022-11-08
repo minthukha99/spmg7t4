@@ -115,7 +115,7 @@ export default {
             
         },
         getSkills() {
-            const url = "http://localhost:3000/skills";
+            const url = "http://localhost:3000/availableskills";
             axios.get(url)
                 .then(response => {
                     var skillData = response.data

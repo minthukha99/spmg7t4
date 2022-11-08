@@ -7,7 +7,7 @@
         </div> -->
         <input type="text" v-model="searchValue" placeholder="Search Course" />
         <br><br>
-        <label for="">Select a skill</label>
+        <label>Select a skill</label>
         <select v-model="selectedSkill">
             <option value="">All</option>
             <option v-for="skill in skillsList" :key="skill.skillID">{{skill.skillName}}</option>
@@ -257,68 +257,60 @@ export default {
 
         },
 
-        filteredSkillCourses() {
-            this.courseSkillList = []
-            const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
-            axios.get(url2)
-                .then(response => {
-                    // console.log(typeof (this.selectedSkill))
-                    var courses = response.data
-                    // console.log(courses)
-
-
-                    for (var course of courses) {
-                        this.courseSkillList.push({
-                            id: course.course_ID,
-                            courseCat: course.course_Category,
-                            courseDesc: course.course_Desc,
-                            courseName: course.course_Name,
-                            courseStatus: course.course_Status,
-                            courseType: course.course_Type
-                        });
-                    }
+        // filteredSkillCourses() {
+        //     this.courseSkillList = []
+        //     const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
+        //     axios.get(url2)
+        //         .then(response => {
+        //             var courses = response.data
+        //             for (var course of courses) {
+        //                 this.courseSkillList.push({
+        //                     id: course.course_ID,
+        //                     courseCat: course.course_Category,
+        //                     courseDesc: course.course_Desc,
+        //                     courseName: course.course_Name,
+        //                     courseStatus: course.course_Status,
+        //                     courseType: course.course_Type
+        //                 });
+        //             }
 
                     
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
-            return this.courseSkillList
-        },
+        //         })
+        //         .catch(error => {
+        //             console.log(error.message)
+        //         })
+        //     return this.courseSkillList
+        // },
 
-        filteredActiveSkillCourses() {
-            this.activeCoursesSkillList = []
-            const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
-            axios.get(url2)
-                .then(response => {
-                    // console.log(typeof (this.selectedSkill))
-                    var courses = response.data
-                    console.log(courses)
+        // filteredActiveSkillCourses() {
+        //     this.activeCoursesSkillList = []
+        //     const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
+        //     axios.get(url2)
+        //         .then(response => {
+        //             var courses = response.data
+        //             console.log(courses)
 
-
-                    for (var course of courses) {
-                        if (course.course_Status == "Active"){
-                            this.activeCoursesSkillList.push({
-                                id: course.course_ID,
-                                courseCat: course.course_Category,
-                                courseDesc: course.course_Desc,
-                                courseName: course.course_Name,
-                                courseStatus: course.course_Status,
-                                courseType: course.course_Type
-                            });
-                        }
-                    }
+        //             for (var course of courses) {
+        //                 if (course.course_Status == "Active"){
+        //                     this.activeCoursesSkillList.push({
+        //                         id: course.course_ID,
+        //                         courseCat: course.course_Category,
+        //                         courseDesc: course.course_Desc,
+        //                         courseName: course.course_Name,
+        //                         courseStatus: course.course_Status,
+        //                         courseType: course.course_Type
+        //                     });
+        //                 }
+        //             }
 
                     
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
-            return this.activeCoursesSkillList
-        }
+        //         })
+        //         .catch(error => {
+        //             console.log(error.message)
+        //         })
+        //     return this.activeCoursesSkillList
+        // }
     },
-
-    
 
     created() {
         this.selectedRole = sessionStorage.getItem('selectedRole') // get role saved in session storage
@@ -366,7 +358,7 @@ export default {
                 })
             
 
-        const url1 = "http://localhost:3000/skills";
+        const url1 = "http://localhost:3000/availableskills";
         axios.get(url1)
             .then(response => {
                 var skillData = response.data
