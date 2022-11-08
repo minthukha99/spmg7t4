@@ -67,18 +67,14 @@ export default {
             axios.get(url)
                 .then(response => {
                     var skillData = response.data
-                    console.log("SkillData=", skillData)
                     for (var skill of skillData) {
-
                         this.skillsList.push({
                             id: skill.id,
                             roleName: skill.roleName,
                             skillName: skill.skillName,
                             status: skill.status
                         });
-
                     }
-                    console.log("SkillsList=", this.skillsList)
                 })
                 .catch(error => {
                     console.log(error.message)
