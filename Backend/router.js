@@ -61,5 +61,7 @@ router.get("/learningjourneyinfo/:id",LjController.getInfoAboutLJ)
 router.get("/coursecompletedbystaff/:id",managerController.coursesCompletedByTeam)
 
 //registration
-router.put("/registerecourse/:id",registerController.updateRegistration)
+router.put("/registerecourse/:id", registerController.updateRegistration)
+router.get("/skillLearntByUser/:id", registerController.skillLearntByUser)
+// getRegistration
 module.exports = router

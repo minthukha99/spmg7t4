@@ -8,6 +8,7 @@
             <p>
                 Select a role that you desire and add it to your current list of learning journeys to track your progress.
             </p>
+            
 
             <input type="text" v-model="roleSelected" list="rolesList" @change="getSkillsForChosenRole">
             <datalist id="rolesList">
@@ -15,14 +16,10 @@
             </datalist>
             <br>
             <br>
-            <!-- <div @change="getSkillsForChosenRole" @click="getRoles">
-            <select v-model="roleSelected">
-              <option selected="true" disabled="disabled">Select a role</option>
-              <option v-for="role in rolesList" :key="role.id" >{{role.roleName}}</option>
-            </select>
-          </div> -->
+            
             <div>
-                <table v-if="roleSelected != ''">
+              <div v-if="roleSelected != '' && errorMessage.length == 0"> 
+                <table>
                     <thead>
                         <tr>
                             <th scope="col">Skill required</th>
@@ -35,24 +32,48 @@
                             <td scope="col">
                                 {{skill.skillName}}
                             </td>
-                            <td>
+                            <td v-if="skill.learnt == false" >
                                 <select v-model="skill.selected">
-                                    <option > Select an option </option>
+                                    <option disabled> Select an option </option>
                                     <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
                                         {{ eachCourse.course_Name }}
                                     </option>
                                 </select>
+
                             </td>
-                            <!-- <td scope="col">
-                            </td> -->
+
+                            <td v-else>
+                              <div class="errorMessage">
+                                You have already learned the Skill. Do choose the Course you have taken to learn this Skill
+                              </div>
+                              <select v-model="skill.selected">
+                                <option disabled> Select an option </option>
+                                <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
+                                  {{ eachCourse.course_Name }}
+                                </option>
+                              </select>
+                            </td>
+                            
                         </tr>
                     </tbody>
 
                 </table>
-
-                <button class="button special" @click="addCoursetoLJ" >
-                    Add to Learning Journey
+                
+                  <ul v-for="error in errorMessage2" :key="error" class="errorMessage">
+                    <li>{{ error }} </li>
+                  </ul>
+                
+                <button class="button special" @click="addCoursetoLJ">
+                  Add to Learning Journey
                 </button>
+                </div>
+
+                <div v-else>
+                  <ul v-for="error in errorMessage" :key="error" class="errorMessage">
+                    <li>{{ error }} </li>
+                  </ul>
+                </div>
+                
             </div>
         </div>
         <div class="header-middle-text">
@@ -73,12 +94,7 @@
                         Number of Courses completed: {{ coursesCounts[index].coursesDone }}
                         <br>
                         Total number of Courses: {{ coursesCounts[index].courseCount }}
-                        
-  
                     </div>
-                    <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
-                    <!-- LJlist -->
-                    <!-- <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link> -->
                     <button class="special">
                         <router-link :to="`/LJComponent/${ LJlist[index].ljId }`">View Learning Journey</router-link>
                     </button>
@@ -88,17 +104,6 @@
                 </div>
             </div>
         </div>
-        <!-- don't delete the codes first in case y'all cannot figure out how to work with the above code -->
-        <!-- <div class="section">
-          <div class="pie" data-value="80"></div>
-          <h4>Leadership Communication Skills for Influence and Impact</h4>
-          <p>Develop the communication skills that will make you irreplaceable, influential and unstoppable as a 21st century leader</p>
-          <span>
-            <button type="button">
-              Continue Learning
-            </button>
-          </span>
-        </div> -->
       </div>
     </div>
 </template>
@@ -108,7 +113,8 @@ import axios from "axios";
 export default {
     name: 'Learning Journey',
     mounted() {
-        this.getLJofUser()
+      this.getLJofUser(),
+      this.getRegistration()
     },
 
     data() {
@@ -122,8 +128,10 @@ export default {
           roleList: [],
           roleList2: [],
           coursesCounts: [], // store the number of courses of each LJ 
-          min123: "",
-          selectedCourses : []
+          userRolesList: [], // store all users lj roles
+          errorMessage: [],  // to show error message if user select a duplicate role for LJ
+          errorMessage2: [], // to show error message if user selct no course for a skill
+          skillsList: [] // store skill id of all skills the user has earned
         }
   },
   created() {
@@ -131,7 +139,6 @@ export default {
     axios.get(url)
       .then(response => {
         var roleData = response.data
-        // console.log("roleData=", roleData)
         for (var role of roleData) {
           this.rolesList.push({
             id: role.roleID,
@@ -145,46 +152,79 @@ export default {
       })
   },
 
-    methods: {
-       getSkillsForChosenRole() {
-        // get the skills required for a role
-
-        // get role id of user input roleName
-         for (var eachRole of this.rolesList) {
-           if (eachRole.roleName == this.roleSelected) {
-             this.roleSelectedId = eachRole.id 
+  methods: {
+    getRegistration() {
+      // get the registration data in json from csv, to check if user acquired the course
+      var userId = sessionStorage.getItem("userId")
+      const url = "http://localhost:3000/skillLearntByUser/" + userId;
+      // http://localhost:3000/registration/130001
+      axios.get(url)
+        .then(response => {
+          for (var eachSkill of response.data) {
+            this.skillsList.push(eachSkill.skillID)
           }
-         }
-
-        const url = "http://localhost:3000/role/" + this.roleSelectedId;
-        axios.get(url)
-          .then(response => {
-            var skillarray = response.data.skillData
-            this.skillsNeededForRole = []
-            for (var skill of skillarray) {
-              this.skillsNeededForRole.push({
-                skillDetail: skill.skillDetail,
-                skillId: skill.skillID,
-                skillName: skill.skillName,
-                course: [],
-                selected : ""
-              });
+        })
+        .catch(error => {
+          console.log(error.message)
+        })
+      },
+      getSkillsForChosenRole() {
+        // get the skills required for a role
+        // this.userRolesList.push(
+        // get role id of user input roleName
+        console.log(this.skillsList)
+        this.errorMessage = []
+        if (this.userRolesList.includes(this.roleSelected)) {
+          this.errorMessage.push("Learning Journey with Role already added!")
+        }
+        else {
+          for (var eachRole of this.rolesList) {
+            if (eachRole.roleName == this.roleSelected) {
+              this.roleSelectedId = eachRole.id
             }
-            this.skillsNeededForRole.forEach(skill=>{
-              var thisSkillName = skill.skillName
-              const url = "http://localhost:3000/coursebyskill/" + thisSkillName;
-              axios.get(url)
-                .then(response => {
-                  skill.course = response.data
-                })
-                .catch(error => {
-                  console.log(error.message)
-                })
+          }
+
+          const url = "http://localhost:3000/role/" + this.roleSelectedId;
+          axios.get(url)
+            .then(response => {
+              var skillarray = response.data.skillData
+              this.skillsNeededForRole = []
+              for (var skill of skillarray) {
+                // if skill is already learnt
+                var learntOrNot = this.skillsList.includes(skill.skillID) 
+                
+                this.skillsNeededForRole.push({
+                  skillDetail: skill.skillDetail,
+                  skillId: skill.skillID,
+                  skillName: skill.skillName,
+                  course: [],
+                  selected: "",
+                  learnt: learntOrNot
+                });
+              }
+              this.skillsNeededForRole.forEach(skill => {
+                var thisSkillName = skill.skillName
+                const url = "http://localhost:3000/coursebyskill/" + thisSkillName;
+                axios.get(url)
+                  .then(response => {
+                    var activeCourse = []
+                    for (var eachCourse of response.data) {
+                      if (eachCourse.course_Status == "Active") {
+                        activeCourse.push(eachCourse)
+                      }
+                    }
+                    skill.course = activeCourse
+                    
+                  })
+                  .catch(error => {
+                    console.log(error.message)
+                  })
+              })
             })
-          })
-          .catch(error => {
-            console.log(error.message)
-          })
+            .catch(error => {
+              console.log(error.message)
+            })
+        }
       },
       getLJofUser() {
         // retrieve all the LJ of the user
@@ -211,7 +251,9 @@ export default {
                 axios
                   .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
                   .then(response => {
-
+                    this.userRolesList.push(response.data.LJInfo[0].roleName)
+                    
+                    // data.LJInfo[0].roleName
                     // to get all the skills required for the role, so that page only show the courses for those skills. 
                     // without this, skills not required for this role will also go into the count
                     var skillsRequired = []
@@ -229,7 +271,7 @@ export default {
                         coursesCompleted += 1
                       }
                     }
-                  
+
                     //to get number of courses completed by user
                     // var coursesCompleted = 0 
                     // for (var eachCourse of response.data.courseRegistered) {
@@ -240,10 +282,9 @@ export default {
                     //   }
                     // }
                     var percentageCourseCompleted = 0
-                    percentageCourseCompleted = Math.round((coursesCompleted / coursesToTake) * 100)
-                    // if (response.data.courseRegistered.length != 0) {
-                    //   percentageCourseCompleted = Math.round((coursesCompleted / response.data.courseRegistered.length) * 100)
-                    // }
+                    if (coursesToTake > 0) {
+                      percentageCourseCompleted = Math.round((coursesCompleted / coursesToTake) * 100)
+                    }
                     this.coursesCounts.push({
                       courseCount: coursesToTake,
                       coursesCompletedPercentage: percentageCourseCompleted,
@@ -274,6 +315,7 @@ export default {
               )
             }
             Promise.all(promises).then(() => console.log())
+            Promise.all(promises2).then(() => console.log())
           })
           .catch(error => {
             console.log(error.message)
@@ -281,569 +323,57 @@ export default {
 
       },
       addCoursetoLJ() {
-        let url = "http://localhost:3000/learningjourney";
-
-        // from skillsneedforrole array, get the courses chosen by user and add to a list
-        var courseChosenList= []
-        for (var eachSkillChosen of this.skillsNeededForRole ) {
+        var courseChosenList = []
+        this.errorMessage2 = []
+        for (var eachSkillChosen of this.skillsNeededForRole) {
           courseChosenList.push(eachSkillChosen.selected)
         }
-        axios.post(url, {
-          roleName: this.roleSelected,
-          staff_ID: sessionStorage.getItem("userId"),
-          course_ID: courseChosenList
-        })
-          .then(response => {
-            console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"), "with courses: ", courseChosenList)
-            location.reload()
-          })
-          .catch(error => {
-            console.log(error.message)
-          })
+        //validation check to ensure user select a course for each skill
+        if (courseChosenList == "") {
+          this.errorMessage2.push("You must choose a Course for each Skill")
+        }
 
+        else {
+          let url = "http://localhost:3000/learningjourney";
+          // from skillsneedforrole array, get the courses chosen by user and add to a list
 
-        // {
-        //   "roleName" : "Role 150065",
-        //     "staff_ID" : "130002",
-        //       "course_ID": ["SAL004", "COR002", "FIN001"]
-        // }
+          axios.post(url, {
+            roleName: this.roleSelected,
+            staff_ID: sessionStorage.getItem("userId"),
+            course_ID: courseChosenList
+          })
+            .then(response => {
+              location.reload()
+            })
+            .catch(error => {
+              console.log(error.message)
+            })
+        }
       },
-      // addToLearningJourney() {
-      //     // save to database the user's LJ. it stores the role (roleSelected), skills needed (skillsNeededForRole) and courses(courseSelected)
-      //   var selected = [];
-      //     let url = "http://localhost:3000/learningjourney";
-      //     axios.post(url, {
-      //             roleName: this.roleSelected,
-      //             staff_ID: sessionStorage.getItem("userId"),
-      //             course_ID: ["COR001", "COR002", "COR004"]
-      //         })
-      //         .then(response => {
-      //           console.log("successful! LJ saved with role: ", this.roleSelected, " into staff ID: ", sessionStorage.getItem("userId"))
-                   
-      //         })
-      //         .catch(error => {
-      //             console.log(error.message)
-      //         })
-      // },
       deleteLJ(id) {  
         axios
           .delete('http://localhost:3000/learningjourney/' + id)
           .then(response => {
-            console.log(response)
             location.reload()
           })
           .catch(error => {
             console.log(error.message)
           })
-      }
+      },
   },
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
 a {
     color: white;
 }
 
-/* .pie {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: rgb(203, 201, 201);
-    background-image: linear-gradient(to right, transparent 50%, #4CC9D8 0);
-    position: relative;
-    display: inline-block;
-    margin: 10px;
-  }
-
-  .pie::before {
-    content: '';
-    display: block;
-    margin-left: 50%;
-    height: 100%;
-    border-radius: 0 100% 100% 0 / 50%;
-    background-color: inherit;
-    transform-origin: left;
-  }
-
-  .pie::after {
-    content: attr(data-value);
-    position: absolute;
-    width: 70%;
-    height: 70%;
-    margin: auto;
-    border-radius: 50%;
-    background-color: rgb(255, 255, 255);
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    text-align: center;
-    font: 900 20px/41px Tahoma;
-  }
-
-  .pie[data-value="0"]:before {
-    transform: rotate(0turn);
-  }
-
-  .pie[data-value="1"]:before {
-    transform: rotate(0.01turn);
-  }
-
-  .pie[data-value="2"]:before {
-    transform: rotate(0.02turn);
-  }
-
-  .pie[data-value="3"]:before {
-    transform: rotate(0.03turn);
-  }
-
-  .pie[data-value="4"]:before {
-    transform: rotate(0.04turn);
-  }
-
-  .pie[data-value="5"]:before {
-    transform: rotate(0.05turn);
-  }
-
-  .pie[data-value="6"]:before {
-    transform: rotate(0.06turn);
-  }
-
-  .pie[data-value="7"]:before {
-    transform: rotate(0.07turn);
-  }
-
-  .pie[data-value="8"]:before {
-    transform: rotate(0.08turn);
-  }
-
-  .pie[data-value="9"]:before {
-    transform: rotate(0.09turn);
-  }
-
-  .pie[data-value="10"]:before {
-    transform: rotate(0.1turn);
-  }
-
-  .pie[data-value="11"]:before {
-    transform: rotate(0.11turn);
-  }
-
-  .pie[data-value="12"]:before {
-    transform: rotate(0.12turn);
-  }
-
-  .pie[data-value="13"]:before {
-    transform: rotate(0.13turn);
-  }
-
-  .pie[data-value="14"]:before {
-    transform: rotate(0.14turn);
-  }
-
-  .pie[data-value="15"]:before {
-    transform: rotate(0.15turn);
-  }
-
-  .pie[data-value="16"]:before {
-    transform: rotate(0.16turn);
-  }
-
-  .pie[data-value="17"]:before {
-    transform: rotate(0.17turn);
-  }
-
-  .pie[data-value="18"]:before {
-    transform: rotate(0.18turn);
-  }
-
-  .pie[data-value="19"]:before {
-    transform: rotate(0.19turn);
-  }
-
-  .pie[data-value="20"]:before {
-    transform: rotate(0.2turn);
-  }
-
-  .pie[data-value="21"]:before {
-    transform: rotate(0.21turn);
-  }
-
-  .pie[data-value="22"]:before {
-    transform: rotate(0.22turn);
-  }
-
-  .pie[data-value="23"]:before {
-    transform: rotate(0.23turn);
-  }
-
-  .pie[data-value="24"]:before {
-    transform: rotate(0.24turn);
-  }
-
-  .pie[data-value="25"]:before {
-    transform: rotate(0.25turn);
-  }
-
-  .pie[data-value="26"]:before {
-    transform: rotate(0.26turn);
-  }
-
-  .pie[data-value="27"]:before {
-    transform: rotate(0.27turn);
-  }
-
-  .pie[data-value="28"]:before {
-    transform: rotate(0.28turn);
-  }
-
-  .pie[data-value="29"]:before {
-    transform: rotate(0.29turn);
-  }
-
-  .pie[data-value="30"]:before {
-    transform: rotate(0.3turn);
-  }
-
-  .pie[data-value="31"]:before {
-    transform: rotate(0.31turn);
-  }
-
-  .pie[data-value="32"]:before {
-    transform: rotate(0.32turn);
-  }
-
-  .pie[data-value="33"]:before {
-    transform: rotate(0.33turn);
-  }
-
-  .pie[data-value="34"]:before {
-    transform: rotate(0.34turn);
-  }
-
-  .pie[data-value="35"]:before {
-    transform: rotate(0.35turn);
-  }
-
-  .pie[data-value="36"]:before {
-    transform: rotate(0.36turn);
-  }
-
-  .pie[data-value="37"]:before {
-    transform: rotate(0.37turn);
-  }
-
-  .pie[data-value="38"]:before {
-    transform: rotate(0.38turn);
-  }
-
-  .pie[data-value="39"]:before {
-    transform: rotate(0.39turn);
-  }
-
-  .pie[data-value="40"]:before {
-    transform: rotate(0.4turn);
-  }
-
-  .pie[data-value="41"]:before {
-    transform: rotate(0.41turn);
-  }
-
-  .pie[data-value="42"]:before {
-    transform: rotate(0.42turn);
-  }
-
-  .pie[data-value="43"]:before {
-    transform: rotate(0.43turn);
-  }
-
-  .pie[data-value="44"]:before {
-    transform: rotate(0.44turn);
-  }
-
-  .pie[data-value="45"]:before {
-    transform: rotate(0.45turn);
-  }
-
-  .pie[data-value="46"]:before {
-    transform: rotate(0.46turn);
-  }
-
-  .pie[data-value="47"]:before {
-    transform: rotate(0.47turn);
-  }
-
-  .pie[data-value="48"]:before {
-    transform: rotate(0.48turn);
-  }
-
-  .pie[data-value="49"]:before {
-    transform: rotate(0.49turn);
-  }
-
-  .pie[data-value="50"]:before {
-    transform: rotate(0.5turn);
-  }
-
-  .pie[data-value="51"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.01turn);
-  }
-
-  .pie[data-value="52"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.02turn);
-  }
-
-  .pie[data-value="53"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.03turn);
-  }
-
-  .pie[data-value="54"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.04turn);
-  }
-
-  .pie[data-value="55"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.05turn);
-  }
-
-  .pie[data-value="56"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.06turn);
-  }
-
-  .pie[data-value="57"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.07turn);
-  }
-
-  .pie[data-value="58"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.08turn);
-  }
-
-  .pie[data-value="59"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.09turn);
-  }
-
-  .pie[data-value="60"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.1turn);
-  }
-
-  .pie[data-value="61"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.11turn);
-  }
-
-  .pie[data-value="62"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.12turn);
-  }
-
-  .pie[data-value="63"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.13turn);
-  }
-
-  .pie[data-value="64"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.14turn);
-  }
-
-  .pie[data-value="65"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.15turn);
-  }
-
-  .pie[data-value="66"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.16turn);
-  }
-
-  .pie[data-value="67"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.17turn);
-  }
-
-  .pie[data-value="68"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.18turn);
-  }
-
-  .pie[data-value="69"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.19turn);
-  }
-
-  .pie[data-value="70"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.2turn);
-  }
-
-  .pie[data-value="71"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.21turn);
-  }
-
-  .pie[data-value="72"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.22turn);
-  }
-
-  .pie[data-value="73"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.23turn);
-  }
-
-  .pie[data-value="74"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.24turn);
-  }
-
-  .pie[data-value="75"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.25turn);
-  }
-
-  .pie[data-value="76"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.26turn);
-  }
-
-  .pie[data-value="77"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.27turn);
-  }
-
-  .pie[data-value="78"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.28turn);
-  }
-
-  .pie[data-value="79"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.29turn);
-  }
-
-  .pie[data-value="80"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.3turn);
-  }
-
-  .pie[data-value="81"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.31turn);
-  }
-
-  .pie[data-value="82"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.32turn);
-  }
-
-  .pie[data-value="83"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.33turn);
-  }
-
-  .pie[data-value="84"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.34turn);
-  }
-
-  .pie[data-value="85"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.35turn);
-  }
-
-  .pie[data-value="86"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.36turn);
-  }
-
-  .pie[data-value="87"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.37turn);
-  }
-
-  .pie[data-value="88"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.38turn);
-  }
-
-  .pie[data-value="89"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.39turn);
-  }
-
-  .pie[data-value="90"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.4turn);
-  }
-
-  .pie[data-value="91"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.41turn);
-  }
-
-  .pie[data-value="92"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.42turn);
-  }
-
-  .pie[data-value="93"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.43turn);
-  }
-
-  .pie[data-value="94"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.44turn);
-  }
-
-  .pie[data-value="95"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.45turn);
-  }
-
-  .pie[data-value="96"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.46turn);
-  }
-
-  .pie[data-value="97"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.47turn);
-  }
-
-  .pie[data-value="98"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.48turn);
-  }
-
-  .pie[data-value="99"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.49turn);
-  }
-
-  .pie[data-value="100"]:before {
-    background-color: #4CC9D8;
-    transform: rotate(0.5turn);
-  } */
-
 .meter {
     margin-top: 10px;
     margin-bottom: 10px;
     box-sizing: content-box;
     height: 20px;
-    /* Can be anything */
     position: relative;
     background: #555;
     border-radius: 25px;
@@ -912,40 +442,12 @@ a {
     overflow: hidden;
 }
 
-/* .card:hover .card__image {
-    filter: contrast(100%);
-  } */
 .card__content {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
     padding: 1rem;
 }
-
-/* .card__image {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-    filter: contrast(70%);
-    overflow: hidden;
-    position: relative;
-    transition: filter 0.5s cubic-bezier(0.43, 0.41, 0.22, 0.91);
-  }
-  .card__image::before {
-    content: "";
-    display: block;
-    padding-top: 56.25%;
-  }
-  @media (min-width: 40rem) {
-    .card__image::before {
-      padding-top: 66.6%;
-    }
-  }
-  .card__image--fence {
-    background-image: url(https://www.b2bsustainable.com/wp-content/uploads/2022/02/2.jpg);
-  } */
 .card__title {
     color: #2c3e50;
     font-size: 1.25rem;
@@ -963,5 +465,9 @@ a {
 .special {
     color: white;
     text-decoration: none;
+}
+
+.errorMessage {
+  color: red
 }
 </style>
