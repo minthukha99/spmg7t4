@@ -55,7 +55,6 @@ export default {
             axios.get(url)
                 .then(response => {
                     var roleData = response.data
-                    // console.log("roleData=", roleData)
                     for (var role of roleData) {
                         this.rolesList.push({
                             id: role._id,
@@ -64,7 +63,6 @@ export default {
                             status: role.status
                         });
                     }
-                    // console.log("rolesList=", this.rolesList)
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -79,8 +77,8 @@ export default {
             if (this.skillName == "") {
                 this.errorMessage += "Skill name is required!"
             }
+
             // if duplicate skill name
-            // http://localhost:3000/skills
             const url = "http://localhost:3000/skills";
             axios.get(url)
                 .then(response => {
