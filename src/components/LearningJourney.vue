@@ -168,11 +168,11 @@ export default {
                 })
         },
         getSkillsForChosenRole() {
-            
+            console.log(this.coursesSelected)
             // get the skills required for a role
             // this.userRolesList.push(
             // get role id of user input roleName
-            
+            console.log(this.skillsList)
             this.errorMessage = []
             if (this.userRolesList.includes(this.roleSelected)) {
                 this.errorMessage.push("Learning Journey with Role already added!")
@@ -182,7 +182,7 @@ export default {
                         this.roleSelectedId = eachRole.id
                     }
                 }
-                console.log(this.roleSelectedId,"B")
+
                 const url = "http://localhost:3000/role/" + this.roleSelectedId;
                 axios.get(url)
                     .then(response => {
@@ -301,15 +301,13 @@ export default {
                             })
                         )
                     }
-                    console.log(this.roleList)
+
                     const array = this.roleList
                     let promises = []
                     for (var i = 0; i < array.length; i++) {
-                        console.log(array[i].roleId,"B")
                         promises.push(
                             axios
-                            // .get('http://localhost:3000/role/' + array[i].roleId)
-                                .get('http://localhost:3000/role/60')
+                            .get('http://localhost:3000/role/' + array[i].roleId)
                             .then(response => {
                                 this.roleList2.push({
                                     roleName: response.data.roleName,
