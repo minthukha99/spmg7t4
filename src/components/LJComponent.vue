@@ -4,7 +4,7 @@
         <h1>Role: <u>{{ roleName }}</u></h1>
         <h4>Total Courses Required: {{ totalCourses}}</h4>
         <h4>Total Courses Completed: {{ coursesCompleted}} </h4>
-        
+
         <div class="meter">
             <span :style="{ width: coursesCompletedPercentage + '%' }"></span>
         </div>
@@ -35,7 +35,7 @@
                         <td v-else>
                             <span>-</span>
                         </td>
-                        <td scope="row" >
+                        <td scope="row">
                             <a class="mouseover" v-on:click="editLJCourse(ljData.regID)">Change Course</a>
                         </td>
                     </tr>
@@ -61,7 +61,7 @@ export default {
             ljInfolist: [],
             roleName: '',
             totalCourses: 0, // store total courses needed to clear for the role
-            coursesCompleted: 0,// store courses completed 
+            coursesCompleted: 0, // store courses completed 
             coursesCompletedPercentage: 0 //store percentage from above 2 data
         }
     },
@@ -81,14 +81,14 @@ export default {
                     var ljInfoData = response.data
                     this.roleName = ljInfoData.LJInfo[0].roleName
                     for (var ljData of ljInfoData.courseRegistered) {
-                        
+
                         if (skillsRequired.includes(ljData.skillName)) {
                             // show "-" if course completion is ""(course not completed, so registered/rejected/ waitlist)
                             var comptStatus = "-"
-                            this.totalCourses += 1 
+                            this.totalCourses += 1
                             if (ljData.Completion_Status == "Completed") {
                                 comptStatus = "Completed"
-                                this.coursesCompleted +=1 //if course completed, increase count 
+                                this.coursesCompleted += 1 //if course completed, increase count 
                             }
                             this.ljInfolist.push({
                                 skillName: ljData.skillName,
@@ -97,12 +97,12 @@ export default {
                                 regID: ljData.Reg_ID,
                                 regStatus: ljData.Reg_Status,
                                 completeStatus: comptStatus,
-                            });   
+                            });
                         }
                     }
                     console.log(this.totalCourses)
                     console.log(this.coursesCompleted)
-                    this.coursesCompletedPercentage = this.coursesCompleted/this.totalCourses
+                    this.coursesCompletedPercentage = this.coursesCompleted / this.totalCourses
 
                 })
                 .catch(error => {
@@ -125,7 +125,7 @@ export default {
         },
         editLJCourse(id) {
             console.log(id)
-            
+
         }
 
     }

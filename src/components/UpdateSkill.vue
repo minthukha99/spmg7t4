@@ -9,10 +9,10 @@
             <br>
             <label for="skillDetail">Skill Detail</label><br>
             <input v-model="newSkillDetail" name="skillDetail"><br>
-            <br> 
-            <ul v-for="error in errorMessage" :key="error" class="errorMessage"> 
-                <li> {{ error }} </li>
-            </ul>
+            <br>
+            <div v-for="error in errorMessage" :key="error" class="errorMessage">
+                <p> {{ error }} </p>
+            </div>
             <br>
             <button value="Cancel" class="cancelButton">
                 <router-link to="/Skills" class="special">Cancel</router-link>
@@ -61,7 +61,7 @@ export default {
                 .catch(error => {
                     console.log(error.message)
                 })
-            
+
         },
         updateSkill() {
             this.errorMessage = []
@@ -82,8 +82,8 @@ export default {
                 console.log("updateRole")
                 let url = "http://localhost:3000/updateskill/" + this.id;
                 axios.put(url, {
-                    skillName: this.newSkillName,
-                    skillDetail: this.newSkillDetail
+                        skillName: this.newSkillName,
+                        skillDetail: this.newSkillDetail
                     })
 
                     .then(response => {
@@ -109,6 +109,7 @@ export default {
     color: white;
     text-decoration: none;
 }
+
 .errorMessage {
     color: red
 }

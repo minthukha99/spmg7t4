@@ -28,9 +28,9 @@
                 </thead>
 
                 <tbody v-if="selectedRole =='Admin'">
-                    <tr  v-for="(role,index) in rolesList" :key="role.id">
+                    <tr v-for="(role,index) in rolesList" :key="role.id">
                         <td scope="row" data-label="Index">{{ index +1}}</td>
-                        <td scope="row" data-label="Name">{{ role.roleName }}</td>                       
+                        <td scope="row" data-label="Name">{{ role.roleName }}</td>
                         <!-- <td scope="row" data-label="Skills">{{ role.skillName }}</td> -->
                         <!-- show in bullet point if got data, else dash -->
                         <td v-if="role.skillName =='' ">
@@ -68,7 +68,7 @@
                     </tr>
                 </tbody>
 
-                <tbody v-else  v-for="(role,index) in activeRoles" :key="role.id">
+                <tbody v-else v-for="(role,index) in activeRoles" :key="role.id">
                     <tr>
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Name">{{ role.roleName }}</td>
@@ -83,7 +83,7 @@
                             </ul>
                         </td>
                         <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
-                
+
                         <!-- <td scope="row" data-label="Action 4">
                                 <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
                                 <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
@@ -111,7 +111,7 @@ export default {
         return {
             rolesList: [],
             selectedRole: "",
-            activeRoles : []
+            activeRoles: []
         }
     },
 
@@ -132,12 +132,10 @@ export default {
                         });
 
                         if (role.status == 1) {
-                            this.activeRoles.push(
-                                {
-                                    roleName: role.roleName,
-                                    skillName: role.skillName,
-                                }
-                            );   
+                            this.activeRoles.push({
+                                roleName: role.roleName,
+                                skillName: role.skillName,
+                            });
                         }
 
                     }

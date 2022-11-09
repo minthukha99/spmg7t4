@@ -10,8 +10,7 @@
             <input v-model="skillDetail" placeholder="No description" onfocus="this.placeholder=''" onblur="this.placeholder='No Description'">
             <br>
             <br>
-        
-            
+
             <div v-if="errorMessage" class="errorMessage">
                 {{ errorMessage }}
             </div>
@@ -20,13 +19,13 @@
                 <br>
             </div>
 
-                <button value="Cancel" class="special">
-                    <router-link to="/Skills" class="special">Cancel</router-link>
-                </button>
-                
-                <button type="button" @click='addSkillButton()' class="special">
-                    Save
-                </button>
+            <button value="Cancel" class="special">
+                <router-link to="/Skills" class="special">Cancel</router-link>
+            </button>
+
+            <button type="button" @click='addSkillButton()' class="special">
+                Save
+            </button>
         </form>
     </div>
 </div>
@@ -46,7 +45,7 @@ export default {
             skillName: "",
             skillDetail: "",
             errorMessage: "",
-            skillsList : [] // store all skill names to check for duplicate skill name
+            skillsList: [] // store all skill names to check for duplicate skill name
         }
     },
     methods: {
@@ -72,7 +71,7 @@ export default {
 
         addSkillButton() {
             this.errorMessage = ""
-            
+
             //check if empty skill name entered
             if (this.skillName == "") {
                 this.errorMessage += "Skill name is required!"
@@ -84,7 +83,7 @@ export default {
                 .then(response => {
                     var skillData = response.data
                     for (var skill of skillData) {
-                        this.skillsList.push(skill.skillName,);
+                        this.skillsList.push(skill.skillName, );
                     }
 
                     if (this.skillsList.includes(this.skillName)) {
@@ -130,9 +129,5 @@ export default {
 .special {
     color: white;
     text-decoration: none;
-}
-
-.errorMessage {
-    color: red
 }
 </style>

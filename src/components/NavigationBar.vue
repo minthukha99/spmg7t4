@@ -9,26 +9,12 @@
                     {{ route.name}}
                 </router-link>
             </div>
-
-            <!-- <div v-if="selectedRole == 'Admin'">
-                    <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
-                    {{ route.name}}
-                  </router-link>
-              </div>
-              <div v-else>
-                <div v-if="route.name != 'User'">
-                  <router-link v-if="route.meta.visible" :to="route.path.toLowerCase()">
-                   {{ route.name}}
-                 </router-link>
-                </div>
-              </div> -->
-
         </template>
         <router-link :to="`/Users`" v-if="selectedRole == 'Admin' | selectedRole == 'Manager'">
             Users
         </router-link>
         <!-- <select v-model="selectedRole" @change="saveRoleInSession" v-if="selectedRole == 'Admin'"> -->
-            <select v-model="selectedRole" @change="saveRoleInSession">
+        <select v-model="selectedRole" @change="saveRoleInSession">
             <option selected="true" disabled="disabled">Select your role</option>
             <option v-for="role in rolesList" :key="role">{{role}}</option>
         </select>
@@ -55,7 +41,6 @@
 </template>
 
 <script>
-
 export default {
     name: "NavigationBar",
     data() {
@@ -126,8 +111,7 @@ export default {
 
     },
 
-
-  }
+}
 </script>
 
 <style scoped>

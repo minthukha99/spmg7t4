@@ -44,7 +44,6 @@
 <script>
 // @ is an alias to /src
 // Components
-import NavigationBar from "@/components/NavigationBar.vue";
 import axios from "axios";
 export default {
     name: "Home",
@@ -68,7 +67,7 @@ export default {
         saveUserId() {
 
             sessionStorage.setItem('userId', this.userId)
-            sessionStorage.setItem("selectedRole","" )
+            sessionStorage.setItem("selectedRole", "")
             this.errorMessage = ""
             const url = "http://localhost:3000/user/" + this.userId;
             axios.get(url)
@@ -76,28 +75,24 @@ export default {
                     console.log(response.data.Role)
                     if (response.data.Role == 1) {
                         this.selectedRole = "Admin"
-                        
-                    }
-                    else if (response.data.Role == 2) {
+
+                    } else if (response.data.Role == 2) {
                         this.selectedRole = "User"
-                        
-                    }
-                    else if (response.data.Role == 3) {
+
+                    } else if (response.data.Role == 3) {
                         this.selectedRole = "Manager"
-                        
-                    }
-                    else {
+
+                    } else {
                         this.selectedRole = "Trainer"
                     }
                     sessionStorage.setItem('selectedRole', this.selectedRole)
                     location.reload()
-                   
-                    
+
                 })
                 .catch(error => {
                     console.log("CAnnot be found")
                     this.errorMessage += "No such user!"
-                    
+
                 })
         }
     },
@@ -157,6 +152,7 @@ export default {
 .errorMessage {
     color: red
 }
+
 .home-page-wrapper {
     overflow-x: hidden;
 }

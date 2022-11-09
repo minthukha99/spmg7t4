@@ -4,8 +4,8 @@
         <h1>Update Role: <u> {{ roleDetails[1]}} </u></h1>
         <h3> Role Details: {{ roleDetails[0]}} </h3>
         <h3> Status: {{ roleDetails[3]}} </h3>
-        
-        <h3 >
+
+        <h3>
             Skills assigned:
             <ul v-for="(skill,index) in roleDetails[2]" :key="skill">
                 <li>
@@ -13,10 +13,10 @@
                     <a v-if="roleDetails[2].length  > 1">
                         <a class="mouseover" v-on:click="deleteSkillAssignedToRole(index) ">Delete</a>
                     </a>
-                </li> 
+                </li>
             </ul>
         </h3>
-        
+
         <form>
             <label for="roleName">New Role Name</label><br>
             <input v-model="newRoleName" id="roleName" name="roleName"><br>
@@ -34,28 +34,28 @@
             </div>
 
             <div v-if="errorMessage" class="errorMessage">
-                <ul v-for="error in errorMessage" :key="error">
-                    <li> 
+                <div v-for="error in errorMessage" :key="error">
+                    <p>
                         {{ error }}
-                    </li>
-                </ul>
+                    </p>
+                </div>
             </div>
-            <div v-else> 
+            <div v-else>
                 <br>
                 <br>
                 <br>
             </div>
-                <br>
-                <button type="button">
-                    <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
-                </button>
-                <button value="Cancel" class="special" type="button">
-                    <router-link to="/Roles" class="special">Cancel</router-link>
-                </button>
-                <button type= "button" @click='updateRoleButton()' value="Save" class="special updateRoleButton">
-                    Save
-                </button>
-            
+            <br>
+            <button type="button">
+                <router-link to="/AddSkill" class="special">+ Add Skill</router-link>
+            </button>
+            <button value="Cancel" class="special" type="button">
+                <router-link to="/Roles" class="special">Cancel</router-link>
+            </button>
+            <button type="button" @click='updateRoleButton()' value="Save" class="special updateRoleButton">
+                Save
+            </button>
+
         </form>
     </div>
 </div>
@@ -82,7 +82,7 @@ export default {
             newRoleDetails: [],
             errorMessage: [],
             allRoles: [],
-            skillForThisRole : []
+            skillForThisRole: []
         }
 
     },
@@ -100,7 +100,7 @@ export default {
                     this.roleDetails = [
                         roleData.roleDetail,
                         roleData.roleName,
-                        roleData.skillData, 
+                        roleData.skillData,
                         status
                     ];
                     // this is to store all the skills in a list, so that deleteSkillAssignedToRole() can find a specific skill to delete
@@ -108,18 +108,18 @@ export default {
                         console.log(eachSkill.skillName)
                         this.skillForThisRole.push(eachSkill.skillName)
                     }
-                    })
+                })
                 .catch(error => {
                     console.log(error.message)
                 })
-            
+
         },
         getSkills() {
             const url = "http://localhost:3000/availableskills";
             axios.get(url)
                 .then(response => {
                     var skillData = response.data
-                
+
                     for (var skill of skillData) {
                         this.skillsList.push({
                             id: skill._id,
@@ -156,12 +156,12 @@ export default {
             }
 
             // if role name is a duplicate
-            for (var eachRole of this.allRoles) { 
+            for (var eachRole of this.allRoles) {
                 if (this.newRoleName == eachRole) {
                     this.errorMessage.push("Role name is already used!")
                 }
             }
-                
+
             // if no skill required for the role
             if (this.selectedSkills.length == 0) {
                 this.errorMessage.push("Each Role require at least a skill!")
@@ -174,14 +174,14 @@ export default {
                     path: '/Roles'
                 })
             }
-            
+
         },
         updateRole() {
             var url = "http://localhost:3000/updaterole/" + this.id;
             axios.put(url, {
-                roleName: this.newRoleName,
-                roleDetail: this.newRoleDetails,
-                skillName: this.selectedSkills
+                    roleName: this.newRoleName,
+                    roleDetail: this.newRoleDetails,
+                    skillName: this.selectedSkills
                 })
                 .then(response => {
                     console.log("Role:", this.newRoleName, "updated", "with details", this.newRoleDetails, this.selectedSkills)
@@ -196,9 +196,9 @@ export default {
             this.skillForThisRole.splice(index, 1) // remove the specific skill from the list of skills for the role
             var url = "http://localhost:3000/updaterole/" + this.id;
             axios.put(url, {
-                roleName: this.roleDetails[1],
-                skillName: this.skillForThisRole
-            })
+                    roleName: this.roleDetails[1],
+                    skillName: this.skillForThisRole
+                })
                 .then(response => {
                     console.log("Role:", this.newRoleName, "updated", "with details", this.newRoleDetails, this.selectedSkills)
                     location.reload()
@@ -216,9 +216,7 @@ export default {
     color: white;
     text-decoration: none;
 }
-.errorMessage {
-    color: red
-}
+
 .mouseover {
     cursor: pointer;
     font-size: small;
@@ -230,7 +228,10 @@ export default {
     transition: background-color .25s cubic-bezier(.33, .66, .66, 1);
     text-decoration: none;
 }
-.mouseover:hover, .mouseover:focus, .mouseover:active {
-    background-color:#b4e7f8;
+
+.mouseover:hover,
+.mouseover:focus,
+.mouseover:active {
+    background-color: #b4e7f8;
 }
 </style>

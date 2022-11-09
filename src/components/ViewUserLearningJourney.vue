@@ -1,40 +1,40 @@
 <template>
-    <div class="learningJourney">
-        <div class="header">
-            <div class="header-middle-text">
-                <!-- <h1><i>Learning Journeys Added for {{ staffInfo.firstName }} {{ staffInfo.lastName }}</i></h1> -->
-                <br>
-                <!-- <h1><i>Learning Journeys Added for {{ staffInfo[0].firstName }}</i></h1> -->
-                <h1><i>Learning Journeys Added for <u>{{ staffInfo[0]}} {{ staffInfo[1]}}</u></i></h1>
-                <p>
-                  <strong>Email: </strong>{{staffInfo[2] }}
-                </p>
-                <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
-                <div class="card" v-for="(eachLJ, index) in roleList2" :key="eachLJ">
-                    <!-- <div class="card__image card__image--fence"></div> -->
-                    <div class="card__content">
-                        <div class="card__title">
-                            {{ eachLJ.roleName }}
-                        </div>
-                        <div class="card__text">
-                            <div class="meter">
-                                <span :style="{ width: coursesCounts[index].percentageCourseCompleted + '%' }"></span>
-                            </div>
-                            Number of courses: {{ coursesCounts[index].courseCount }}
-
-                        </div>
-                        <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
-                        <!-- LJlist -->
-                        <!-- <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link> -->
-                        <button class="special">
-                            <router-link :to="`/LJComponent/${LJlist[index].ljId}`">View Learning Journey
-                            </router-link>
-                        </button>
+<div class="learningJourney">
+    <div class="header">
+        <div class="header-middle-text">
+            <!-- <h1><i>Learning Journeys Added for {{ staffInfo.firstName }} {{ staffInfo.lastName }}</i></h1> -->
+            <br>
+            <!-- <h1><i>Learning Journeys Added for {{ staffInfo[0].firstName }}</i></h1> -->
+            <h1><i>Learning Journeys Added for <u>{{ staffInfo[0]}} {{ staffInfo[1]}}</u></i></h1>
+            <p>
+                <strong>Email: </strong>{{staffInfo[2] }}
+            </p>
+            <!-- <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special"> -->
+            <div class="card" v-for="(eachLJ, index) in roleList2" :key="eachLJ">
+                <!-- <div class="card__image card__image--fence"></div> -->
+                <div class="card__content">
+                    <div class="card__title">
+                        {{ eachLJ.roleName }}
                     </div>
+                    <div class="card__text">
+                        <div class="meter">
+                            <span :style="{ width: coursesCounts[index].percentageCourseCompleted + '%' }"></span>
+                        </div>
+                        Number of courses: {{ coursesCounts[index].courseCount }}
+
+                    </div>
+                    <!-- :to="`/AssignSkillstoCourse/${course.id}`" -->
+                    <!-- LJlist -->
+                    <!-- <button class="special"><router-link to="/LJComponent">View Learning Journey</router-link> -->
+                    <button class="special">
+                        <router-link :to="`/LJComponent/${LJlist[index].ljId}`">View Learning Journey
+                        </router-link>
+                    </button>
                 </div>
             </div>
-            <!-- don't delete the codes first in case y'all cannot figure out how to work with the above code -->
-            <!-- <div class="section">
+        </div>
+        <!-- don't delete the codes first in case y'all cannot figure out how to work with the above code -->
+        <!-- <div class="section">
           <div class="pie" data-value="80"></div>
           <h4>Leadership Communication Skills for Influence and Impact</h4>
           <p>Develop the communication skills that will make you irreplaceable, influential and unstoppable as a 21st century leader</p>
@@ -44,8 +44,8 @@
             </button>
           </span>
         </div> -->
-        </div>
     </div>
+</div>
 </template>
 
 <script>
@@ -53,8 +53,8 @@ import axios from "axios";
 export default {
     name: 'Learning Journey',
     mounted() {
-      this.getLJofUser()
-      this.getUserInfo()
+        this.getLJofUser()
+        this.getUserInfo()
     },
     props: ['id'],
 
@@ -69,44 +69,44 @@ export default {
             roleList: [],
             roleList2: [],
             coursesCounts: [], // store the number of courses of each LJ 
-          selectedCourses: [],
+            selectedCourses: [],
             staffInfo: [] // store user information
         }
     },
 
-  methods: {
-    getUserInfo() {
-      const url = "http://localhost:3000/user/" + this.id
-      axios.get(url)
-        .then(response => {
-          this.staffInfo.push(response.data.Staff_FName ,response.data.Staff_LName,response.data.Email)
-      })
-      
-      },
-    getLJofUser() {
-        // retrieve all the LJ of the user
-        var userId = sessionStorage.getItem("userId")
-        const url = "http://localhost:3000/getlearningjourneyby/" + this.id;
-        axios.get(url)
-          .then(response => {
-              console.log(response)
-                for (var eachLJ of response.data) {
-                    this.LJlist.push({
-                        ljId: eachLJ.LJID,
-                        roleId: eachLJ.roleID,
-                        roleName: [],
-                        staffId: eachLJ.staff_ID,
-                        courseCount: 0
-                    })
-                    this.roleList.push({
-                        roleId: eachLJ.roleID
-                    })
-                }
-                const array2 = this.LJlist
-                let promises2 = []
-                for (var i = 0; i < array2.length; i++) {
-                    promises2.push(
-                        axios
+    methods: {
+        getUserInfo() {
+            const url = "http://localhost:3000/user/" + this.id
+            axios.get(url)
+                .then(response => {
+                    this.staffInfo.push(response.data.Staff_FName, response.data.Staff_LName, response.data.Email)
+                })
+
+        },
+        getLJofUser() {
+            // retrieve all the LJ of the user
+            var userId = sessionStorage.getItem("userId")
+            const url = "http://localhost:3000/getlearningjourneyby/" + this.id;
+            axios.get(url)
+                .then(response => {
+                    console.log(response)
+                    for (var eachLJ of response.data) {
+                        this.LJlist.push({
+                            ljId: eachLJ.LJID,
+                            roleId: eachLJ.roleID,
+                            roleName: [],
+                            staffId: eachLJ.staff_ID,
+                            courseCount: 0
+                        })
+                        this.roleList.push({
+                            roleId: eachLJ.roleID
+                        })
+                    }
+                    const array2 = this.LJlist
+                    let promises2 = []
+                    for (var i = 0; i < array2.length; i++) {
+                        promises2.push(
+                            axios
                             .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
                             .then(response => {
                                 // console.log(response.data.courseRegistered)
@@ -130,14 +130,14 @@ export default {
                             .catch(error => {
                                 console.log(error.message)
                             })
-                    )
-                }
+                        )
+                    }
 
-                const array = this.roleList
-                let promises = []
-                for (var i = 0; i < array.length; i++) {
-                    promises.push(
-                        axios
+                    const array = this.roleList
+                    let promises = []
+                    for (var i = 0; i < array.length; i++) {
+                        promises.push(
+                            axios
                             .get('http://localhost:3000/role/' + array[i].roleId)
                             .then(response => {
                                 this.roleList2.push({
@@ -148,15 +148,15 @@ export default {
                             .catch(error => {
                                 console.log(error.message)
                             })
-                    )
-                }
-                Promise.all(promises).then(() => console.log())
-            })
-            .catch(error => {
-                console.log(error.message)
-            })
+                        )
+                    }
+                    Promise.all(promises).then(() => console.log())
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
 
-    },
+        },
     },
 }
 </script>

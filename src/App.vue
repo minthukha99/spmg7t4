@@ -191,4 +191,11 @@ export default {
   .active {
     color: rgba(40, 190, 42, 0.77);
   }
+
+  .errorMessage {
+      color: red
+  }
+  .successMessage {
+      color: green
+  }
 </style>

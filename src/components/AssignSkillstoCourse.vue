@@ -13,7 +13,7 @@
             <p>
                 <strong> Skills assigned: </strong>
                 <ul v-for="skill in this.skillsAssigned" :key="skill">
-                    <li>{{ skill.skillName }} 
+                    <li>{{ skill.skillName }}
                         <a class="mouseover" v-on:click="deleteSkillAssignedToCourse(skill.skillId)">Delete</a>
                     </li>
                 </ul>
@@ -43,7 +43,7 @@
                         </p>
                     </div>
                 </div>
-                
+
                 <div v-else>
                     <br>
                 </div>
@@ -132,8 +132,7 @@ export default {
                         this.skillsAssigned.push({
                             skillName: response.data.skillName[x].skillName,
                             skillId: response.data.skillName[x].skillID
-                        }
-                        )
+                        })
                     }
                     console.log(this.skillsAssigned)
                 })
@@ -145,13 +144,13 @@ export default {
         // function used for validation in assignSelectedSkillsToCourse()
         findCommonSkills(array1, array2) {
             // Loop for array1
-            for(let i = 0; i < array1.length; i++) {
+            for (let i = 0; i < array1.length; i++) {
                 // Loop for array2
-                for(let j = 0; j < array2.length; j++) {
+                for (let j = 0; j < array2.length; j++) {
                     // Compare the element of each and
                     // every element from both of the
                     // arrays
-                    if(array1[i] === array2[j]) {
+                    if (array1[i] === array2[j]) {
                         // Return if common element found
                         return true;
                     }
@@ -173,15 +172,15 @@ export default {
                 let url = "http://localhost:3000/assignskilltocourse";
                 for (var x in this.selectedSkills) {
                     axios.post(url, {
-                        skillName: this.selectedSkills[x],
-                        course_ID: this.id,
-                    })
-                    .then(response => {
-                        this.successMessage.push( "Success! " + this.selectedSkills[x] + " has been assigned to course " + this.id)
-                    })
-                    .catch(error => {
-                        console.log(error.message)
-                    })
+                            skillName: this.selectedSkills[x],
+                            course_ID: this.id,
+                        })
+                        .then(response => {
+                            this.successMessage.push("Success! " + this.selectedSkills[x] + " has been assigned to course " + this.id)
+                        })
+                        .catch(error => {
+                            console.log(error.message)
+                        })
                 }
             }
         },
@@ -213,13 +212,6 @@ export default {
     text-decoration: none;
 }
 
-.successMessage {
-    color: green
-}
-
-.errorMessage {
-    color: red
-}
 .mouseover {
     cursor: pointer;
     font-size: small;
@@ -227,7 +219,6 @@ export default {
     color: red;
     border-bottom: .05em solid #b4e7f8;
     box-shadow: inset 0 -0.05em 0 #b4e7f8;
-
     transition: background-color .25s cubic-bezier(.33, .66, .66, 1);
     text-decoration: none;
 }

@@ -2,9 +2,6 @@
 <div class="header">
     <div class="header-middle-text">
         <h1>Courses</h1>
-        <!-- <div>
-            {{selectedRole2}}
-        </div> -->
         <input type="text" v-model="searchValue" placeholder="Search Course" />
         <br><br>
         <label>Select a skill</label>
@@ -21,7 +18,6 @@
                         <th scope="col">Code</th>
                         <th scope="col">Name</th>
 
-                    
                         <th scope="col" v-if="selectedRole =='Admin'">Status</th>
                         <th scope="col" v-if="selectedRole =='Admin'">Action 1</th>
                         <th scope="col" v-if="selectedRole =='Admin'">Action 2</th>
@@ -40,7 +36,6 @@
                         <td scope="row" v-if="course.courseStatus == 'Retired'" data-label="Status" class="inactive">
                             {{ course.courseStatus }}
                         </td>
-
 
                         <td scope="row" v-else-if="course.courseStatus == 'Pending'" data-label="Status">
                             {{ course.courseStatus }}
@@ -134,10 +129,10 @@
                         </td>
 
                         <td v-else-if="selectedRole != 'Learner'">
-                        
+
                         </td>
 
-                        <td v-if= "selectedRole != 'Learner'">
+                        <td v-if="selectedRole != 'Learner'">
                             <a>
                                 <router-link :to="`/AssignSkillstoCourse/${course.id}`">Assign Skills</router-link>
                             </a>
@@ -208,7 +203,6 @@ export default {
                     // this.getRoles()
                     location.reload()
 
-
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -234,7 +228,6 @@ export default {
 
     computed: {
         filteredCourses() {
-            // console.log(this.coursesList)
             if (this.searchValue != " ") {
                 return this.coursesList.filter(course =>
                     course.courseName.toLowerCase().includes(this.searchValue.toLowerCase())
@@ -242,71 +235,13 @@ export default {
             }
         },
 
-
         filteredActiveCourses() {
-            // console.log(this.coursesList)
             if (this.searchValue != " ") {
                 return this.activeCourses.filter(course =>
                     course.courseName.toLowerCase().includes(this.searchValue.toLowerCase())
                 );
             }
-
-
         },
-
-        // filteredSkillCourses() {
-        //     this.courseSkillList = []
-        //     const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
-        //     axios.get(url2)
-        //         .then(response => {
-        //             var courses = response.data
-        //             for (var course of courses) {
-        //                 this.courseSkillList.push({
-        //                     id: course.course_ID,
-        //                     courseCat: course.course_Category,
-        //                     courseDesc: course.course_Desc,
-        //                     courseName: course.course_Name,
-        //                     courseStatus: course.course_Status,
-        //                     courseType: course.course_Type
-        //                 });
-        //             }
-
-                    
-        //         })
-        //         .catch(error => {
-        //             console.log(error.message)
-        //         })
-        //     return this.courseSkillList
-        // },
-
-        // filteredActiveSkillCourses() {
-        //     this.activeCoursesSkillList = []
-        //     const url2 = "http://localhost:3000/coursebyskill/" + this.selectedSkill;
-        //     axios.get(url2)
-        //         .then(response => {
-        //             var courses = response.data
-        //             console.log(courses)
-
-        //             for (var course of courses) {
-        //                 if (course.course_Status == "Active"){
-        //                     this.activeCoursesSkillList.push({
-        //                         id: course.course_ID,
-        //                         courseCat: course.course_Category,
-        //                         courseDesc: course.course_Desc,
-        //                         courseName: course.course_Name,
-        //                         courseStatus: course.course_Status,
-        //                         courseType: course.course_Type
-        //                     });
-        //                 }
-        //             }
-
-                    
-        //         })
-        //         .catch(error => {
-        //             console.log(error.message)
-        //         })
-        //     return this.activeCoursesSkillList
-        // }
     },
 
     created() {
@@ -316,50 +251,45 @@ export default {
             .then(response => {
                 var coursesData = response.data
                 this.errorMessage = "";
-                    if (this.coursesData == 0) {
-                         console.log("its empty")
-                         this.errorMessage += "No courses available currently!"
-                   } else {
-                      for (var course of coursesData) {
-                    // console.log(course)
+                if (this.coursesData == 0) {
+                    console.log("its empty")
+                    this.errorMessage += "No courses available currently!"
+                } else {
+                    for (var course of coursesData) {
+                        // console.log(course)
 
                         this.coursesList.push({
-                          id: course.course_ID,
-                          courseCat: course.course_Category,
-                          courseDesc: course.course_Desc,
-                          courseName: course.course_Name,
-                          courseStatus: course.course_Status,
-                          courseType: course.course_Type
+                            id: course.course_ID,
+                            courseCat: course.course_Category,
+                            courseDesc: course.course_Desc,
+                            courseName: course.course_Name,
+                            courseStatus: course.course_Status,
+                            courseType: course.course_Type
                         });
-                    
-                        if (course.course_Status == "Active") {
-                          this.activeCourses.push(
-                            {
-                              id: course.course_ID,
-                              courseCat: course.course_Category,
-                              courseDesc: course.course_Desc,
-                              courseName: course.course_Name,
-                              courseStatus: course.course_Status,
-                              courseType: course.course_Type
-                            }
-                          ); 
-                        }
-                        
-                   }console.log(this.activeCourses)    
-                }
 
-                    // <CAlert v-if="course.courseStatus == 'Retired'"> No courses available </CAlert>
-                }) 
-                .catch(error => {
-                    console.log(error.message)
-                })
-            
+                        if (course.course_Status == "Active") {
+                            this.activeCourses.push({
+                                id: course.course_ID,
+                                courseCat: course.course_Category,
+                                courseDesc: course.course_Desc,
+                                courseName: course.course_Name,
+                                courseStatus: course.course_Status,
+                                courseType: course.course_Type
+                            });
+                        }
+
+                    }
+                    console.log(this.activeCourses)
+                }
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
 
         const url1 = "http://localhost:3000/availableskills";
         axios.get(url1)
             .then(response => {
                 var skillData = response.data
-                // console.log("SkillData=", skillData)
                 for (var skill of skillData) {
                     this.skillsList.push({
                         roles: skill.roleName,

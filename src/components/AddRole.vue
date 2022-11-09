@@ -26,11 +26,11 @@
                 <input type="checkbox" :id="index" :value="option.value" v-model="selected">
                 <label :for="index">{{ option.text }}</label>
             </li>
-            <ul v-for="error in errorMessage" :key="error" class="errorMessage">
-                <li>
+            <div v-for="error in errorMessage" :key="error" class="errorMessage">
+                <p>
                     {{ error }}
-                </li>
-            </ul>
+                </p>
+            </div>
             <br>
             <br>
             <button type="button">
@@ -54,7 +54,7 @@ export default {
     name: 'AddRoles',
     mounted() {
         this.getSkills(),
-        this.getRoles()
+            this.getRoles()
     },
 
     data() {
@@ -108,7 +108,7 @@ export default {
             this.errorMessage = []
 
             //check if empty role name entered
-            
+
             if (this.roleName == "") {
                 this.errorMessage.push("Role name is required!")
             }
@@ -149,30 +149,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
-/* input[type=text],
-select {
-    width: 80%;
-    padding: 12px 12px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
-input[type=submit] {
-    background-color: #000;
-    color: white;
-    border: none;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 10px 2px;
-    cursor: pointer;
-} */
-
 .special {
     color: white;
     text-decoration: none;
@@ -180,8 +156,5 @@ input[type=submit] {
 
 input:focus::placeholder {
     color: transparent;
-}
-.errorMessage {
-    color: red
 }
 </style>

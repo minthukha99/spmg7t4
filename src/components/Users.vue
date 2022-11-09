@@ -100,7 +100,7 @@
                             {{ user.staffFName }} {{ user.staffLName }}
                         </td>
                         <td>
-                            {{ user.department }} 
+                            {{ user.department }}
                         </td>
                         <td>
                             <!-- <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link> -->

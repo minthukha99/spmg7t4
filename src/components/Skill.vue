@@ -56,12 +56,11 @@
 
                         <td v-else data-label="Action 2">
                             <a class="mouseover" v-on:click="deactivateSkills(skill.skillName)">Deactivate</a>
-                        </td>  
+                        </td>
                     </tr>
                 </tbody>
 
-
-                <tbody v-else  v-for="(skill,index) in activeSkills" :key="skill.id">
+                <tbody v-else v-for="(skill,index) in activeSkills" :key="skill.id">
                     <tr>
                         <td scope="row" data-label="Index">{{ index +1}}</td>
                         <td scope="row" data-label="Name">{{ skill.skillName }}</td>
@@ -76,7 +75,7 @@
                             </ul>
                         </td>
                         <!-- <td scope="row" data-label="Action 3"><a href="#"> Add to Learning Journey</a></td> -->
-                
+
                         <!-- <td scope="row" data-label="Action 4">
                                 <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link>
                                 <router-link :to="{roleName:'user', params: {id:role.roleName} }">Assign skills</router-link>
@@ -123,17 +122,15 @@ export default {
                             skillName: skill.skillName,
                             status: skill.status
                         });
-                        if(skill.status == 1) {
-                            this.activeSkills.push(
-                                {
-                                    id: skill._id,      
-                                    roleName: skill.roleName,
-                                    skillName: skill.skillName
-                                    
-                                }
-                            )   
-                        } 
-                  }
+                        if (skill.status == 1) {
+                            this.activeSkills.push({
+                                id: skill._id,
+                                roleName: skill.roleName,
+                                skillName: skill.skillName
+
+                            })
+                        }
+                    }
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -189,6 +186,7 @@ a {
     color: white;
     text-decoration: none;
 }
+
 .mouseover {
     cursor: pointer;
 }
