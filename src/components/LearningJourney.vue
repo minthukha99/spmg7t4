@@ -31,17 +31,32 @@
                                 <td scope="col">
                                     {{skill.skillName}}
                                 </td>
-                                <td v-if="skill.learnt == false">
+                                <td >
+                                    <!-- <select v-model="skill.selected">
+                                        <option disabled> Select an option </option>
+                                        <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
+                                            {{ eachCourse.course_Name }}
+                                        </option>
+                                    </select> -->
+                                    {{ skill.learnt }}
+                                    <div v-for="(eachCourse) in skill.course"  :key="eachCourse" >
+                                        {{ skill.selected }}
+                                        <input type="checkbox" :value="eachCourse.course_ID"  v-model="eachCourse.selected">
+                                        <label>{{ eachCourse.course_Name }}</label>
+                                    </div>
+
+                                </td>
+                                <!-- <td v-if="skill.learnt == false">
                                     <select v-model="skill.selected">
                                         <option disabled> Select an option </option>
                                         <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
                                             {{ eachCourse.course_Name }}
                                         </option>
-                                    </select>
+                                    </select> 
+                                
+                                </td> -->
 
-                                </td>
-
-                                <td v-else>
+                                <!-- <td v-else>
                                     <div class="errorMessage">
                                         You have already learned the Skill. Do choose the Course you have taken to learn this Skill
                                     </div>
@@ -51,7 +66,7 @@
                                             {{ eachCourse.course_Name }}
                                         </option>
                                     </select>
-                                </td>
+                                </td> -->
 
                             </tr>
                         </tbody>
@@ -130,7 +145,8 @@ export default {
             userRolesList: [], // store all users lj roles
             errorMessage: [], // to show error message if user select a duplicate role for LJ
             errorMessage2: [], // to show error message if user selct no course for a skill
-            skillsList: [] // store skill id of all skills the user has earned
+            skillsList: [], // store skill id of all skills the user has earned
+            coursesSelected: []
         }
     },
     created() {
@@ -168,6 +184,7 @@ export default {
                 })
         },
         getSkillsForChosenRole() {
+            console.log(this.coursesSelected)
             // get the skills required for a role
             // this.userRolesList.push(
             // get role id of user input roleName
@@ -196,7 +213,7 @@ export default {
                                 skillId: skill.skillID,
                                 skillName: skill.skillName,
                                 course: [],
-                                selected: "",
+                                selected: [],
                                 learnt: learntOrNot
                             });
                         }
@@ -321,30 +338,31 @@ export default {
 
         },
         addCoursetoLJ() {
-            var courseChosenList = []
-            this.errorMessage2 = []
-            for (var eachSkillChosen of this.skillsNeededForRole) {
-                courseChosenList.push(eachSkillChosen.selected)
-            }
-            //validation check to ensure user select a course for each skill
-            if (courseChosenList == "") {
-                this.errorMessage2.push("You must choose a Course for each Skill")
-            } else {
-                let url = "http://localhost:3000/learningjourney";
-                // from skillsneedforrole array, get the courses chosen by user and add to a list
+            console.log(this.skillsNeededForRole)
+            // var courseChosenList = []
+            // this.errorMessage2 = []
+            // for (var eachSkillChosen of this.skillsNeededForRole) {
+            //     courseChosenList.push(eachSkillChosen.selected)
+            // }
+            // //validation check to ensure user select a course for each skill
+            // if (courseChosenList == "") {
+            //     this.errorMessage2.push("You must choose a Course for each Skill")
+            // } else {
+            //     let url = "http://localhost:3000/learningjourney";
+            //     // from skillsneedforrole array, get the courses chosen by user and add to a list
 
-                axios.post(url, {
-                        roleName: this.roleSelected,
-                        staff_ID: sessionStorage.getItem("userId"),
-                        course_ID: courseChosenList
-                    })
-                    .then(response => {
-                        location.reload()
-                    })
-                    .catch(error => {
-                        console.log(error.message)
-                    })
-            }
+            //     axios.post(url, {
+            //             roleName: this.roleSelected,
+            //             staff_ID: sessionStorage.getItem("userId"),
+            //             course_ID: courseChosenList
+            //         })
+            //         .then(response => {
+            //             location.reload()
+            //         })
+            //         .catch(error => {
+            //             console.log(error.message)
+            //         })
+            // }
         },
         deleteLJ(id) {
             axios
