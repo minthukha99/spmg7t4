@@ -47,19 +47,32 @@ describe("Get all available Role", function(){
         .expect(200,done)
     })
 });
-// describe("Create a role", function(){
-//     it("Create a role with Valid data", function(done){
-//         request(app).post("/role")
-//         .send(
-//             {
-//                 "roleName" : "Role From Testing",
-//                 "roleDetail" : "Testing added Role",
-//                 "skillName" : ["SkillTEstttt"]
-//             }
-//         )
-//         .expect(200,done)
-//     })
-// });
+describe("Create a role", function(){
+    it("Create a role with Valid data", function(done){
+        request(app).post("/role")
+        .send(
+            {
+                "roleName" : "Role From Testing",
+                "roleDetail" : "Testing added Role",
+                "skillName" : ["SkillTEstttt"]
+            }
+        )
+        .expect(200,done)
+    })
+});
+describe("Update a role", function(){
+    it("Create a role with Valid data", function(done){
+        request(app).put("/updaterole/1")
+        .send(
+            {
+                "roleName" : "Role From Testing",
+                "roleDetail" : "Testing added Role",
+                "skillName" : ["SkillTEstttt"]
+            }
+        )
+        .expect(200,done)
+    })
+});
 describe("Deactive a role with RoleID 1", function(){
     it("Set the role status to inactive", function(done){
         request(app).put("/deleterole/1")
@@ -72,23 +85,23 @@ describe("Activate a role with RoleID 1", function(){
         .expect(200,done)
     })
 });
-describe("Deactive a role with invalid roleID", function(){
-    it("Set the role status to inactive", function(done){
-        request(app).put("/deleterole/InvalidID")
-        .expect({
-            status : 400,
-            result : "Fail to soft delete role: " + "InvalidID"
-        })
-        .expect(400,done)
-    })
-});
-describe("Activate a role with invalid roleID", function(){
-    it("Set the role status to active", function(done){
-        request(app).put("/activaterole/InvalidID")
-        .expect({
-            status : 400,
-            result : "Fail to activate role: " + "InvalidID"
-        })
-        .expect(400,done)
-    })
-});
+// describe("Deactive a role with invalid roleID", function(){
+//     it("Set the role status to inactive", function(done){
+//         request(app).put("/deleterole/InvalidID")
+//         .expect({
+//             status : 400,
+//             result : "Fail to soft delete role: " + "InvalidID"
+//         })
+//         .expect(400,done)
+//     })
+// });
+// describe("Activate a role with invalid roleID", function(){
+//     it("Set the role status to active", function(done){
+//         request(app).put("/activaterole/InvalidID")
+//         .expect({
+//             status : 400,
+//             result : "Fail to activate role: " + "InvalidID"
+//         })
+//         .expect(400,done)
+//     })
+// });

@@ -27,8 +27,8 @@ describe("Get all available Skill", function(){
     })
 });
 
-describe("Create a role", function(){
-    it("Create a role with Valid data", function(done){
+describe("Create a skill", function(){
+    it("Create a skill with Valid data", function(done){
         request(app).post("/skill")
         .send(
             {
@@ -49,42 +49,6 @@ describe("Deactive a skill with skillID 1", function(){
 describe("Activate a skill with skillID 1", function(){
     it("Set the skill status to active", function(done){
         request(app).put("/activateskill/skill5")
-        .expect(200,done)
-    })
-});
-describe("Deactive a skill with invalid skillID", function(){
-    it("Set the skill status to inactive", function(done){
-        request(app).put("/deleteskill/InvalidID")
-        .expect({
-            "result": {
-                "affectedRows": 0,
-                "changedRows": 0,
-                "fieldCount": 0,
-                "info": "Rows matched: 0  Changed: 0  Warnings: 0",
-                "insertId": 0,
-                "serverStatus": 2,
-                "warningStatus": 0,
-            },
-            "status": 200
-        })
-        .expect(200,done)
-    })
-});
-describe("Activate a skill with invalid skillID", function(){
-    it("Set the skill status to active", function(done){
-        request(app).put("/activateskill/InvalidID")
-        .expect({
-            "result": {
-                "affectedRows": 0,
-                "changedRows": 0,
-                "fieldCount": 0,
-                "info": "Rows matched: 0  Changed: 0  Warnings: 0",
-                "insertId": 0,
-                "serverStatus": 2,
-                "warningStatus": 0,
-            },
-            "status": 200
-        })
         .expect(200,done)
     })
 });
