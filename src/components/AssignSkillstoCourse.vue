@@ -29,11 +29,19 @@
                     </div>
                 </div>
                 <div v-if="errorMessage" class="errorMessage">
-                    <ul v-for="error in errorMessage" :key="error">
-                        <li>
+                    <div v-for="error in errorMessage" :key="error">
+                        <p>
                             {{ error }}
-                        </li>
-                    </ul>
+                        </p>
+                    </div>
+                </div>
+
+                <div v-if="successMessage" class="successMessage">
+                    <div v-for="success in successMessage" :key="success">
+                        <p>
+                            {{ success }}
+                        </p>
+                    </div>
                 </div>
                 
                 <div v-else>
@@ -76,7 +84,8 @@ export default {
             courseName: "",
             courseSelected: {},
             skillsAssigned: [],
-            errorMessage: ""
+            errorMessage: "",
+            successMessage: ""
         }
     },
     methods: {
@@ -155,6 +164,7 @@ export default {
         assignSelectedSkillsToCourse() {
             // assign skills that user selected to the Course 
             this.errorMessage = [];
+            this.successMessage = [];
             if (this.selectedSkills.length == 0) {
                 this.errorMessage.push("Please assign at least one skill to the course before saving.")
             } else if (this.findCommonSkills(this.skillsAssigned, this.selectedSkills)) {
@@ -167,7 +177,7 @@ export default {
                         course_ID: this.id,
                     })
                     .then(response => {
-                        this.errorMessage.push( "Success! " + this.selectedSkills[x] + " has been assigned to course " + this.id)
+                        this.successMessage.push( "Success! " + this.selectedSkills[x] + " has been assigned to course " + this.id)
                     })
                     .catch(error => {
                         console.log(error.message)
@@ -201,6 +211,10 @@ export default {
 .special {
     color: white;
     text-decoration: none;
+}
+
+.successMessage {
+    color: green
 }
 
 .errorMessage {
