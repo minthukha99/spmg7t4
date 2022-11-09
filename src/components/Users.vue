@@ -100,11 +100,11 @@
                             {{ user.staffFName }} {{ user.staffLName }}
                         </td>
                         <td>
-                            {{ user.department }}
+                            {{ user.department }} 
                         </td>
                         <td>
                             <!-- <router-link :to="`/AssignSkillstoRole/${role.roleName}`">Assign skills</router-link> -->
-                            <router-link :to="`/Users/`">View Learning Journey</router-link>
+                            <router-link :to="`/ViewUserLearningJourney/${user.staffId}`">View Learning Journey</router-link>
                         </td>
 
                     </tr>
@@ -197,9 +197,6 @@ export default {
                             courseId: eachCourseCompleted.course_ID,
                             completedStatus: eachCourseCompleted.Completion_Status,
                             name: eachCourseCompleted.staff_FName + " " + eachCourseCompleted.staff_LName,
-
-                            //    "staff_FName": "Mary",
-                            // "staff_LName": "Teo",
                         })
                     }
                     // console.log(this.coursesDoneByUser)

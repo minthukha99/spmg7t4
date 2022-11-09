@@ -19,8 +19,10 @@ const createLJ = async (req, res) => {
         });
     });
     var insertStr = `Insert into spm.LearningJourneyCourse(LJID,course_ID) values `
-    LJInfo.course_ID.forEach(c => {
-        insertStr += `('${result.insertId}','${c}'),`
+    LJInfo.course_ID.forEach( list =>{
+        list.forEach(c=>{
+            insertStr += `('${result.insertId}','${c}'),`
+        });
     });
     insertStr = insertStr.slice(0, -1);
     const insertResult = await db.query(

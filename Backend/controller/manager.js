@@ -13,8 +13,11 @@ const coursesCompletedByTeam = async (req,res) =>{
         select * from spm.staff t0
         inner join spm.registration t1
         on t0.staff_ID = t1.staff_ID
+        inner join spm.course t2
+        on t2.course_ID = t1.course_ID
         where dept = (select dept from spm.staff where staff_ID = ${managerID})
         and role != 3
+        and t2.course_Status = "Active"
 
         `
 

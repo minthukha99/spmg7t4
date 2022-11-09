@@ -10,7 +10,7 @@ describe("Get Learning Journey By Staff_ID", function(){
 
 // describe("Create a new Learning Journey", function(){
 //     it("Return all learning journey for selected staff", function(done){
-//         request(app).get("/getlearningjourneyby/1000")
+//         request(app).post("/getlearningjourneyby/1000")
 //         .expect(200,done)
 //     })
 // });

@@ -45,7 +45,8 @@ export default {
             selectedRoles: [],
             skillName: "",
             skillDetail: "",
-            errorMessage: ""
+            errorMessage: "",
+            skillsList : [] // store all skill names to check for duplicate skill name
         }
     },
     methods: {
@@ -54,7 +55,6 @@ export default {
             axios.get(url)
                 .then(response => {
                     var roleData = response.data
-                    // console.log("roleData=", roleData)
                     for (var role of roleData) {
                         this.rolesList.push({
                             id: role._id,
@@ -63,7 +63,6 @@ export default {
                             status: role.status
                         });
                     }
-                    // console.log("rolesList=", this.rolesList)
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -72,26 +71,36 @@ export default {
         },
 
         addSkillButton() {
-            // console.log(this.skillName)
             this.errorMessage = ""
+            
+            //check if empty skill name entered
             if (this.skillName == "") {
-
-                console.log("Empty skill name")
                 this.errorMessage += "Skill name is required!"
-            } else {
-                console.log("createSkill")
-                this.createSkill()
-                this.$router.replace({
-                    path: '/skills'
-                })
-                // this.$router.push({ path: '/home' });
-                // $router.go(-2)
-            // if at least 1 role is needed for the skill
-            // if (this.selectedRoles == "") {
-            //     console.log("Empty roles selected")
-            //     this.errorMessage += "Role  is required!"
-            // }
             }
+
+            // if duplicate skill name
+            const url = "http://localhost:3000/skills";
+            axios.get(url)
+                .then(response => {
+                    var skillData = response.data
+                    for (var skill of skillData) {
+                        this.skillsList.push(skill.skillName,);
+                    }
+
+                    if (this.skillsList.includes(this.skillName)) {
+                        this.errorMessage += "Duplicate Skill name!"
+                    }
+                    //if no error, process user request
+                    if (this.errorMessage == "") {
+                        this.createSkill()
+                        this.$router.replace({
+                            path: '/skills'
+                        })
+                    }
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
         },
 
         createSkill() {
@@ -101,11 +110,8 @@ export default {
                     roleName: this.selectedRoles,
                     status: true,
                     skillDetail: this.skillDetail
-                    // skillDetail: ,
-                    // courses: []
                 })
                 .then(response => {
-                    console.log("new role:", this.skillName, this.selectedRoles)
                     location.reload()
                 })
                 .catch(error => {

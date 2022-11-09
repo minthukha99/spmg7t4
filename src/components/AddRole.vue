@@ -26,6 +26,11 @@
                 <input type="checkbox" :id="index" :value="option.value" v-model="selected">
                 <label :for="index">{{ option.text }}</label>
             </li>
+            <ul v-for="error in errorMessage" :key="error" class="errorMessage">
+                <li>
+                    {{ error }}
+                </li>
+            </ul>
             <br>
             <br>
             <button type="button">
@@ -34,7 +39,7 @@
             <button value="Cancel" class="special">
                 <router-link to="/Roles" class="special">Cancel</router-link>
             </button>
-            <button @click='createRole(); $router.push("/Roles")' type="submit" value="Save" class="special">
+            <button @click='createRole()' type="button" value="Save" class="special">
                 Save
             </button>
 
@@ -48,7 +53,8 @@ import axios from "axios";
 export default {
     name: 'AddRoles',
     mounted() {
-        this.getSkills()
+        this.getSkills(),
+        this.getRoles()
     },
 
     data() {
@@ -56,7 +62,9 @@ export default {
             skillsList: [], //list of all skills 
             selectedSkills: [],
             roleName: "",
-            roleDetail: ""
+            roleDetail: "",
+            errorMessage: [],
+            rolesList: []
         }
     },
 
@@ -67,18 +75,29 @@ export default {
             axios.get(url)
                 .then(response => {
                     var skillData = response.data
-                    console.log("SkillData=", skillData)
                     for (var skill of skillData) {
-
                         this.skillsList.push({
                             id: skill.id,
                             roleName: skill.roleName,
                             skillName: skill.skillName,
                             status: skill.status
                         });
-
                     }
-                    console.log("SkillsList=", this.skillsList)
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
+        },
+        getRoles() {
+            const url = "http://localhost:3000/roles";
+            axios.get(url)
+                .then(response => {
+                    var roleData = response.data
+                    for (var role of roleData) {
+                        this.rolesList.push(
+                            role.roleName,
+                        );
+                    }
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -86,24 +105,43 @@ export default {
         },
 
         createRole() {
+            this.errorMessage = []
 
-            let url = "http://localhost:3000/role";
-            axios.post(url, {
-                    roleName: this.roleName,
-                    skillName: this.selectedSkills,
-                    roleDetail: this.roleDetail
-                })
+            //check if empty role name entered
+            
+            if (this.roleName == "") {
+                this.errorMessage.push("Role name is required!")
+            }
+            console.log(this.errorMessage)
+            console.log("success")
 
-                .then(response => {
-                    console.log("new role:", this.roleName, this.selectedSkills)
-                    location.reload()
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
+            // check if duplicate role name
+            console.log(this.rolesList.includes(this.roleName))
+            if (this.rolesList.includes(this.roleName)) {
+                this.errorMessage.push("Duplicate Role name!")
+            }
 
+            //if no error, process user request
+            if (this.errorMessage == "") {
+                let url = "http://localhost:3000/role";
+                axios.post(url, {
+                        roleName: this.roleName,
+                        skillName: this.selectedSkills,
+                        roleDetail: this.roleDetail
+                    })
+
+                    .then(response => {
+                        console.log("new role:", this.roleName, this.selectedSkills)
+                        location.reload()
+                    })
+                    .catch(error => {
+                        console.log(error.message)
+                    })
+                this.$router.replace({
+                    path: '/roles'
+                })
+            }
         }
-
     }
 }
 </script>
@@ -142,5 +180,8 @@ input[type=submit] {
 
 input:focus::placeholder {
     color: transparent;
+}
+.errorMessage {
+    color: red
 }
 </style>

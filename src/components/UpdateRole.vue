@@ -9,17 +9,14 @@
             Skills assigned:
             <ul v-for="(skill,index) in roleDetails[2]" :key="skill">
                 <li>
-                    
-                        {{ skill.skillName }}
-                    
-                        <a v-if="roleDetails[2].length  > 1">
-                            <a class="mouseover" v-on:click="deleteSkillAssignedToRole(index) ">Delete</a>
-                        </a>
-                    
+                    {{ skill.skillName }}
+                    <a v-if="roleDetails[2].length  > 1">
+                        <a class="mouseover" v-on:click="deleteSkillAssignedToRole(index) ">Delete</a>
+                    </a>
                 </li> 
             </ul>
         </h3>
-        <!--<a class="mouseover" v-on:click="activateSkills(skill.skillName)">Activate</a>-->
+        
         <form>
             <label for="roleName">New Role Name</label><br>
             <input v-model="newRoleName" id="roleName" name="roleName"><br>
@@ -29,21 +26,13 @@
             <br>
             <label for="skillsNeeded" class="multiselect">Skills required</label>
             <div class="selectBox">
-                <!-- <select multiple v-model="selectedSkills"> -->
                 <option selected="true" disabled="disabled">Select new skills (required)</option>
                 <div v-for="skill in skillsList" :key="skill.id">
                     <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills" data-test="selectedSkill">
                     <label :for="skill.id">{{skill.skillName}}</label>
                 </div>
-                <!-- </select> -->
             </div>
 
-            <!-- <label for="skillsNeeded" class="multiselect">Skills required</label>
-            <br>
-            <select multiple v-model="selectedSkills">
-                <option selected="true" disabled="disabled">Select an option</option>
-                <option v-for="skill in skillsList" :key="skill.id">{{skill.skillName}}</option>
-            </select> -->
             <div v-if="errorMessage" class="errorMessage">
                 <ul v-for="error in errorMessage" :key="error">
                     <li> 
@@ -119,7 +108,6 @@ export default {
                         console.log(eachSkill.skillName)
                         this.skillForThisRole.push(eachSkill.skillName)
                     }
-                    // console.log(this.skillForThisRole)
                     })
                 .catch(error => {
                     console.log(error.message)
@@ -127,11 +115,11 @@ export default {
             
         },
         getSkills() {
-            const url = "http://localhost:3000/skills";
+            const url = "http://localhost:3000/availableskills";
             axios.get(url)
                 .then(response => {
                     var skillData = response.data
-                    // console.log("SkillData=", skillData)
+                
                     for (var skill of skillData) {
                         this.skillsList.push({
                             id: skill._id,
@@ -141,7 +129,6 @@ export default {
                         });
                     }
 
-                    // console.log("SkillsList=", this.skillsList)
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -152,12 +139,9 @@ export default {
             var url = "http://localhost:3000/roles"
             axios.get(url)
                 .then(response => {
-                    // console.log(response.data)
                     for (var eachRole of response.data) {
-                        // console.log(eachRole)
                         this.allRoles.push(eachRole.roleName)
                     }
-                    // console.log(this.allRoles)
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -168,27 +152,23 @@ export default {
 
             //if new role name is empty
             if (this.newRoleName == "") {
-                // console.log("Empty skill name")
-                this.errorMessage.push("Skill name is required!")
+                this.errorMessage.push("Role name is required!")
             }
 
             // if role name is a duplicate
-            for (var eachRole of this.allRoles) {
-                // console.log(eachRole)
+            for (var eachRole of this.allRoles) { 
                 if (this.newRoleName == eachRole) {
-                    // console.log("Duplicate Skill")
-                    this.errorMessage.push("Skill name is already used!")
+                    this.errorMessage.push("Role name is already used!")
                 }
             }
                 
             // if no skill required for the role
             if (this.selectedSkills.length == 0) {
-                // console.log("No skill chosen ")
                 this.errorMessage.push("Each Role require at least a skill!")
             }
 
-            if (this.errorMessage == "") {
-                console.log("updateRole")
+            //process form if no error 
+            if (this.errorMessage.length == 0) {
                 this.updateRole()
                 this.$router.replace({
                     path: '/Roles'
@@ -226,13 +206,10 @@ export default {
                 .catch(error => {
                     console.log(error.message)
                 })
-
         }
     }
 }
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
 .special {
