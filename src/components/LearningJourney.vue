@@ -31,42 +31,25 @@
                                 <td scope="col">
                                     {{skill.skillName}}
                                 </td>
-                                <td >
-                                    <!-- <select v-model="skill.selected">
-                                        <option disabled> Select an option </option>
-                                        <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
-                                            {{ eachCourse.course_Name }}
-                                        </option>
-                                    </select> -->
-                                    {{ skill.learnt }}
-                                    <div v-for="(eachCourse) in skill.course"  :key="eachCourse" >
+                                <td v-if="skill.learnt == false">
+                                    <div v-for="(eachCourse) in skill.course" :key="eachCourse">
                                         {{ skill.selected }}
-                                        <input type="checkbox" :value="eachCourse.course_ID"  v-model="skill.selected">
+                                        <input type="checkbox" :value="eachCourse.course_ID" v-model="skill.selected">
                                         <label>{{ eachCourse.course_Name }}</label>
                                     </div>
-
-                                </td>
-                                <!-- <td v-if="skill.learnt == false">
-                                    <select v-model="skill.selected">
-                                        <option disabled> Select an option </option>
-                                        <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
-                                            {{ eachCourse.course_Name }}
-                                        </option>
-                                    </select> 
                                 
-                                </td> -->
+                                </td>
 
-                                <!-- <td v-else>
+                                <td v-else>
                                     <div class="errorMessage">
                                         You have already learned the Skill. Do choose the Course you have taken to learn this Skill
                                     </div>
-                                    <select v-model="skill.selected">
-                                        <option disabled> Select an option </option>
-                                        <option v-for="(eachCourse) in skill.course" :key="eachCourse" :value="eachCourse.course_ID">
-                                            {{ eachCourse.course_Name }}
-                                        </option>
-                                    </select>
-                                </td> -->
+                                    <div v-for="(eachCourse) in skill.course" :key="eachCourse">
+                                        {{ skill.selected }}
+                                        <input type="checkbox" :value="eachCourse.course_ID" v-model="skill.selected">
+                                        <label>{{ eachCourse.course_Name }}</label>
+                                    </div>
+                                </td>
 
                             </tr>
                         </tbody>
@@ -146,7 +129,8 @@ export default {
             errorMessage: [], // to show error message if user select a duplicate role for LJ
             errorMessage2: [], // to show error message if user selct no course for a skill
             skillsList: [], // store skill id of all skills the user has earned
-            coursesSelected: []
+            coursesSelected: [],
+            coursesNeededForEachSkill :[],
         }
     },
     created() {
@@ -184,11 +168,11 @@ export default {
                 })
         },
         getSkillsForChosenRole() {
-            console.log(this.coursesSelected)
+            
             // get the skills required for a role
             // this.userRolesList.push(
             // get role id of user input roleName
-            console.log(this.skillsList)
+            
             this.errorMessage = []
             if (this.userRolesList.includes(this.roleSelected)) {
                 this.errorMessage.push("Learning Journey with Role already added!")
@@ -198,7 +182,7 @@ export default {
                         this.roleSelectedId = eachRole.id
                     }
                 }
-
+                console.log(this.roleSelectedId,"B")
                 const url = "http://localhost:3000/role/" + this.roleSelectedId;
                 axios.get(url)
                     .then(response => {
@@ -265,26 +249,32 @@ export default {
                         promises2.push(
                             axios
                             .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
-                            .then(response => {
+                                .then(response => {
+                                console.log(response.data)
                                 this.userRolesList.push(response.data.LJInfo[0].roleName)
 
                                 // data.LJInfo[0].roleName
                                 // to get all the skills required for the role, so that page only show the courses for those skills. 
                                 // without this, skills not required for this role will also go into the count
-                                var skillsRequired = []
-                                for (var eachSkill of response.data.skillNeededForRole) {
-                                    skillsRequired.push(eachSkill.skillName)
-                                }
+                                // var skillsRequired = []
+                                // for (var eachSkill of response.data.skillNeededForRole) {
+                                //     skillsRequired.push(eachSkill.skillName)
+                                // }
+
                                 //to get total number of courses to be completed and courses completed by user
                                 var coursesToTake = 0 //store total courses to be completed
                                 var coursesCompleted = 0 //store total courses completed
-                                for (var eachCourse of response.data.courseRegistered) {
-                                    if (skillsRequired.includes(eachCourse.skillName)) { //if skill learned in course is also skill required for role
+                                    for (var eachCourse of response.data.courseRegistered) {
                                         coursesToTake += 1
-                                    }
-                                    if (eachCourse.Completion_Status == "Completed" && skillsRequired.includes(eachCourse.skillName)) {
-                                        coursesCompleted += 1
-                                    }
+                                        if (eachCourse.Completion_Status == "Completed" ) {
+                                            coursesCompleted += 1
+                                        }
+                                    // if (skillsRequired.includes(eachCourse.skillName)) { //if skill learned in course is also skill required for role
+                                    //     coursesToTake += 1
+                                    // }
+                                    // if (eachCourse.Completion_Status == "Completed" && skillsRequired.includes(eachCourse.skillName)) {
+                                    //     coursesCompleted += 1
+                                    // }
                                 }
 
                                 //to get number of courses completed by user
@@ -311,13 +301,15 @@ export default {
                             })
                         )
                     }
-
+                    console.log(this.roleList)
                     const array = this.roleList
                     let promises = []
                     for (var i = 0; i < array.length; i++) {
+                        console.log(array[i].roleId,"B")
                         promises.push(
                             axios
-                            .get('http://localhost:3000/role/' + array[i].roleId)
+                            // .get('http://localhost:3000/role/' + array[i].roleId)
+                                .get('http://localhost:3000/role/60')
                             .then(response => {
                                 this.roleList2.push({
                                     roleName: response.data.roleName,
@@ -338,31 +330,32 @@ export default {
 
         },
         addCoursetoLJ() {
-            console.log(this.skillsNeededForRole)
-            // var courseChosenList = []
-            // this.errorMessage2 = []
-            // for (var eachSkillChosen of this.skillsNeededForRole) {
-            //     courseChosenList.push(eachSkillChosen.selected)
-            // }
-            // //validation check to ensure user select a course for each skill
-            // if (courseChosenList == "") {
-            //     this.errorMessage2.push("You must choose a Course for each Skill")
-            // } else {
-            //     let url = "http://localhost:3000/learningjourney";
-            //     // from skillsneedforrole array, get the courses chosen by user and add to a list
+            this.errorMessage2 = []
+         
+            for (var eachSkillRequired of this.skillsNeededForRole) {
+                if (eachSkillRequired.selected == "" && this.errorMessage2.length == 0) {
+                    this.errorMessage2.push("You must choose a Course for each Skill")
+                } 
+                this.coursesNeededForEachSkill.push(eachSkillRequired.selected)
+            }
 
-            //     axios.post(url, {
-            //             roleName: this.roleSelected,
-            //             staff_ID: sessionStorage.getItem("userId"),
-            //             course_ID: courseChosenList
-            //         })
-            //         .then(response => {
-            //             location.reload()
-            //         })
-            //         .catch(error => {
-            //             console.log(error.message)
-            //         })
-            // }
+            if (this.errorMessage2.length == 0) {
+                let url = "http://localhost:3000/learningjourney";
+                // from skillsneedforrole array, get the courses chosen by user and add to a list
+
+                axios.post(url, {
+                    roleName: this.roleSelected,
+                    staff_ID: sessionStorage.getItem("userId"),
+                    course_ID: this.coursesNeededForEachSkill
+                })
+                    .then(response => {
+                        location.reload()
+                    })
+                    .catch(error => {
+                        console.log(error.message)
+                    })
+            }
+            
         },
         deleteLJ(id) {
             axios

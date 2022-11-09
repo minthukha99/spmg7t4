@@ -218,7 +218,6 @@ const updateRole = async (req, res) => {
         status : 200,
         result: "Updated successfully"
     });
-
 };
 
 const deleteRole = async (req, res) => {
