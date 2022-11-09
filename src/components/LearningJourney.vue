@@ -41,7 +41,7 @@
                                     {{ skill.learnt }}
                                     <div v-for="(eachCourse) in skill.course"  :key="eachCourse" >
                                         {{ skill.selected }}
-                                        <input type="checkbox" :value="eachCourse.course_ID"  v-model="eachCourse.selected">
+                                        <input type="checkbox" :value="eachCourse.course_ID"  v-model="skill.selected">
                                         <label>{{ eachCourse.course_Name }}</label>
                                     </div>
 
