@@ -12,25 +12,24 @@
             <br>
             <label for="skillsNeeded" class="multiselect">Skills required</label>
             <div class="selectBox">
-                <!-- <select multiple v-model="selectedSkills"> -->
 
                 <option selected="true" disabled="disabled">Select an option</option>
                 <div v-for="skill in skillsList" :key="skill.id">
                     <input type="checkbox" :id="skill.id" :value="skill.skillName" v-model="selectedSkills">
                     <label :for="skill.id">{{skill.skillName}}</label>
                 </div>
-                <!-- </select> -->
+        
             </div>
 
             <li v-for="(option, index) in options" :key="index">
                 <input type="checkbox" :id="index" :value="option.value" v-model="selected">
                 <label :for="index">{{ option.text }}</label>
             </li>
-            <div v-for="error in errorMessage" :key="error" class="errorMessage">
-                <p>
+            <ul v-for="error in errorMessage" :key="error" class="errorMessage">
+                <li>
                     {{ error }}
-                </p>
-            </div>
+                </li>
+            </ul>
             <br>
             <br>
             <button type="button">
@@ -108,21 +107,22 @@ export default {
             this.errorMessage = []
 
             //check if empty role name entered
-
             if (this.roleName == "") {
                 this.errorMessage.push("Role name is required!")
             }
-            console.log(this.errorMessage)
-            console.log("success")
-
+            
             // check if duplicate role name
-            console.log(this.rolesList.includes(this.roleName))
             if (this.rolesList.includes(this.roleName)) {
                 this.errorMessage.push("Duplicate Role name!")
             }
 
+            //check if no skills chosen to assign selectedSkills
+            if (this.selectedSkills.length == 0) {
+                this.errorMessage.push("No Skill is selected. Please select at least a Skill!")
+            }
+
             //if no error, process user request
-            if (this.errorMessage == "") {
+            if (this.errorMessage == "") { 
                 let url = "http://localhost:3000/role";
                 axios.post(url, {
                         roleName: this.roleName,

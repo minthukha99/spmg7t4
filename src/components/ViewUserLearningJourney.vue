@@ -18,7 +18,7 @@
                     </div>
                     <div class="card__text">
                         <div class="meter">
-                            <span :style="{ width: coursesCounts[index].percentageCourseCompleted + '%' }"></span>
+                            <span :style="{ width: coursesCounts[index].coursesCompletedPercentage + '%' }"></span>
                         </div>
                         Number of courses: {{ coursesCounts[index].courseCount }}
 
@@ -70,7 +70,9 @@ export default {
             roleList2: [],
             coursesCounts: [], // store the number of courses of each LJ 
             selectedCourses: [],
-            staffInfo: [] // store user information
+            staffInfo: [], // store user information
+            userRolesList: [],
+            coursesToTakeList : []
         }
     },
 
@@ -82,81 +84,165 @@ export default {
                     this.staffInfo.push(response.data.Staff_FName, response.data.Staff_LName, response.data.Email)
                 })
 
-        },
-        getLJofUser() {
-            // retrieve all the LJ of the user
-            var userId = sessionStorage.getItem("userId")
-            const url = "http://localhost:3000/getlearningjourneyby/" + this.id;
-            axios.get(url)
-                .then(response => {
-                    console.log(response)
-                    for (var eachLJ of response.data) {
-                        this.LJlist.push({
-                            ljId: eachLJ.LJID,
-                            roleId: eachLJ.roleID,
-                            roleName: [],
-                            staffId: eachLJ.staff_ID,
-                            courseCount: 0
-                        })
-                        this.roleList.push({
-                            roleId: eachLJ.roleID
-                        })
-                    }
-                    const array2 = this.LJlist
-                    let promises2 = []
-                    for (var i = 0; i < array2.length; i++) {
-                        promises2.push(
-                            axios
-                            .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
-                            .then(response => {
-                                // console.log(response.data.courseRegistered)
-                                //to get number of courses completed by user
-                                var coursesCompleted = 0
-                                for (var eachCourse of response.data.courseRegistered) {
-                                    if (eachCourse.Completion_Status) {
-                                        coursesCompleted += 1
-                                    }
-                                }
-                                var percentageCourseCompleted = 0
-                                if (response.data.courseRegistered.length != 0) {
-                                    percentageCourseCompleted = Math.round((coursesCompleted / response.data.courseRegistered.length) * 100)
-                                }
-                                this.coursesCounts.push({
-                                    courseCount: response.data.courseRegistered.length,
-                                    percentageCourseCompleted: percentageCourseCompleted
-                                })
-                                // console.log(this.coursesCounts)
-                            })
-                            .catch(error => {
-                                console.log(error.message)
-                            })
-                        )
+      },
+      getLJofUser() {
+        // retrieve all the LJ of the user
+        
+        const url = "http://localhost:3000/getlearningjourneyby/" + this.id;
+        axios.get(url)
+          .then(response => {
+            for (var eachLJ of response.data) {
+              this.LJlist.push({
+                ljId: eachLJ.LJID,
+                roleId: eachLJ.roleID,
+                roleName: [],
+                staffId: eachLJ.staff_ID,
+                courseCount: 0
+              })
+              this.roleList.push({
+                roleId: eachLJ.roleID
+              })
+            }
+            const array2 = this.LJlist
+            let promises2 = []
+            for (var i = 0; i < array2.length; i++) {
+              promises2.push(
+                axios
+                  .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
+                  .then(response => {
+                    this.userRolesList.push(response.data.LJInfo[0].roleName)
+
+                    //to get total number of courses to be completed and courses completed by user
+                    this.coursesToTake = 0
+                    this.coursesCompleted = 0
+                    for (var eachCourse of response.data.courseRegistered) {
+                      if (!this.coursesToTakeList.includes(eachCourse.course_Name)) {
+                        this.coursesToTakeList.push(eachCourse.course_Name)
+                        this.coursesToTake += 1
+                        if (eachCourse.Completion_Status == "Completed") {
+                          this.coursesCompleted += 1
+                        }
+                      }
                     }
 
-                    const array = this.roleList
-                    let promises = []
-                    for (var i = 0; i < array.length; i++) {
-                        promises.push(
-                            axios
-                            .get('http://localhost:3000/role/' + array[i].roleId)
-                            .then(response => {
-                                this.roleList2.push({
-                                    roleName: response.data.roleName,
-                                    roleId: response.data.roleID,
-                                });
-                            })
-                            .catch(error => {
-                                console.log(error.message)
-                            })
-                        )
+                    //to get percentage of courses completed by user
+                    this.percentageCourseCompleted = 0
+                    if (this.coursesToTake > 0) {
+                      this.percentageCourseCompleted = Math.round((this.coursesCompleted / this.coursesToTake) * 100)
                     }
-                    Promise.all(promises).then(() => console.log())
-                })
-                .catch(error => {
+                    this.coursesCounts.push({
+                      courseCount: this.coursesToTake,
+                      coursesCompletedPercentage: this.percentageCourseCompleted,
+                      coursesDone: this.coursesCompleted
+                    })
+
+                  })
+
+                  .catch(error => {
                     console.log(error.message)
-                })
+                  })
+              )
+            }
 
-        },
+            const array = this.roleList
+            let promises = []
+            for (var i = 0; i < array.length; i++) {
+              promises.push(
+                axios
+                  .get('http://localhost:3000/role/' + array[i].roleId)
+                  .then(response => {
+                    this.roleList2.push({
+                      roleName: response.data.roleName,
+                      roleId: response.data.roleID,
+                    });
+                  })
+                  .catch(error => {
+                    console.log(error.message)
+                  })
+              )
+            }
+            Promise.all(promises).then(() => console.log())
+            Promise.all(promises2).then(() => console.log())
+          })
+          .catch(error => {
+            console.log(error.message)
+          })
+
+      },
+        // getLJofUser2() {
+        //     // retrieve all the LJ of the user
+        //     var userId = sessionStorage.getItem("userId")
+        //     const url = "http://localhost:3000/getlearningjourneyby/" + this.id;
+        //     axios.get(url)
+        //         .then(response => {
+        //             console.log(response)
+        //             for (var eachLJ of response.data) {
+        //                 this.LJlist.push({
+        //                     ljId: eachLJ.LJID,
+        //                     roleId: eachLJ.roleID,
+        //                     roleName: [],
+        //                     staffId: eachLJ.staff_ID,
+        //                     courseCount: 0
+        //                 })
+        //                 this.roleList.push({
+        //                     roleId: eachLJ.roleID
+        //                 })
+        //             }
+        //             const array2 = this.LJlist
+        //             let promises2 = []
+        //             for (var i = 0; i < array2.length; i++) {
+        //                 promises2.push(
+        //                     axios
+        //                     .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
+        //                     .then(response => {
+        //                         // console.log(response.data.courseRegistered)
+        //                         //to get number of courses completed by user
+        //                         var coursesCompleted = 0
+        //                         for (var eachCourse of response.data.courseRegistered) {
+        //                             if (eachCourse.Completion_Status) {
+        //                                 coursesCompleted += 1
+        //                             }
+        //                         }
+        //                         var percentageCourseCompleted = 0
+        //                         if (response.data.courseRegistered.length != 0) {
+        //                             percentageCourseCompleted = Math.round((coursesCompleted / response.data.courseRegistered.length) * 100)
+        //                         }
+        //                         this.coursesCounts.push({
+        //                             courseCount: response.data.courseRegistered.length,
+        //                             percentageCourseCompleted: percentageCourseCompleted
+        //                         })
+        //                         // console.log(this.coursesCounts)
+        //                     })
+        //                     .catch(error => {
+        //                         console.log(error.message)
+        //                     })
+        //                 )
+        //             }
+
+        //             const array = this.roleList
+        //             let promises = []
+        //             for (var i = 0; i < array.length; i++) {
+        //                 promises.push(
+        //                     axios
+        //                     .get('http://localhost:3000/role/' + array[i].roleId)
+        //                     .then(response => {
+        //                         this.roleList2.push({
+        //                             roleName: response.data.roleName,
+        //                             roleId: response.data.roleID,
+        //                         });
+        //                     })
+        //                     .catch(error => {
+        //                         console.log(error.message)
+        //                     })
+        //                 )
+        //             }
+        //             Promise.all(promises).then(() => console.log())
+        //         })
+        //         .catch(error => {
+        //             console.log(error.message)
+        //         })
+
+        // },
     },
 }
 </script>

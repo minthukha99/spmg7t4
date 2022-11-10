@@ -170,13 +170,14 @@ export default {
                 this.errorMessage.push("Skill(s) selected has already been assigned to course. Please try again.")
             } else {
                 let url = "http://localhost:3000/assignskilltocourse";
+                this.successMessage.push("Success! Skills have been assigned to course to " + this.id)
                 for (var x in this.selectedSkills) {
                     axios.post(url, {
                             skillName: this.selectedSkills[x],
                             course_ID: this.id,
                         })
                         .then(response => {
-                            this.successMessage.push("Success! " + this.selectedSkills[x] + " has been assigned to course " + this.id)
+                            console.log("success")
                         })
                         .catch(error => {
                             console.log(error.message)

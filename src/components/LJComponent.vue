@@ -13,18 +13,17 @@
             <table>
                 <thead>
                     <tr>
-                        <th scope="col">Skill Name</th>
                         <th scope="col">Course Code</th>
                         <th scope="col">Course Name</th>
                         <th scope="col">Registration Status</th>
                         <th scope="col">Completion Status</th>
                         <th scope="col">Action 1</th>
                         <th scope="col">Action 2</th>
+                        <!-- <th scope="col">Action 3</th> -->
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="ljData in ljInfolist" :key="ljData.regID">
-                        <td scope="row" data-label="Skill Name">{{ ljData.skillName }}</td>
                         <td scope="row" data-label="Course Code">{{ ljData.courseCode }}</td>
                         <td scope="row" data-label="Course Name">{{ ljData.courseName }}</td>
                         <td scope="row" data-label="Registration Status">{{ ljData.regStatus }}</td>
@@ -35,9 +34,27 @@
                         <td v-else>
                             <span>-</span>
                         </td>
-                        <td scope="row">
-                            <a class="mouseover" v-on:click="editLJCourse(ljData.regID)">Change Course</a>
+                        <td> 
+                            <a class="mouseover" v-on:click="deleteCourse(ljData)">Delete Course from LJ</a>
                         </td>
+                        <!-- <td scope="row" v-if="alternativeCourses.length == 0">
+                            <a class="mouseover" v-on:click="editLJCourse(ljData)">Change Course</a>
+                        </td>
+                        
+                        <td scope="row" v-else>
+                            <select>
+                                <option v-for="course in alternativeCourses" :key="course" >{{ course }}</option>
+                            </select>
+                            <button @click="saveLJCourseEdit">
+                                Save
+                            </button>
+                            <button @click="cancelEditLJCourse">
+                                Cancel
+                            </button>
+                        </td> -->
+                        <!-- <td scope="row" v-else>
+                            {{ alternativeCourses }}
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
@@ -62,7 +79,11 @@ export default {
             roleName: '',
             totalCourses: 0, // store total courses needed to clear for the role
             coursesCompleted: 0, // store courses completed 
-            coursesCompletedPercentage: 0 //store percentage from above 2 data
+            coursesCompletedPercentage: 0, //store percentage from above 2 data
+            coursesList: [],
+            ljID: 0,
+            
+
         }
     },
 
@@ -71,37 +92,31 @@ export default {
             const url = "http://localhost:3000/learningjourneyinfo/" + this.id;
             axios.get(url)
                 .then(response => {
-                    // to get all the skills required for the role, so that page only show the courses for those skills
-                    // without this, skills not required for this role will also show
-                    var skillsRequired = []
-                    for (var eachSkill of response.data.skillNeededForRole) {
-                        skillsRequired.push(eachSkill.skillName)
-                    }
+                    
+                    this.ljID = response.data.LJInfo[0].LJID
 
                     var ljInfoData = response.data
                     this.roleName = ljInfoData.LJInfo[0].roleName
                     for (var ljData of ljInfoData.courseRegistered) {
-
-                        if (skillsRequired.includes(ljData.skillName)) {
-                            // show "-" if course completion is ""(course not completed, so registered/rejected/ waitlist)
-                            var comptStatus = "-"
-                            this.totalCourses += 1
-                            if (ljData.Completion_Status == "Completed") {
-                                comptStatus = "Completed"
-                                this.coursesCompleted += 1 //if course completed, increase count 
-                            }
-                            this.ljInfolist.push({
-                                skillName: ljData.skillName,
-                                courseCode: ljData.course_ID,
-                                courseName: ljData.course_Name,
-                                regID: ljData.Reg_ID,
-                                regStatus: ljData.Reg_Status,
-                                completeStatus: comptStatus,
-                            });
-                        }
+                        if (!this.coursesList.includes(ljData.course_ID)) {
+                            this.coursesList.push(ljData.course_ID)
+                                // show "-" if course completion is ""(course not completed, so registered/rejected/ waitlist)
+                                var comptStatus = "-"
+                                this.totalCourses += 1
+                                if (ljData.Completion_Status == "Completed") {
+                                    comptStatus = "Completed"
+                                    this.coursesCompleted += 1 //if course completed, increase count 
+                                }
+                                this.ljInfolist.push({
+                                    skillName: ljData.skillName,
+                                    courseCode: ljData.course_ID,
+                                    courseName: ljData.course_Name,
+                                    regID: ljData.Reg_ID,
+                                    regStatus: ljData.Reg_Status,
+                                    completeStatus: comptStatus,
+                                });   
+                        }    
                     }
-                    console.log(this.totalCourses)
-                    console.log(this.coursesCompleted)
                     this.coursesCompletedPercentage = this.coursesCompleted / this.totalCourses
 
                 })
@@ -113,7 +128,6 @@ export default {
             let url = "http://localhost:3000/registerecourse/" + regID;
             axios.put(url)
                 .then(response => {
-                    console.log(url)
                     console.log("course registered under registration ID:", regID)
                     location.reload()
 
@@ -123,10 +137,64 @@ export default {
                 })
 
         },
-        editLJCourse(id) {
-            console.log(id)
+        // editLJCourse(id) {
+        //     console.log(id.skillName)
+        //     const url = "http://localhost:3000/coursebyskill/" + id.skillName
+
+        //     axios
+        //         .get(url)
+        //         .then(response => {
+        //             this.alternativeCourses = []
+
+        //             for (var eachCourse of response.data ) {
+        //                 this.alternativeCourses.push(eachCourse.course_Name)
+        //             }
+        //             console.log(this.alternativeCourses)
+
+
+        //             })
+        //         .catch(error => {
+        //             console.log(error.message)
+        //         })
+        // },
+        // cancelEditLJCourse() {
+        //     this.alternativeCourses = []
+        // },
+
+        // saveLJCourseEdit() {
+        //     // {
+        //     //     "roleName" : "150065 role",
+        //     //         "staff_ID" : "140002",
+        //     //             "course_ID": [["COR001"], ["tch003", "tch013"]]
+        //     // }
+        //     console.log(this.roleName, sessionStorage.getItem("userId"))
+        // }
+        deleteCourse(id) {
+            console.log(this.coursesList)
+            console.log(id.courseCode)
+            const index = this.coursesList.indexOf(id.courseCode)
+            this.coursesList.splice(index, 1)
+            
+            console.log(this.coursesList,this.ljID)
+            
+            // const url = "http://localhost:3000/learningjourneycourse/" 
+            // axios
+            //     .put(url,
+            //         {
+            //             "LJID": this.ljID,
+            //             "course_ID": this.coursesList
+            //         }
+            //     )
+            //     .then(response => {
+            //         console.log("Success")
+            //     })
+            //     .catch(error => {
+            //         console.log(error.message)
+            //     })
 
         }
+        
+
 
     }
 }
