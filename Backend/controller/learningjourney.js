@@ -46,12 +46,14 @@ const createLJ = async (req, res) => {
         return obj.course_ID;
       });
     var newCourse = false
-    LJInfo.course_ID.forEach(c =>{
-        if(!alreadyRegister.includes(c)){
-            newCourse = true
-            console.log(alreadyRegister.includes(c));
-            insertRegistration += `('${c}','${LJInfo.staff_ID}','Waitlist',''),`
-        }
+    LJInfo.course_ID.forEach(list =>{
+        list.forEach(c=>{
+            if(!alreadyRegister.includes(c)){
+                newCourse = true
+                console.log(alreadyRegister.includes(c));
+                insertRegistration += `('${c}','${LJInfo.staff_ID}','Waitlist',''),`
+            }
+        })
     });
     insertRegistration = insertRegistration.slice(0, -1);
     if(!newCourse){
@@ -143,8 +145,10 @@ const updateCourseFromLJ = async (req, res) => {
 
     //re insert the updated courses into LearningJOurneyCourses
     var insertStr = `Insert into spm.LearningJourneyCourse(LJID,course_ID) values `
-    data.course_ID.forEach(c => {
-        insertStr += `('${data.LJID}','${c}'),`
+    data.course_ID.forEach(list => {
+        list.forEach(c=>{
+            insertStr += `('${data.LJID}','${c}'),`
+        });
     });
     insertStr = insertStr.slice(0, -1);
     const result = await db.query(
