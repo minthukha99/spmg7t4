@@ -58,6 +58,13 @@
                     </tr>
                 </tbody>
             </table>
+            <div>
+                <ul>
+                    <li v-for="error in errorMessage" :key="error" class="errorMessage">
+                        {{ error }}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -82,8 +89,9 @@ export default {
             coursesCompletedPercentage: 0, //store percentage from above 2 data
             coursesList: [],
             ljID: 0,
-            
-
+            tempList: [], //temporary list to format courselist for api
+            tempList2: [], //temporary list 2 to format courselist for api
+            errorMessage: []   
         }
     },
 
@@ -117,8 +125,8 @@ export default {
                                 });   
                         }    
                     }
-                    this.coursesCompletedPercentage = this.coursesCompleted / this.totalCourses
 
+                    this.coursesCompletedPercentage = (this.coursesCompleted / this.totalCourses ) * 100
                 })
                 .catch(error => {
                     console.log(error.message)
@@ -170,31 +178,43 @@ export default {
         //     console.log(this.roleName, sessionStorage.getItem("userId"))
         // }
         deleteCourse(id) {
-            console.log(this.coursesList)
-            console.log(id.courseCode)
-            const index = this.coursesList.indexOf(id.courseCode)
-            this.coursesList.splice(index, 1)
-            
-            console.log(this.coursesList,this.ljID)
-            
-            // const url = "http://localhost:3000/learningjourneycourse/" 
-            // axios
-            //     .put(url,
-            //         {
-            //             "LJID": this.ljID,
-            //             "course_ID": this.coursesList
-            //         }
-            //     )
-            //     .then(response => {
-            //         console.log("Success")
-            //     })
-            //     .catch(error => {
-            //         console.log(error.message)
-            //     })
+            //if only 1 course in LJ, show error message
+            if (this.coursesList.length == 1) {
+                this.errorMessage.push("Learning Journey must have at least 1 Course! Delete the Learning Journey from Learning Journey page if you want to delete it")
+            }
+            if (this.errorMessage.length == 0) {
+                console.log("proceed")
+                const index = this.coursesList.indexOf(id.courseCode)
+                this.coursesList.splice(index, 1)
+                this.errorMessage == 0
+
+                //format list for the api
+                for (var eachCourse of this.coursesList) {
+                        this.tempList = [eachCourse]
+                        console.log(eachCourse)
+                        this.tempList2.push(this.tempList)
+                    }
+
+                const url = "http://localhost:3000/learningjourneycourse"
+                axios
+                    .put(url,
+                        {
+                            "LJID": this.ljID,
+                            "course_ID": this.tempList2
+                        }
+                    )
+                    .then(response => {
+                        console.log("Success")
+                        location.reload()
+                    })
+                    .catch(error => {
+                        console.log(error.message)
+                    })
+        
+            }
+ 
 
         }
-        
-
 
     }
 }

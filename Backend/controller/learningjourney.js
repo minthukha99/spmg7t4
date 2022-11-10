@@ -159,6 +159,7 @@ const updateCourseFromLJ = async (req, res) => {
             result: "Fail to add course to LJ"
         });
     });
+    return res.status(200).json(result);
 }
 
 const getInfoAboutLJ = async (req, res) => {
