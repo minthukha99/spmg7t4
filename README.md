@@ -5,8 +5,8 @@ AY2022-2023, Term 1
 Section 7 
 Team 4
 
-This project is running Nodejs(Backend) and Vuejs(Frontend)
-The database used in this project is MySQL
+This project is running Nodejs (Backend) and Vuejs (Frontend).
+The database used in this project is MySQL.
 
 ## Authors
 
@@ -21,11 +21,10 @@ The database used in this project is MySQL
 
 Git repository: https://github.com/minthukha99/spmg7t4/
 
-## Project setup
+## Project setup 
 
 ```
 npm install
-min test 
 ```
 
 ### Compiles and hot-reloads for development
