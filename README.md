@@ -52,6 +52,8 @@ npm run lint
 ### Backend is running at localhost port 3000
 
 Database used is MySQL. Update the config.js file according to local db setup
+
+```
 const config = {
     db: {
         host: "localhost",
@@ -63,7 +65,7 @@ const config = {
     },
     listperPage: 10,
 };
-
+```
 
 
 
