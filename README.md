@@ -1,6 +1,6 @@
 # Course and Team Information
 
-IS217 Software Project Management `<br>`
+IS212 Software Project Management `<br>`
 AY2022-2023, Term 1 `<br>`
 Section 7 `<br>`
 Team 4
