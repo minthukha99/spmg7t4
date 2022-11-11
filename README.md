@@ -1,21 +1,21 @@
 # Course and Team Information
 
-IS212 Software Project Management `<br>`
-AY2022-2023, Term 1 `<br>`
-Section 7 `<br>`
+IS212 Software Project Management 
+AY2022-2023, Term 1 
+Section 7 
 Team 4
-`<br>`
-This project is running Nodejs(Backend) and Vuejs(Frontend)`<br>`
-The database used in this project is MySQL`<br>`
+
+This project is running Nodejs(Backend) and Vuejs(Frontend)
+The database used in this project is MySQL
 
 ## Authors
 
-* Min Thu Kha - thukha.min.2020 `<br>`
-* Lee Zi Qi - ziqi.lee.2020 `<br>`
-* Leong Wei Qin - wqleong.2020 `<br>`
-* Tian Feng - fengtian.2020 `<br>`
-* Tan Yee Khai - yeekhai.tan.2020 `<br>`
-* Wong Kelly - kelly.wong.2020 `<br>`
+* Min Thu Kha - thukha.min.2020 
+* Lee Zi Qi - ziqi.lee.2020 
+* Leong Wei Qin - wqleong.2020
+* Tian Feng - fengtian.2020 
+* Tan Yee Khai - yeekhai.tan.2020 
+* Wong Kelly - kelly.wong.2020 
 
 # spmg7t4
 
@@ -77,7 +77,7 @@ To run unit tests, run the following command
 To run integration tests, run the following command
 
 ```bash
-  npm run test
+  npm run test:unit
 ```
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
