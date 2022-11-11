@@ -26,7 +26,6 @@ describe("Get all available Skill", function(){
         .expect(200,done)
     })
 });
-
 describe("Create a skill", function(){
     it("Create a skill with Valid data", function(done){
         request(app).post("/skill")
@@ -39,7 +38,6 @@ describe("Create a skill", function(){
         .expect(200,done)
     })
 });
-
 describe("Deactive a skill with skillID 1", function(){
     it("Set the skill status to inactive", function(done){
         request(app).put("/deleteskill/skill5")
