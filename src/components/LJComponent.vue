@@ -2,6 +2,12 @@
 <div class="header">
     <div class="header-middle-text">
         <h1>Role: <u>{{ roleName }}</u></h1>
+        <button class="float">
+            <router-link :to="`/AddCourseToLearningJourney/${id}`" class="special"> 
+                Add Course To Learning Journey
+                <!-- <router-link :to="`/UpdateSkill/${skill.skillName}`">Edit</router-link> -->
+            </router-link>
+        </button>
         <h4>Total Courses Required: {{ totalCourses}}</h4>
         <h4>Total Courses Completed: {{ coursesCompleted}} </h4>
 
@@ -9,6 +15,7 @@
             <span :style="{ width: coursesCompletedPercentage + '%' }"></span>
         </div>
         <br>
+        
         <div>
             <table>
                 <thead>
@@ -91,7 +98,8 @@ export default {
             ljID: 0,
             tempList: [], //temporary list to format courselist for api
             tempList2: [], //temporary list 2 to format courselist for api
-            errorMessage: []   
+            errorMessage: [],
+            // ljID: 0 //store lj ID to route for Add Course To Learning Journey
         }
     },
 
@@ -223,6 +231,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
+.float{
+    float: right
+}
 .meter {
     box-sizing: content-box;
     height: 20px;

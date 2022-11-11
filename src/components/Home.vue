@@ -7,7 +7,7 @@
         </div>
         <section class="header-middle-text container">
             <div class="text-center">
-                <h5 class="mb-1">Read the following instructions</h5>
+                
                 <p>
                     Enter your User ID:
                 </p>
