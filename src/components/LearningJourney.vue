@@ -181,7 +181,6 @@ export default {
                         this.roleSelectedId = eachRole.id
                     }
                 }
-
                 const url = "http://localhost:3000/role/" + this.roleSelectedId;
                 axios.get(url)
                     .then(response => {
@@ -352,80 +351,7 @@ export default {
                     console.log(error.message)
                 })
         },
-        getLJofUser2() {
-            // retrieve all the LJ of the user
-            var userId = sessionStorage.getItem("userId")
-            const url = "http://localhost:3000/getlearningjourneyby/" + this.id;
-            axios.get(url)
-                .then(response => {
-                    console.log(response)
-                    for (var eachLJ of response.data) {
-                        this.LJlist.push({
-                            ljId: eachLJ.LJID,
-                            roleId: eachLJ.roleID,
-                            roleName: [],
-                            staffId: eachLJ.staff_ID,
-                            courseCount: 0
-                        })
-                        this.roleList.push({
-                            roleId: eachLJ.roleID
-                        })
-                    }
-                    const array2 = this.LJlist
-                    let promises2 = []
-                    for (var i = 0; i < array2.length; i++) {
-                        promises2.push(
-                            axios
-                                .get('http://localhost:3000/learningjourneyinfo/' + array2[i].ljId)
-                                .then(response => {
-                                    // console.log(response.data.courseRegistered)
-                                    //to get number of courses completed by user
-                                    var coursesCompleted = 0
-                                    for (var eachCourse of response.data.courseRegistered) {
-                                        if (eachCourse.Completion_Status) {
-                                            coursesCompleted += 1
-                                        }
-                                    }
-                                    var percentageCourseCompleted = 0
-                                    if (response.data.courseRegistered.length != 0) {
-                                        percentageCourseCompleted = Math.round((coursesCompleted / response.data.courseRegistered.length) * 100)
-                                    }
-                                    this.coursesCounts.push({
-                                        courseCount: response.data.courseRegistered.length,
-                                        percentageCourseCompleted: percentageCourseCompleted
-                                    })
-                                    // console.log(this.coursesCounts)
-                                })
-                                .catch(error => {
-                                    console.log(error.message)
-                                })
-                        )
-                    }
-
-                    const array = this.roleList
-                    let promises = []
-                    for (var i = 0; i < array.length; i++) {
-                        promises.push(
-                            axios
-                                .get('http://localhost:3000/role/' + array[i].roleId)
-                                .then(response => {
-                                    this.roleList2.push({
-                                        roleName: response.data.roleName,
-                                        roleId: response.data.roleID,
-                                    });
-                                })
-                                .catch(error => {
-                                    console.log(error.message)
-                                })
-                        )
-                    }
-                    Promise.all(promises).then(() => console.log())
-                })
-                .catch(error => {
-                    console.log(error.message)
-                })
-
-        },
+        
     },
 }
 </script>
