@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="header-middle-text">
-            <h1>Add Course to Learning Journey <u> xxx</u></h1>
+            <h1>Add Course to Learning Journey <u> {{ ljName }}</u></h1>
             
             <div>
                 <div v-if="errorMessage.length == 0">
@@ -9,60 +9,39 @@
                         <thead>
                             <tr>
                                 <th scope="col">Skill required</th>
-                                <th scope="col">Courses </th>
+                                <th scope="col">Courses you are currently taking to learn Skill</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr scope="row" v-for="(index,skill) in skillsList" :key="index">
-                                <td scope="col">
-                                    {{ index }}
-                                    {{ skill }}
+                            <tr scope="row" v-for="course in courses" :key="course">
+                                <td scope="col" >
+                                   {{ course.skillName }}
                                 </td>
-
-                                
-                            </tr>
-                            <tr scope="row" v-for="course in coursesList" :key="course">
-                                <td scope="col">
-                                    {{ course.courseNamesList }}
+                                <td>
+                                    <ul v-for="course in course.courseNamesList" :key="course">
+                                        <li>
+                                            {{ course }}
+                                        </li>
+                                    </ul>                                    
                                 </td>
                             </tr>
                         </tbody>
-                        
-            
-                        <tbody>
-                            
-                            
-            
-                            <!-- <tr scope="row" v-for="skill in skillsNeededForRole" :key="skill">
-                                <td scope="col">
-                                    {{ skill.skillName }}
-                                </td>
-                                <td v-if="skill.learnt == false">
-                                    <div v-for="(eachCourse) in skill.course" :key="eachCourse">
-                                        <input type="checkbox" :value="eachCourse.course_ID" v-model="skill.selected">
-                                        <label>{{ eachCourse.course_Name }}</label>
-                                    </div>
-            
-                                </td>
-            
-                                <td v-else>
-                                    <div class="errorMessage">
-                                        You have already learned the Skill. Do choose the Course you have taken to learn this Skill
-                                    </div>
-                                    <div v-for="(eachCourse) in skill.course" :key="eachCourse">
-                                        <input type="checkbox" :value="eachCourse.course_ID" v-model="skill.selected">
-                                        <label>{{ eachCourse.course_Name }}</label>
-                                    </div>
-                                </td>
-            
-                            </tr> -->
-                        </tbody>
-            
                     </table>
             
                     <div v-for="error in errorMessage2" :key="error" class="errorMessage">
                         <p>{{ error }} </p>
                     </div>
+
+                    <!-- <select v-model="selectedRole" @change="saveRoleInSession">
+                        <option selected="true" disabled="disabled">Select your role</option>
+                        <option v-for="role in rolesList" :key="role">{{role}}</option>
+                    </select> -->
+                    
+                    <select v-model="selectedCourse">
+                        <option selected="true" disabled="disabled">Add Course</option>
+                        <option v-for="course in allActiveCourses" :key="course.course_ID">{{course.courseName}}</option>
+                    </select>
+                    
             
                     <button class="button special" @click="addCoursetoLJ">
                         Add to Learning Journey
@@ -86,7 +65,8 @@ export default {
     props: ['id'],
     name: 'Add Course to Learning Journey',
     mounted() {
-        this.getLJInfo()
+        this.getLJInfo(),
+        this.getActiveCourses()
     },
 
     data() {
@@ -97,7 +77,14 @@ export default {
 
             courseNameToClearEachRole :[],
             courseIDToClearEachRole: [],
-            coursesList: []
+            courses: [],
+            ljName: "",
+            ljID: 0,
+            courseList: [],
+            allActiveCourses: [],
+            selectedCourse: "",
+            tempList : []
+            
 
         }
     },
@@ -114,39 +101,93 @@ export default {
                     var ljData = response.data.LJInfo
                     var skillData = response.data.skillNeededForRole
                     var courseData = response.data.courseRegistered
-                    
+
+
                     for (var eachSkill of skillData) {
                         if (eachSkill.status == 1) { 
                             this.skillsList.push(eachSkill.skillName)
                         }
                     }
-                    
                     for (var eachSkill of this.skillsList) {
                         
                         this.courseNameToClearEachRole = []
                         this.courseIDToClearEachRole = []
                         for (var eachCourse of courseData) {
                             if (eachCourse.skillName == eachSkill && !this.courseNameToClearEachRole.includes(eachCourse.course_Name)) {
+                                if (!this.courseList.includes(eachCourse.course_ID)) {
+                                    this.courseList.push(eachCourse.course_ID)
+                                }
+                                    
                                     this.courseNameToClearEachRole.push(eachCourse.course_Name)
                                     this.courseIDToClearEachRole.push(eachCourse.course_ID)
                             }
                         }
-                        this.coursesList.push({
+
+                        this.courses.push({
+                            skillName : eachSkill,
                             courseNamesList: this.courseNameToClearEachRole,
                             couseID: this.courseIDToClearEachRole
                         })
                     }
-                    
-                    console.log(this.coursesList)
     
                 })
                 .catch(error => {
                     console.log(error.message)
                 })
+        },
 
+        addCoursetoLJ() {
+            const url = "http://localhost:3000/learningjourneycourse"
+            for (var eachCourse of this.allActiveCourses) {
+                if (eachCourse.courseName == this.selectedCourse) {
+                    this.tempList.push(this.courseList),
+                    eachCourse.courseID = [eachCourse.courseID],
+                    this.tempList.push(eachCourse.courseID)
+                }
+            }
 
+            var allSkills = []
+            for (var eachCourseForEachSkill of this.courses) {
+                console.log(eachCourseForEachSkill.courseNamesList)
+                for (var eachCourse of eachCourseForEachSkill) {
+                    console.log(eachCourse)
+                }
+            }
+            // console.log(this.allActiveCourses)
+            
+
+            // this.selectedCourse
+            //  axios
+            //         .put(url,
+            //             {
+            //                 "LJID": this.id,
+            //                 "course_ID": this.tempList
+            //             }
+            //         )
+            //         .then(response => {
+            //             console.log("Success")
+            //             location.reload()
+            //         })
+            //         .catch(error => {
+            //             console.log(error.message)
+            //         })
             
         },
+        getActiveCourses() {
+            const url = "http://localhost:3000/activecourse"
+            axios.get(url)
+                .then(response => {
+                    for (var eachCourse of response.data) {
+                        this.allActiveCourses.push({
+                            courseID: eachCourse.course_ID,
+                            courseName: eachCourse.course_Name
+                        })
+                    }
+                })
+                .catch(error => {
+                    console.log(error.message)
+                })
+        }
 
         // addCoursetoLJ() {
         //     this.errorMessage2 = []

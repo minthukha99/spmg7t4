@@ -181,7 +181,6 @@ export default {
                         this.roleSelectedId = eachRole.id
                     }
                 }
-
                 const url = "http://localhost:3000/role/" + this.roleSelectedId;
                 axios.get(url)
                     .then(response => {

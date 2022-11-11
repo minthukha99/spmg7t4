@@ -191,7 +191,6 @@ export default {
                 this.errorMessage.push("Learning Journey must have at least 1 Course! Delete the Learning Journey from Learning Journey page if you want to delete it")
             }
             if (this.errorMessage.length == 0) {
-                console.log("proceed")
                 const index = this.coursesList.indexOf(id.courseCode)
                 this.coursesList.splice(index, 1)
                 this.errorMessage == 0
