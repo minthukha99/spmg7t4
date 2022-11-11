@@ -4,6 +4,9 @@ IS212 Software Project Management `<br>`
 AY2022-2023, Term 1 `<br>`
 Section 7 `<br>`
 Team 4
+`<br>`
+This project is running Nodejs(Backend) and Vuejs(Frontend)`<br>`
+The database used in this project is MySQL`<br>`
 
 ## Authors
 
@@ -44,5 +47,37 @@ npm run lint
 ```
 
 ### Customize configuration
+
+## information
+### Backend is running at localhost port 3000
+
+Database used is MySQL. Update the config.js file according to local db setup
+const config = {
+    db: {
+        host: "localhost",
+        port: 8889, //change this
+        user: "root", //change this (if needed)
+        password: "root",//change this (if needed)
+        database: "spm"
+        
+    },
+    listperPage: 10,
+};
+
+
+
+
+## Running Tests
+
+To run unit tests, run the following command
+
+```bash
+./node_modules/.bin/mocha
+```
+To run integration tests, run the following command
+
+```bash
+  npm run test
+```
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
