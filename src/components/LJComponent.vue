@@ -3,7 +3,7 @@
     <div class="header-middle-text">
         <h1>Role: <u>{{ roleName }}</u></h1>
         <button class="float">
-            <router-link :to="`/AddCourseToLearningJourney/${id}`" class="special"> 
+            <router-link :to="`/AddCourseToLearningJourney/${id}`"> 
                 Add Course To Learning Journey
                 <!-- <router-link :to="`/UpdateSkill/${skill.skillName}`">Edit</router-link> -->
             </router-link>
@@ -230,6 +230,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 
 <style scoped>
+
+button a {
+    color: white;
+    text-decoration: none;
+}
 .float{
     float: right
 }
